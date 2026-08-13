@@ -1,0 +1,63 @@
+/* HearMe — styles complémentaires (le reste vient de Tailwind CDN) */
+
+:root {
+  --hm-violet: #7c5cff;
+  --hm-magenta: #c24df0;
+}
+
+html { -webkit-tap-highlight-color: transparent; }
+body { font-family: "Poppins", ui-sans-serif, system-ui, sans-serif; }
+
+/* Fond "mesh" sombre (Nocturne) réutilisé sur login + dashboard */
+.hm-mesh {
+  background-color: #0a0a12;
+  background-image:
+    radial-gradient(60rem 60rem at 12% -10%, rgba(124, 92, 255, 0.22), transparent 60%),
+    radial-gradient(50rem 50rem at 110% 10%, rgba(194, 77, 240, 0.18), transparent 55%),
+    radial-gradient(40rem 40rem at 50% 120%, rgba(80, 120, 255, 0.12), transparent 60%);
+}
+
+.hm-gradient-text {
+  background: linear-gradient(92deg, var(--hm-violet), var(--hm-magenta));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hm-gradient-bg { background: linear-gradient(120deg, var(--hm-violet), var(--hm-magenta)); }
+
+/* Carte "verre" translucide */
+.hm-glass {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(10px);
+}
+
+/* Carte MapLibre */
+#map { width: 100%; height: 100%; min-height: 320px; border-radius: 1rem; }
+.maplibregl-ctrl-attrib { font-size: 10px; opacity: 0.6; }
+.maplibregl-ctrl-attrib a { color: inherit; }
+
+/* Marqueur "dernière position" (point qui pulse) */
+.hm-pin { width: 18px; height: 18px; position: relative; }
+.hm-pin::before {
+  content: ""; position: absolute; inset: 0; border-radius: 9999px;
+  background: var(--hm-magenta); box-shadow: 0 0 0 3px rgba(255,255,255,.85);
+}
+.hm-pin::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 9999px;
+  border: 2px solid var(--hm-magenta); animation: hm-ping 1.8s cubic-bezier(0,0,.2,1) infinite;
+}
+@keyframes hm-ping { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(2.4); opacity: 0; } }
+
+/* Onglets de connexion */
+.hm-tab { transition: color .15s, background .15s; }
+.hm-tab[aria-selected="true"] { color: #fff; background: rgba(255,255,255,0.08); }
+
+/* Galerie */
+.hm-gallery::-webkit-scrollbar { height: 8px; width: 8px; }
+.hm-gallery::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 8px; }
+
+/* Toast */
+.hm-toast { transition: opacity .35s ease, transform .35s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hm-pin::after { animation: none; }
+}

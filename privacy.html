@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HearMe — Politique de confidentialité</title>
+  <meta name="description" content="Politique de confidentialité de l'application HearMe et de son panneau web d'urgence." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { brand: { violet: "#7c5cff", magenta: "#c24df0" } },
+      fontFamily: { sans: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"] },
+    } } };
+  </script>
+  <link rel="stylesheet" href="assets/css/app.css" />
+</head>
+<body class="hm-mesh min-h-screen text-slate-200">
+  <div class="max-w-3xl mx-auto px-5 py-10">
+    <a href="index.html" class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-slate-200 mb-8">← Retour</a>
+
+    <div class="flex items-center gap-3 mb-2">
+      <svg viewBox="0 0 48 48" class="w-9 h-9" aria-hidden="true">
+        <defs><linearGradient id="gp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#c24df0"/></linearGradient></defs>
+        <path d="M24 3l16 6v10.5C40 30 33 37.6 24 42 15 37.6 8 30 8 19.5V9l16-6z" fill="url(#gp)"/>
+        <g fill="#fff"><rect x="14.5" y="20" width="3" height="8" rx="1.5"/><rect x="18.5" y="17" width="3" height="14" rx="1.5"/><rect x="22.5" y="14" width="3" height="20" rx="1.5"/><rect x="26.5" y="17" width="3" height="14" rx="1.5"/><rect x="30.5" y="20" width="3" height="8" rx="1.5"/></g>
+      </svg>
+      <h1 class="text-3xl font-bold"><span class="hm-gradient-text">HearMe</span> — Politique de confidentialité</h1>
+    </div>
+    <p class="text-sm text-slate-500 mb-8">Dernière mise à jour : 13 août 2026</p>
+
+    <div class="space-y-6 leading-relaxed text-[15px] text-slate-300
+                [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h2]:mt-8 [&_h2]:mb-2
+                [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-slate-100 [&_h3]:mt-4
+                [&_a]:text-brand-magenta [&_a:hover]:underline
+                [&_strong]:text-slate-100
+                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1 [&_ul]:mt-2">
+
+      <p>HearMe est une application de sécurité personnelle (anti-vol / localisation de votre propre téléphone). Cette politique explique quelles données sont utilisées, par l'<strong>application Android</strong> et par le <strong>panneau web d'urgence</strong> optionnel.</p>
+
+      <div class="hm-glass rounded-xl p-4 text-sm">
+        <strong class="text-white">En bref.</strong> Le traitement se fait d'abord <strong>sur l'appareil</strong>. Le micro et les photos ne quittent pas le téléphone, sauf les alertes que <em>vous</em> configurez. Le panneau web et la synchronisation cloud sont <strong>optionnels</strong> : ils ne s'activent que si vous créez un compte ou utilisez une clé secrète pour piloter votre téléphone à distance.
+      </div>
+
+      <h2>1. Données utilisées par l'application</h2>
+
+      <h3>Micro (mot-clé vocal)</h3>
+      <p>La reconnaissance du mot-clé se fait <strong>sur l'appareil</strong>. Aucun audio n'est enregistré ni transmis.</p>
+
+      <h3>Localisation</h3>
+      <p>Utilisée pour l'anti-vol (joindre la position à vos alertes) et pour afficher la carte. La localisation en arrière-plan n'est utilisée que si vous activez la carte communautaire.</p>
+
+      <h3>Caméra</h3>
+      <p>En cas de vol ou d'échec de déverrouillage (anti-vol armé), une photo de la caméra frontale peut être envoyée à votre canal Telegram et, si vous utilisez le panneau web, à votre espace de stockage privé (voir §2).</p>
+
+      <h3>Signalement communautaire (optionnel, désactivé par défaut)</h3>
+      <p>Si vous l'activez, un vol confirmé peut alimenter la carte des zones à risque via un signalement <strong>anonyme</strong> : coordonnées bruitées (±150 m), horodatage arrondi, <strong>aucun identifiant ni adresse IP</strong> conservés.</p>
+
+      <h2>2. Panneau web & synchronisation cloud (optionnel)</h2>
+      <p>Le panneau web vous permet de localiser et sécuriser votre téléphone depuis un navigateur. Il repose sur <strong>Supabase</strong> (hébergement des données). Cette synchronisation ne s'active que si <strong>vous</strong> l'utilisez (compte ou clé secrète). Sont alors stockées, pour <em>votre</em> appareil :</p>
+      <ul>
+        <li><strong>Positions GPS</strong> (dernière position et historique récent) ;</li>
+        <li><strong>État de l'appareil</strong> : niveau de batterie, type de réseau, statut de verrouillage, dernière activité ;</li>
+        <li><strong>Photos de sécurité</strong> (caméra frontale) dans un espace de stockage <strong>privé</strong> ;</li>
+        <li><strong>Commandes à distance</strong> que vous déclenchez (verrouiller, alarme, localiser…) ;</li>
+        <li>Si vous créez un compte : votre <strong>adresse e-mail</strong> (authentification) ;</li>
+        <li>La <strong>clé secrète</strong> de l'appareil, qui sert d'identifiant/mot de passe de commande.</li>
+      </ul>
+      <p>Ces données ne sont accessibles qu'à <strong>vous</strong> : soit via votre compte (isolation par « Row Level Security »), soit via la clé secrète de l'appareil. Elles ne sont ni vendues, ni partagées, ni utilisées à des fins publicitaires. Communications en <strong>HTTPS/TLS</strong>.</p>
+
+      <h2>3. Partage</h2>
+      <p>Nous ne vendons ni ne partageons vos données avec des tiers à des fins publicitaires. Les seules sorties de données sont celles que vous déclenchez et dirigez vous-même (alertes vers votre Telegram, votre propre panneau web) et le signalement anonyme si vous y avez consenti. Le sous-traitant technique d'hébergement est <strong>Supabase</strong> (base de données et stockage).</p>
+
+      <h2>4. Conservation et suppression</h2>
+      <ul>
+        <li>Les réglages et secrets locaux (code, token) restent <strong>chiffrés sur l'appareil</strong> et sont supprimés à la désinstallation.</li>
+        <li>Les données du panneau web (positions, photos, état) sont conservées dans votre espace jusqu'à leur suppression. Vous pouvez demander leur effacement (voir Contact) ; supprimer un appareil supprime en cascade ses positions, photos et commandes.</li>
+        <li>Les signalements communautaires anonymes ne contiennent aucun identifiant et décroissent avec le temps.</li>
+      </ul>
+
+      <h2>5. Permissions sensibles (détail)</h2>
+      <div class="overflow-x-auto">
+      <table class="w-full text-sm border-collapse [&_th]:text-left [&_th]:py-2 [&_th]:px-3 [&_td]:py-2 [&_td]:px-3 [&_td]:border-t [&_td]:border-white/10 [&_th]:border-b [&_th]:border-white/20">
+        <thead class="text-slate-400">
+          <tr><th>Permission</th><th>Pourquoi</th><th>Sortie des données</th></tr>
+        </thead>
+        <tbody class="text-slate-300">
+          <tr><td><strong>Microphone</strong></td><td>Détecter le mot-clé vocal</td><td>Aucune — traité sur l'appareil</td></tr>
+          <tr><td><strong>Localisation</strong></td><td>Joindre la position aux alertes ; carte</td><td>Votre Telegram / votre panneau web</td></tr>
+          <tr><td><strong>Localisation arrière-plan</strong></td><td>Alerte à l'entrée d'une zone à risque</td><td>Aucune en continu (opt-in)</td></tr>
+          <tr><td><strong>Caméra</strong></td><td>Photo en cas de vol / échec de déverrouillage</td><td>Votre Telegram / stockage privé</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="text-sm text-slate-400">Chaque permission est demandée au moment de l'usage, révocable dans les réglages Android ; l'app reste fonctionnelle (mode dégradé) si elle est refusée.</p>
+
+      <h2>6. Sécurité</h2>
+      <ul>
+        <li>Secrets locaux chiffrés via <strong>EncryptedSharedPreferences</strong> (clé dans le KeyStore Android).</li>
+        <li>Côté cloud : <strong>Row Level Security</strong> (chaque compte ne voit que ses appareils), stockage des photos <strong>privé</strong> (URLs signées, temporaires), accès par clé secrète via des fonctions serveur restreintes.</li>
+        <li>Toutes les communications réseau en <strong>HTTPS/TLS</strong>.</li>
+      </ul>
+
+      <h2>7. Conformité réglementaire</h2>
+      <h3>RGPD / GDPR (Union européenne)</h3>
+      <p><strong>Base légale</strong> : consentement (usage du panneau web, carte communautaire) et intérêt légitime (sécurité de l'utilisateur). <strong>Minimisation</strong> : seules les données nécessaires à la localisation/sécurisation de votre appareil sont traitées. <strong>Droits</strong> d'accès, rectification et effacement assurés (données locales supprimées à la désinstallation ; données cloud effaçables sur demande).</p>
+      <h3>CCPA / CPRA (Californie)</h3>
+      <p>Pas de « vente » ni de « partage » de données personnelles. Droits « Know / Delete / Opt-out » respectés ; le panneau web est désactivable à tout moment.</p>
+      <h3>LGPD (Brésil)</h3>
+      <p>Finalité et nécessité limitées à la sécurité ; consentement libre et éclairé ; anonymisation des signalements communautaires.</p>
+
+      <div class="hm-glass rounded-xl p-4 text-sm text-amber-200/90 border border-amber-500/20">
+        ⚠️ Ce document est un <strong>modèle</strong>. Faites-le relire par un juriste avant publication et renseignez le responsable de traitement / contact ci-dessous.
+      </div>
+
+      <h2>8. Vos choix</h2>
+      <ul>
+        <li>Le panneau web et la synchronisation cloud sont <strong>optionnels</strong> et cessent si vous ne les utilisez pas.</li>
+        <li>La contribution à la carte communautaire est <strong>opt-in</strong>, désactivable à tout moment.</li>
+        <li>Les permissions (micro, localisation, caméra) sont révocables dans les réglages Android.</li>
+      </ul>
+
+      <h2>9. Contact</h2>
+      <p>Pour toute question ou demande d'effacement : <a href="mailto:zianemahdi28@gmail.com">zianemahdi28@gmail.com</a>.</p>
+    </div>
+
+    <p class="mt-10 text-center text-xs text-slate-600">© 2026 HearMe</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HearMe — Tableau de bord d'urgence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { brand: { violet: "#7c5cff", magenta: "#c24df0" } },
+        fontFamily: { sans: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"] },
+      } },
+    };
+  </script>
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+</head>
+<body class="hm-mesh min-h-screen text-slate-100">
+  <!-- En-tête -->
+  <header class="sticky top-0 z-20 border-b border-white/10 bg-black/30 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
+      <svg viewBox="0 0 48 48" class="w-8 h-8 shrink-0" aria-hidden="true">
+        <defs><linearGradient id="gh" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff" /><stop offset="1" stop-color="#c24df0" /></linearGradient></defs>
+        <path d="M24 3l16 6v10.5C40 30 33 37.6 24 42 15 37.6 8 30 8 19.5V9l16-6z" fill="url(#gh)" />
+        <g fill="#fff"><rect x="14.5" y="20" width="3" height="8" rx="1.5"/><rect x="18.5" y="17" width="3" height="14" rx="1.5"/><rect x="22.5" y="14" width="3" height="20" rx="1.5"/><rect x="26.5" y="17" width="3" height="14" rx="1.5"/><rect x="30.5" y="20" width="3" height="8" rx="1.5"/></g>
+      </svg>
+      <div class="min-w-0">
+        <div class="flex items-center gap-2">
+          <h1 id="device-name" class="font-semibold truncate">Mon téléphone</h1>
+          <span id="online-badge" class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium bg-slate-500/15 text-slate-400">—</span>
+        </div>
+        <p id="last-update" class="text-xs text-slate-500">—</p>
+      </div>
+      <div class="ml-auto flex items-center gap-2">
+        <select id="device-switcher" class="hidden rounded-lg bg-white/5 border border-white/10 px-2 py-1.5 text-sm focus:outline-none"></select>
+        <button id="btn-logout" class="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm hover:bg-white/10">Déconnexion</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-4 grid gap-4 lg:grid-cols-3">
+    <!-- Colonne principale : carte + galerie -->
+    <section class="lg:col-span-2 space-y-4">
+      <div class="hm-glass rounded-2xl p-3">
+        <div class="relative h-[56vh] min-h-[340px]">
+          <div id="map" class="absolute inset-0"></div>
+          <button id="btn-recenter" class="absolute z-10 top-3 right-14 rounded-lg border border-white/15 bg-black/50 px-3 py-1.5 text-xs font-medium text-white backdrop-blur hover:bg-black/70">Recentrer</button>
+        </div>
+        <div class="flex items-center justify-between px-2 pt-3 text-sm">
+          <div><span class="text-slate-400">Dernière position :</span> <span id="coords" class="font-medium">—</span></div>
+          <div id="coords-time" class="text-slate-500 text-xs"></div>
+        </div>
+      </div>
+
+      <div class="hm-glass rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-semibold text-slate-300">Galerie de sécurité</h2>
+          <span class="text-xs text-slate-500">Caméra frontale — échecs de déverrouillage & captures à distance</span>
+        </div>
+        <div id="gallery" class="hm-gallery flex gap-3 overflow-x-auto pb-2"></div>
+        <div id="gallery-empty" class="hidden py-10 text-center text-sm text-slate-500">
+          Aucune photo capturée pour le moment.
+        </div>
+      </div>
+    </section>
+
+    <!-- Colonne latérale -->
+    <aside class="space-y-4">
+      <!-- État -->
+      <div class="hm-glass rounded-2xl p-5 space-y-4">
+        <h2 class="text-sm font-semibold text-slate-300">État de l'appareil</h2>
+        <div>
+          <div class="flex justify-between text-xs text-slate-400"><span>Batterie</span><span id="stat-battery" class="text-slate-200 font-medium">—</span></div>
+          <div class="mt-1.5 h-2 w-full rounded-full bg-white/10"><div id="stat-battery-bar" class="h-full rounded-full bg-slate-500" style="width:0%"></div></div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-slate-400">Réseau</span>
+          <span id="stat-network" class="text-sm font-medium text-slate-200">—</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-slate-400">Verrouillage</span>
+          <span id="stat-lock" class="text-lg font-semibold text-slate-300">—</span>
+        </div>
+      </div>
+
+      <!-- Actions d'urgence -->
+      <div class="hm-glass rounded-2xl p-5">
+        <h2 class="text-sm font-semibold text-slate-300 mb-3">Actions d'urgence</h2>
+        <div class="grid grid-cols-2 gap-3">
+          <button id="btn-lock"  class="rounded-xl border border-emerald-500/30 bg-emerald-500/15 px-3 py-3 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/25">🔒 Verrouiller</button>
+          <button id="btn-alarm" class="rounded-xl border border-rose-500/30 bg-rose-500/15 px-3 py-3 text-sm font-semibold text-rose-200 hover:bg-rose-500/25">🔔 Alarme</button>
+          <button id="btn-stopalarm" class="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-slate-200 hover:bg-white/10">Stopper l'alarme</button>
+          <button id="btn-locate"    class="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-slate-200 hover:bg-white/10">Localiser</button>
+          <button id="btn-photo"     class="col-span-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-slate-200 hover:bg-white/10">📷 Prendre une photo</button>
+        </div>
+      </div>
+
+      <!-- Clé secrète -->
+      <div class="hm-glass rounded-2xl p-5 space-y-3">
+        <h2 class="text-sm font-semibold text-slate-300">Clé secrète Telegram</h2>
+        <div id="secret-value" data-key="" class="rounded-lg bg-black/30 border border-white/10 px-3 py-2.5 font-mono text-lg tracking-wider break-all text-brand-magenta">••••••••</div>
+        <div class="flex gap-2">
+          <button id="btn-reveal"   class="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm hover:bg-white/10">Afficher</button>
+          <button id="btn-copy-key" class="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm hover:bg-white/10">Copier</button>
+        </div>
+        <button id="btn-regen" class="w-full rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-sm font-medium text-amber-200 hover:bg-amber-500/20">Régénérer la clé</button>
+        <p class="text-xs text-slate-500">Cette clé commande votre téléphone à distance (Telegram & ce panneau). Ne la partagez pas.</p>
+      </div>
+
+      <p class="text-center text-xs text-slate-500">
+        <a href="privacy.html" class="hover:text-slate-300 hover:underline">Politique de confidentialité</a>
+      </p>
+    </aside>
+  </main>
+
+  <!-- Scripts (ordre important) -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/supabase.js"></script>
+  <script src="assets/js/session.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/map.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

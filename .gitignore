@@ -1,0 +1,14 @@
+# OS / éditeurs
+.DS_Store
+Thumbs.db
+*.log
+
+# Vercel
+.vercel
+
+# Supabase CLI
+supabase/.temp
+supabase/.branches
+
+# Dépendances éventuelles (le site n'a pas de build)
+node_modules
