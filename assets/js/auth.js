@@ -71,7 +71,10 @@
     accMsg.className = "text-sm text-slate-400 min-h-5";
     try {
       if (signupMode) {
-        const { data, error } = await HM.sb.auth.signUp({ email, password });
+        const { data, error } = await HM.sb.auth.signUp({
+          email, password,
+          options: { emailRedirectTo: new URL("confirm.html", location.href).href },
+        });
         if (error) throw error;
         if (!data.session) {
           accMsg.textContent = "Compte créé. Vérifiez votre e-mail pour le confirmer, puis connectez-vous.";
