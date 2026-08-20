@@ -1,0 +1,12 @@
+{
+  "name": "HearMe — Panneau Web d'urgence",
+  "description": "Panneau web d'urgence et centre de contrôle antivol pour l'application HearMe : localisation GPS en temps réel, alarme à distance, verrouillage sécurisé, galerie photos d'intrus et gestion de clé secrète.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
