@@ -114,3 +114,14 @@ begin
   begin alter publication supabase_realtime add table device_locations; exception when duplicate_object then null; end;
   begin alter publication supabase_realtime add table devices;          exception when duplicate_object then null; end;
 end $$;
+
+-- -------------------------------------------------------------------------
+-- Privilèges de table pour 'authenticated' (mode « compte », accès direct).
+-- INDISPENSABLE : une policy RLS filtre un privilège, elle ne l'accorde pas.
+-- Sans ces GRANT → « permission denied for table devices ». L'anon n'y touche
+-- jamais (il passe par les RPC SECURITY DEFINER).
+-- -------------------------------------------------------------------------
+grant select, update, delete on devices          to authenticated;
+grant select                 on device_locations  to authenticated;
+grant select                 on security_photos   to authenticated;
+grant select, insert         on device_commands   to authenticated;

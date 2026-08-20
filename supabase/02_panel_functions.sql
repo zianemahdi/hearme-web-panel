@@ -77,11 +77,12 @@ end $$;
 create or replace function poll_commands(p_secret text)
 returns table(id uuid, command text, params jsonb, created_at timestamptz)
 language plpgsql security definer set search_path = public as $$
+#variable_conflict use_column
 declare v_id uuid;
 begin
-    select id into v_id from devices where secret_key = p_secret;
+    select d.id into v_id from devices d where d.secret_key = p_secret;
     if v_id is null then raise exception 'clé secrète invalide'; end if;
-    update devices set last_seen = now(), is_online = true where id = v_id;
+    update devices d set last_seen = now(), is_online = true where d.id = v_id;
     return query
       update device_commands c set status = 'delivered'
       where c.device_id = v_id and c.status = 'pending'

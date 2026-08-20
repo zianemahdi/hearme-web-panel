@@ -4,16 +4,13 @@
 (function () {
   const $ = (id) => document.getElementById(id);
 
-  // Si déjà connecté, aller directement au tableau de bord.
-  (async function redirectIfLogged() {
-    const mode = HM.session.getMode();
-    if (mode === "secret" && HM.session.getSecret()) return location.replace("dashboard.html");
-    if (mode === "auth" && (await HM.session.hasAuthSession())) return location.replace("dashboard.html");
-  })();
-
-  /* ---------------------------- Onglets --------------------------------- */
   const tabs = { account: $("tab-account"), secret: $("tab-secret") };
   const panels = { account: $("panel-account"), secret: $("panel-secret") };
+  const accBtn = $("btn-account");
+  const accMsg = $("account-msg");
+  let signupMode = false;
+
+  /* ---------------------------- Onglets --------------------------------- */
   function select(which) {
     Object.keys(tabs).forEach((k) => {
       tabs[k].setAttribute("aria-selected", String(k === which));
@@ -24,10 +21,6 @@
   tabs.secret.addEventListener("click", () => select("secret"));
 
   /* ------------------- Onglet "Compte" (email + MDP) -------------------- */
-  let signupMode = false;
-  const accBtn = $("btn-account");
-  const accMsg = $("account-msg");
-
   $("account-mode-toggle").addEventListener("click", (e) => {
     e.preventDefault();
     signupMode = !signupMode;
@@ -38,22 +31,36 @@
     accMsg.textContent = "";
   });
 
-  async function afterAuth() {
+  /**
+   * Session compte active : va au tableau de bord si un appareil est rattaché,
+   * sinon affiche le guide de liaison. NE redemande PAS la clé et NE boucle PAS
+   * (c'était la cause du « reste connecté / reconnecté »).
+   */
+  async function resolveAccount() {
     HM.session.setAuth();
     let devices = [];
-    try { devices = await HM.api.listDevices(); } catch (_) {}
-    if (!devices.length) {
-      // Compte sans appareil → proposer le rattachement par clé.
-      $("claim-box").classList.remove("hidden");
-      accMsg.textContent = "Connecté. Rattachez votre téléphone avec sa clé secrète.";
-      accMsg.className = "text-sm text-emerald-300 min-h-5";
+    try {
+      devices = await HM.api.listDevices();
+    } catch (e) {
+      accMsg.textContent = translate(e.message || "Erreur de chargement.");
+      accMsg.className = "text-sm text-rose-300 min-h-5";
       return;
     }
-    const d = devices[0];
-    HM.session.setDevice(d.id, d.name);
-    location.replace("dashboard.html");
+    if (devices.length) {
+      HM.session.setDevice(devices[0].id, devices[0].name);
+      return location.replace("dashboard.html");
+    }
+    showLinkGuide();
   }
 
+  /** Compte connecté mais aucun téléphone lié : on explique la liaison auto. */
+  function showLinkGuide() {
+    $("claim-box").classList.remove("hidden");
+    accMsg.textContent = "Connecté ✓ — aucun téléphone lié pour l'instant.";
+    accMsg.className = "text-sm text-emerald-300 min-h-5";
+  }
+
+  /* ----------------------- Soumission du formulaire --------------------- */
   $("form-account").addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = $("email").value.trim();
@@ -78,7 +85,7 @@
         const { error } = await HM.sb.auth.signInWithPassword({ email, password });
         if (error) throw error;
       }
-      await afterAuth();
+      await resolveAccount();
     } catch (err) {
       accMsg.textContent = translate(err.message || "Échec de la connexion.");
       accMsg.className = "text-sm text-rose-300 min-h-5";
@@ -87,7 +94,7 @@
     }
   });
 
-  // Rattachement d'un appareil (compte sans appareil).
+  // Rattachement manuel (repli) : lier un appareil par sa clé secrète.
   $("btn-claim").addEventListener("click", async () => {
     const key = $("claim-secret").value.trim();
     if (!key) return;
@@ -130,6 +137,9 @@
 
   // Traductions FR de quelques messages Supabase.
   function translate(m) {
+    const s = String(m || "");
+    if (/permission denied/i.test(s))
+      return "Accès à la base refusé (droits serveur manquants). Exécutez 04_panel_grants.sql dans Supabase.";
     const map = {
       "Invalid login credentials": "E-mail ou mot de passe incorrect.",
       "Email not confirmed": "E-mail non confirmé. Vérifiez votre boîte mail.",
@@ -137,6 +147,13 @@
       "Password should be at least 6 characters":
         "Le mot de passe doit contenir au moins 6 caractères.",
     };
-    return map[m] || m;
+    return map[s] || s;
   }
+
+  /* --------- Au chargement : reprendre une session existante ------------ */
+  (async function redirectIfLogged() {
+    const mode = HM.session.getMode();
+    if (mode === "secret" && HM.session.getSecret()) return location.replace("dashboard.html");
+    if (mode === "auth" && (await HM.session.hasAuthSession())) return resolveAccount();
+  })();
 })();

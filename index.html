@@ -74,16 +74,25 @@
             <a id="account-mode-toggle" href="#" class="text-brand-magenta hover:underline">Créer un compte</a>
           </p>
 
-          <!-- Rattachement d'un appareil (compte sans téléphone) -->
+          <!-- Compte sans téléphone lié : la liaison se fait depuis l'app -->
           <div id="claim-box" class="hidden rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
-            <p class="text-sm text-slate-300">Rattachez votre téléphone en saisissant sa <strong>clé secrète</strong> (visible dans l'app HearMe → Réglages).</p>
-            <input id="claim-secret" type="text"
-              class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm font-mono placeholder-slate-500 focus:border-brand-violet focus:outline-none focus:ring-2 focus:ring-brand-violet/40"
-              placeholder="clé secrète" />
-            <button id="btn-claim" type="button"
-              class="w-full rounded-xl bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/15 disabled:opacity-50">
-              Rattacher & continuer
-            </button>
+            <p class="text-sm text-slate-300">
+              <strong>Presque prêt.</strong> Ouvrez l'app HearMe sur votre téléphone et
+              connectez-vous avec <strong>ce même compte</strong> : votre appareil se liera
+              <strong>automatiquement</strong> ici, sans clé.
+            </p>
+            <details class="text-sm text-slate-400">
+              <summary class="cursor-pointer select-none hover:text-slate-200">Lier manuellement avec une clé</summary>
+              <div class="mt-3 space-y-2">
+                <input id="claim-secret" type="text"
+                  class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm font-mono placeholder-slate-500 focus:border-brand-violet focus:outline-none focus:ring-2 focus:ring-brand-violet/40"
+                  placeholder="clé secrète (app → Réglages)" />
+                <button id="btn-claim" type="button"
+                  class="w-full rounded-xl bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/15 disabled:opacity-50">
+                  Rattacher & continuer
+                </button>
+              </div>
+            </details>
           </div>
         </form>
       </div>
