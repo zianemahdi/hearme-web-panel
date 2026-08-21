@@ -6,14 +6,12 @@ interface QuickProtectionBarProps {
   device: Device;
   isOnline: boolean;
   theme?: 'dark' | 'light';
-  onOpenSimulator: () => void;
 }
 
 export const QuickProtectionBar: React.FC<QuickProtectionBarProps> = ({
   device,
   isOnline,
-  theme = 'dark',
-  onOpenSimulator
+  theme = 'dark'
 }) => {
   const isDark = theme === 'dark';
 
@@ -87,18 +85,6 @@ export const QuickProtectionBar: React.FC<QuickProtectionBarProps> = ({
           </div>
         </div>
 
-        {/* Right: Quick Companion Simulator Link */}
-        <button
-          onClick={onOpenSimulator}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold border transition shadow-sm active:scale-95 ${
-            isDark
-              ? 'bg-purple-500/15 hover:bg-purple-500/25 border-purple-500/30 text-purple-200'
-              : 'bg-purple-50 hover:bg-purple-100 border-purple-200 text-purple-700'
-          }`}
-        >
-          <Smartphone className="w-4 h-4 text-purple-400" />
-          <span>Simulateur Mobile</span>
-        </button>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Smartphone, Settings, LogOut, FileText, Sparkles, ExternalLink, Sun, Moon } from 'lucide-react';
+import { Smartphone, LogOut, FileText, ExternalLink, Sun, Moon } from 'lucide-react';
 import { Device, AuthMode } from '../types';
 import { HearMeLogo } from './HearMeLogo';
 
@@ -9,8 +9,6 @@ interface NavbarProps {
   isOnline: boolean;
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
-  onOpenSimulator: () => void;
-  onOpenSettings: () => void;
   onOpenPrivacy: () => void;
   onLogout: () => void;
   customLogoUrl?: string;
@@ -22,8 +20,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   isOnline,
   theme,
   onToggleTheme,
-  onOpenSimulator,
-  onOpenSettings,
   onOpenPrivacy,
   onLogout,
   customLogoUrl
@@ -150,21 +146,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             {isDark ? <Sun className="w-4 h-4 text-yellow-400" /> : <Moon className="w-4 h-4 text-indigo-600" />}
           </button>
 
-          {/* Mobile Phone Simulator Launcher */}
-          <button
-            id="btn-nav-simulator"
-            onClick={onOpenSimulator}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition active:scale-95 shadow-sm cursor-pointer ${
-              isDark
-                ? 'bg-white/[0.06] hover:bg-purple-600/20 border-white/[0.1] hover:border-purple-500/40 text-white'
-                : 'bg-purple-50 hover:bg-purple-100 border-purple-200 text-purple-900'
-            }`}
-            title="Tester avec le simulateur mobile Android"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-pink-500" />
-            <span className="hidden md:inline">Simulateur Live</span>
-          </button>
-
           {/* Privacy Policy */}
           <button
             id="btn-nav-privacy"
@@ -177,20 +158,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             title="Politique de confidentialité (RGPD & Play Store)"
           >
             <FileText className="w-4 h-4" />
-          </button>
-
-          {/* Settings */}
-          <button
-            id="btn-nav-settings"
-            onClick={onOpenSettings}
-            className={`p-2 rounded-xl border text-xs transition cursor-pointer ${
-              isDark
-                ? 'bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border-white/[0.08]'
-                : 'bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border-slate-200'
-            }`}
-            title="Configuration Backend Supabase"
-          >
-            <Settings className="w-4 h-4" />
           </button>
 
           {/* Logout */}
