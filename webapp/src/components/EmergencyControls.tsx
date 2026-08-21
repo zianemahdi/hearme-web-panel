@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Bell, BellOff, MapPin, Camera, Mic, CheckCircle2, Loader2, Volume2, ShieldAlert, Radio, Sparkles } from 'lucide-react';
+import { Lock, Bell, BellOff, MapPin, Camera, CheckCircle2, Loader2, Volume2, ShieldAlert } from 'lucide-react';
 import { CommandType } from '../types';
 import { siren } from '../utils/audio';
 
@@ -36,8 +36,7 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
         alarm: 'Sirène d\'alarme 105 dB déclenchée à distance !',
         stopalarm: 'Ordre d\'arrêt de l\'alarme transmis',
         locate: 'Demande de géolocalisation GPS haute précision émise',
-        photo: 'Ordre de capture photo frontale envoyé',
-        audio: 'Enregistrement audio ambiant démarré'
+        photo: 'Ordre de capture photo frontale envoyé'
       };
       setLastActionStatus(labels[command] || 'Commande transmise');
       setTimeout(() => setLastActionStatus(null), 4000);
@@ -150,20 +149,6 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
           <span>Prendre photo</span>
         </button>
 
-        {/* Ambient Audio Capture */}
-        <button
-          id="btn-action-audio"
-          onClick={() => handleAction('audio')}
-          disabled={isSending}
-          className={`col-span-2 flex items-center justify-center gap-2 p-2.5 rounded-xl border text-xs font-medium transition active:scale-[0.98] disabled:opacity-50 ${
-            isDark
-              ? 'border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] text-slate-300'
-              : 'border-slate-200 bg-slate-100/80 hover:bg-slate-200 text-slate-800'
-          }`}
-        >
-          <Mic className="w-4 h-4 text-sky-400 shrink-0" />
-          <span>Écoute audio ambiante (30s)</span>
-        </button>
       </div>
 
       {/* Feedback status message */}
