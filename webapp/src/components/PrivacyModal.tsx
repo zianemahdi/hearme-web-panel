@@ -37,7 +37,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
         <div className="max-h-[65vh] overflow-y-auto pr-2 space-y-5 text-xs sm:text-sm leading-relaxed">
           <div className="p-4 rounded-2xl bg-purple-950/25 border border-purple-500/30 text-purple-200">
             <strong className="text-white block mb-1">En bref & Engagement de transparence :</strong>
-            HearMe traite vos données en priorité <strong>localement sur votre mobile</strong>. Le micro et les capteurs ne quittent jamais votre téléphone sans votre autorisation expresse. Le panneau web d'urgence est un outil sécurisé chiffré de bout en bout pour vous permettre de retrouver votre mobile volé ou égaré.
+            HearMe traite vos données en priorité <strong>localement sur votre mobile</strong>. Le micro et les capteurs ne quittent jamais votre téléphone sans votre autorisation expresse. Le panneau web d'urgence est un outil sécurisé — chiffré en transit (TLS) et cloisonné par compte — pour vous aider à retrouver votre mobile volé ou égaré.
           </div>
 
           <section className="space-y-2">
@@ -57,7 +57,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
               <span className="text-purple-400">2.</span> Panneau web d'urgence & Sécurité Cloud
             </h3>
             <p className="text-slate-400">
-              Les communications entre l'application mobile et le panneau web reposent sur des fonctions RPC sécurisées (PostgreSQL RLS / Row Level Security). La clé secrète ne donne accès qu'au terminal associé.
+              L'accès au panneau se fait de deux façons : par un <strong>compte (e-mail + mot de passe)</strong>, qui ne voit que vos propres appareils grâce au cloisonnement RLS (Row Level Security) ; ou par la <strong>clé secrète</strong> de l'appareil, qui ne donne accès qu'au terminal associé. Les échanges sont chiffrés en transit (TLS) et vos données ne sont ni vendues ni partagées.
             </p>
           </section>
 
@@ -73,7 +73,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
 
         {/* Footer */}
         <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between">
-          <span className="text-xs text-slate-500 font-mono">HearMe Antivol &bull; v2.4</span>
+          <span className="text-xs text-slate-500 font-mono">HearMe Antivol &bull; v2.5</span>
           <button
             onClick={onClose}
             className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:brightness-110 text-white font-bold text-xs transition shadow-lg shadow-purple-950/40 active:scale-95"

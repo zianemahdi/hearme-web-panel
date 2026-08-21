@@ -1,5 +1,5 @@
 import React from 'react';
-import { Smartphone, LogOut, FileText, ExternalLink, Sun, Moon } from 'lucide-react';
+import { Smartphone, LogOut, FileText, Sun, Moon } from 'lucide-react';
 import { Device, AuthMode } from '../types';
 import { HearMeLogo } from './HearMeLogo';
 
@@ -38,13 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
         {/* Left: Brand Logo & Status matching Wix site */}
         <div className="flex items-center gap-4">
-          <a
-            href="https://paperwhite28.wixsite.com/my-site"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 group transition"
-            title="Visiter le site officiel HearMe"
-          >
+          <div className="flex items-center gap-3 group">
             {customLogoUrl ? (
               <img src={customLogoUrl} alt="HearMe Logo" className="h-8 object-contain" />
             ) : (
@@ -66,27 +60,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
               Live Control
             </span>
-          </a>
+          </div>
 
-          {/* Nav links styled like site */}
+          {/* Nav links */}
           <nav
             className={`hidden lg:flex items-center gap-1 border-l pl-4 text-xs ${
               isDark ? 'border-white/[0.08]' : 'border-slate-200'
             }`}
           >
-            <a
-              href="https://paperwhite28.wixsite.com/my-site"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1 ${
-                isDark
-                  ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              <span>Accueil</span>
-              <ExternalLink className="w-3 h-3 opacity-60" />
-            </a>
             <button
               onClick={onOpenPrivacy}
               className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${

@@ -24,20 +24,13 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({ onOpenPrivacy, theme = '
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo & Brand description */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left gap-2">
-            <a
-              href="https://paperwhite28.wixsite.com/my-site"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block"
-            >
-              <HearMeLogo
-                variant="horizontal"
-                size="md"
-                theme={isDark ? 'white' : 'dark'}
-                animatedLight={true}
-                showSubtitle={true}
-              />
-            </a>
+            <HearMeLogo
+              variant="horizontal"
+              size="md"
+              theme={isDark ? 'white' : 'dark'}
+              animatedLight={true}
+              showSubtitle={true}
+            />
             <p
               className={`text-xs max-w-sm ${
                 isDark ? 'text-slate-400' : 'text-slate-500'
@@ -53,14 +46,6 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({ onOpenPrivacy, theme = '
               isDark ? 'text-slate-400' : 'text-slate-600'
             }`}
           >
-            <a
-              href="https://paperwhite28.wixsite.com/my-site"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-purple-400 transition"
-            >
-              Accueil
-            </a>
             <button
               onClick={onOpenPrivacy}
               className="hover:text-purple-400 transition cursor-pointer"
