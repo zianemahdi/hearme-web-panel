@@ -795,14 +795,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
           >
             Politique de Confidentialité
           </button>
-          <a
-            href="https://paperwhite28.wixsite.com/my-site"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-slate-300 transition underline"
-          >
-            Site Officiel HearMe
-          </a>
         </div>
       </footer>
     </div>
