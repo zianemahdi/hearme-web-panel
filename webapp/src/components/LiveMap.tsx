@@ -759,30 +759,18 @@ export const LiveMap: React.FC<LiveMapProps> = ({
             )}
           </div>
 
-          <div className="flex items-center gap-1.5 font-mono text-[11px]">
-            <Compass className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-            <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>
-              Cap : <strong>042° NE</strong>
-            </span>
-          </div>
-
-          <div className="flex items-center gap-1.5 font-mono text-[11px]">
-            <Activity className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>
-              Vitesse : <strong>{geofenceStatus.isSafe ? '0.0 km/h (Fixe)' : '18.4 km/h (Mouvement)'}</strong>
-            </span>
-          </div>
+          {currentLocation && currentLocation.accuracy != null && (
+            <div className="flex items-center gap-1.5 font-mono text-[11px]">
+              <Activity className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>
+                Précision : <strong>±{Math.round(currentLocation.accuracy)} m</strong>
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Right Status Pill */}
         <div className="flex items-center gap-2">
-          <div className={`px-2.5 py-1 rounded-xl border text-[11px] font-mono flex items-center gap-1.5 ${
-            isDark ? 'bg-black/40 border-white/[0.08] text-slate-300' : 'bg-slate-100 border-slate-200 text-slate-800'
-          }`}>
-            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-ping" />
-            <span>18 SATS (GNSS Multi-Bande L1/L5)</span>
-          </div>
-
           {currentLocation && (
             <span className={`px-2 py-1 rounded-xl border text-[11px] font-mono ${
               isDark ? 'bg-black/40 border-white/[0.08] text-slate-400' : 'bg-slate-100 border-slate-200 text-slate-600'
