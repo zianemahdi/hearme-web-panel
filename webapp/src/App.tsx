@@ -325,7 +325,7 @@ export default function App() {
                 Politique de confidentialité (Conforme Google Play Protect & RGPD)
               </button>
               <div className={`text-[11px] ${theme === 'dark' ? 'text-slate-500' : 'text-slate-400'}`}>
-                HearMe Antivol v2.5 &bull; Chiffrement TLS 1.3 / ChaCha20
+                HearMe — Panneau de contrôle
               </div>
             </div>
           </main>

@@ -101,21 +101,11 @@ export const LiveMap: React.FC<LiveMapProps> = ({
   const [activeLayer, setActiveLayer] = useState<MapLayerType>(isDark ? 'dark' : 'streets');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showLayerMenu, setShowLayerMenu] = useState(false);
-  const [isTacticalRadarActive, setIsTacticalRadarActive] = useState(true);
+  const [isTacticalRadarActive, setIsTacticalRadarActive] = useState(false);
   const [showGeofenceDrawer, setShowGeofenceDrawer] = useState(false);
   
-  // Geofences State
-  const [geofences, setGeofences] = useState<GeofenceZone[]>(() => {
-    // If current location exists, anchor default home to current location
-    if (currentLocation) {
-      return INITIAL_GEOFENCES.map((g, idx) =>
-        idx === 0
-          ? { ...g, latitude: currentLocation.latitude, longitude: currentLocation.longitude }
-          : g
-      );
-    }
-    return INITIAL_GEOFENCES;
-  });
+  // Géofencing retiré : aucune zone de sécurité.
+  const [geofences, setGeofences] = useState<GeofenceZone[]>([]);
 
   const [newZoneName, setNewZoneName] = useState('');
   const [newZoneRadius, setNewZoneRadius] = useState<number>(300);
@@ -475,65 +465,15 @@ export const LiveMap: React.FC<LiveMapProps> = ({
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
             </span>
             <span className="tracking-wider uppercase text-[11px] font-extrabold text-cyan-400">
-              RADAR GPS TACTIQUE
+              Localisation GPS
             </span>
           </div>
 
-          {/* Geofence Status Badge */}
-          <div
-            className={`px-3 py-1.5 rounded-xl backdrop-blur-md border text-xs font-bold flex items-center gap-1.5 shadow-xl transition-all ${
-              geofenceStatus.isSafe
-                ? 'bg-emerald-950/80 border-emerald-500/40 text-emerald-300'
-                : 'bg-rose-950/90 border-rose-500/60 text-rose-200 animate-pulse shadow-rose-950/60'
-            }`}
-          >
-            {geofenceStatus.isSafe ? (
-              <>
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>PÉRIMÈTRE SÉCURISÉ</span>
-              </>
-            ) : (
-              <>
-                <ShieldAlert className="w-3.5 h-3.5 text-rose-400 animate-bounce" />
-                <span>HORS ZONE SÉCURISÉE !</span>
-              </>
-            )}
-          </div>
         </div>
 
         {/* Top Right Floating Controls */}
         <div className="absolute top-3 right-3 z-[400] flex items-center gap-2">
-          {/* Geofence Manager Drawer Toggle */}
-          <button
-            id="btn-toggle-geofence-drawer"
-            onClick={() => setShowGeofenceDrawer(!showGeofenceDrawer)}
-            className={`px-3 py-1.5 rounded-xl backdrop-blur-md border text-xs font-bold transition shadow-xl flex items-center gap-1.5 active:scale-95 ${
-              showGeofenceDrawer
-                ? 'bg-purple-600 border-purple-400 text-white shadow-purple-900/50'
-                : 'bg-[#0d0d1a]/85 border-white/15 text-slate-200 hover:text-white hover:bg-black/90'
-            }`}
-            title="Gérer les zones de sécurité virtuelles (Geofencing)"
-          >
-            <Shield className="w-3.5 h-3.5 text-purple-400" />
-            <span className="hidden sm:inline">Zones de Sécurité</span>
-            <span className="px-1.5 py-0.2 rounded-full bg-purple-500/30 text-[10px]">
-              {geofences.filter(g => g.enabled).length}
-            </span>
-          </button>
 
-          {/* Tactical Sweep Toggle */}
-          <button
-            id="btn-toggle-tactical-radar"
-            onClick={() => setIsTacticalRadarActive(!isTacticalRadarActive)}
-            className={`p-2 rounded-xl backdrop-blur-md border text-xs transition shadow-xl flex items-center gap-1.5 active:scale-95 ${
-              isTacticalRadarActive
-                ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300'
-                : 'bg-[#0d0d1a]/85 border-white/15 text-slate-400 hover:text-white'
-            }`}
-            title="Activer/Désactiver le balayage radar tactique"
-          >
-            <Radio className={`w-4 h-4 ${isTacticalRadarActive ? 'text-cyan-400 animate-pulse' : ''}`} />
-          </button>
 
           {/* Layer Selector */}
           <div className="relative">
@@ -564,7 +504,7 @@ export const LiveMap: React.FC<LiveMapProps> = ({
                     activeLayer === 'tactical' ? 'bg-cyan-600/25 text-cyan-300 font-bold border border-cyan-500/30' : 'text-slate-300 hover:bg-white/5'
                   }`}
                 >
-                  <span>Tactique Radar</span>
+                  <span>Contraste</span>
                   {activeLayer === 'tactical' && <span className="text-cyan-400 font-bold">✓</span>}
                 </button>
                 <button
