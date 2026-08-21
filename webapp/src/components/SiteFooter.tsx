@@ -1,5 +1,5 @@
 import React from 'react';
-import { Instagram, Youtube, Facebook, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { HearMeLogo } from './HearMeLogo';
 
 interface SiteFooterProps {
@@ -67,83 +67,8 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({ onOpenPrivacy, theme = '
             >
               Politique de confidentialité
             </button>
-            <button
-              onClick={onOpenPrivacy}
-              className="hover:text-purple-400 transition cursor-pointer"
-            >
-              Déclaration d'accessibilité
-            </button>
-            <button
-              onClick={onOpenPrivacy}
-              className="hover:text-purple-400 transition cursor-pointer"
-            >
-              Politique de cookies
-            </button>
-            <button
-              onClick={onOpenPrivacy}
-              className="hover:text-purple-400 transition cursor-pointer"
-            >
-              Mentions légales
-            </button>
           </div>
 
-          {/* Social media icons */}
-          <div className="flex items-center gap-3">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className={`p-2.5 rounded-xl border transition ${
-                isDark
-                  ? 'bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border-white/[0.08]'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border-slate-200'
-              }`}
-            >
-              <Instagram className="w-4 h-4" />
-            </a>
-            <a
-              href="https://youtube.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="YouTube"
-              className={`p-2.5 rounded-xl border transition ${
-                isDark
-                  ? 'bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border-white/[0.08]'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border-slate-200'
-              }`}
-            >
-              <Youtube className="w-4 h-4" />
-            </a>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-              className={`p-2.5 rounded-xl border transition ${
-                isDark
-                  ? 'bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border-white/[0.08]'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border-slate-200'
-              }`}
-            >
-              <Facebook className="w-4 h-4" />
-            </a>
-            <a
-              href="https://tiktok.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="TikTok"
-              className={`p-2.5 rounded-xl border transition ${
-                isDark
-                  ? 'bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border-white/[0.08]'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border-slate-200'
-              }`}
-            >
-              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden="true">
-                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.89 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003 15.67 6.34 6.34 0 009.34 22a6.34 6.34 0 006.34-6.33V8.89a8.28 8.28 0 004.81 1.52v-3.5a4.84 4.84 0 01-.9-.22z" />
-              </svg>
-            </a>
-          </div>
         </div>
 
         {/* Bottom copyright line matching Wix site */}
