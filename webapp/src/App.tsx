@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Device, LocationPoint, CommandType, AuthMode, AuthSession } from './types';
 import { INITIAL_DEMO_DEVICE, INITIAL_DEMO_LOCATIONS } from './utils/mockData';
 import { getSupabase, callRpc } from './utils/supabaseClient';
-import { siren } from './utils/audio';
 
 // Components
 import { Navbar } from './components/Navbar';
@@ -11,7 +10,6 @@ import { EmergencyControls } from './components/EmergencyControls';
 import { SecretKeyCard } from './components/SecretKeyCard';
 import { PrivacyModal } from './components/PrivacyModal';
 import { SiteFooter } from './components/SiteFooter';
-import { Background3D } from './components/Background3D';
 import { WelcomeAuthPortal } from './components/WelcomeAuthPortal';
 
 // Bento Grid Modules (fonctionnels uniquement)
@@ -203,7 +201,7 @@ export default function App() {
 
   const handleGeofenceBreach = (zoneName: string) => setGeofenceBreachAlert(zoneName);
 
-  const handleLogout = () => { siren.stop(); setSession(null); };
+  const handleLogout = () => { setSession(null); };
 
   const handleAuthSuccess = (mode: AuthMode, deviceSecretKey?: string, userEmail?: string) => {
     const newSession: AuthSession = {
@@ -223,8 +221,6 @@ export default function App() {
         theme === 'dark' ? 'hm-mesh text-slate-100' : 'hm-mesh-light text-slate-900'
       }`}
     >
-      <Background3D theme={theme} intensity={theme === 'dark' ? 0.95 : 0.65} />
-
       {!session ? (
         <WelcomeAuthPortal
           onSuccess={handleAuthSuccess}

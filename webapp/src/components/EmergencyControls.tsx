@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Lock, Bell, BellOff, MapPin, Camera, CheckCircle2, Loader2, Volume2, ShieldAlert } from 'lucide-react';
 import { CommandType } from '../types';
-import { siren } from '../utils/audio';
 
 interface EmergencyControlsProps {
   isAlarmActive: boolean;
@@ -23,12 +22,7 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
   const [lastActionStatus, setLastActionStatus] = useState<string | null>(null);
 
   const handleAction = async (command: CommandType, params?: Record<string, unknown>) => {
-    if (command === 'alarm') {
-      siren.start();
-    } else if (command === 'stopalarm') {
-      siren.stop();
-    }
-
+    // Pas de son côté navigateur : on envoie juste la commande au téléphone.
     const success = await onSendCommand(command, params);
     if (success) {
       const labels: Record<string, string> = {
