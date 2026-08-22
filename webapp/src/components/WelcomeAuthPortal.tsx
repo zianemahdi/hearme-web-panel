@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   KeyRound,
   Mail,
@@ -25,6 +25,12 @@ import {
 import { AuthMode } from '../types';
 import { getSupabase } from '../utils/supabaseClient';
 import { HearMeLogo } from './HearMeLogo';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
+
+// hCaptcha — clé de TEST par défaut (passe toujours, sans protection réelle).
+// ⚠️ REMPLACER par ta vraie Site Key hCaptcha ; mettre la Secret Key dans
+// Supabase (Auth → Attack Protection → hCaptcha).
+const HCAPTCHA_SITE_KEY = '10000000-ffff-ffff-ffff-000000000001';
 
 type SB = ReturnType<typeof getSupabase>;
 
@@ -80,6 +86,21 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [infoMsg, setInfoMsg] = useState<string | null>(null);
   const [showFaq, setShowFaq] = useState(false);
+
+  // hCaptcha invisible : on exécute juste avant chaque appel d'auth pour obtenir
+  // un jeton, transmis à Supabase. Sans jeton, Supabase refuse (quand le CAPTCHA
+  // est activé côté serveur).
+  const captchaRef = useRef<HCaptcha>(null);
+  const getCaptchaToken = async (): Promise<string | undefined> => {
+    try {
+      const res = await captchaRef.current?.execute({ async: true });
+      return res?.response;
+    } catch {
+      return undefined;
+    } finally {
+      try { captchaRef.current?.resetCaptcha(); } catch { /* ignore */ }
+    }
+  };
 
   // Calculate Password Strength (0-4)
   const calculateStrength = (pass: string) => {
@@ -156,10 +177,12 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
     try {
       const supabase = getSupabase();
       if (supabase) {
+        const captchaToken = await getCaptchaToken();
         const { data, error } = await supabase.auth.signUp({
           email: regEmail.trim(),
           password: regPassword,
           options: {
+            captchaToken,
             data: {
               full_name: regName || 'Utilisateur HearMe',
               device_name: regDeviceName || 'Mon Téléphone',
@@ -214,9 +237,11 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
     try {
       const supabase = getSupabase();
       if (supabase) {
+        const captchaToken = await getCaptchaToken();
         const { data, error } = await supabase.auth.signInWithPassword({
           email: loginEmail.trim(),
           password: loginPassword,
+          options: { captchaToken },
         });
 
         if (error) throw error;
@@ -241,6 +266,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
 
   return (
     <div className="relative min-h-screen z-10 flex flex-col justify-between px-4 sm:px-6 py-6 sm:py-10">
+      <HCaptcha ref={captchaRef} sitekey={HCAPTCHA_SITE_KEY} size="invisible" />
       {/* Top Bar with Logo & Theme Toggle */}
       <header className="max-w-6xl w-full mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
