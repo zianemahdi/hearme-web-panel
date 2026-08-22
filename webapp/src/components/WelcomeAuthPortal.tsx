@@ -105,7 +105,8 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   // Handle Secret Key Direct Unlock
   const handleSecretSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!quickSecretKey.trim()) {
+    const key = quickSecretKey.trim();
+    if (!key) {
       setErrorMsg('Veuillez saisir la clé secrète de votre téléphone');
       return;
     }
@@ -114,25 +115,19 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
     setErrorMsg(null);
     try {
       const supabase = getSupabase();
-      if (supabase) {
-        const { data, error } = await supabase
-          .from('devices')
-          .select('id, name, secret_key')
-          .eq('secret_key', quickSecretKey.trim())
-          .maybeSingle();
-
-        if (error) {
-          console.warn('Supabase query note:', error.message);
-        }
-        if (data) {
-          onSuccess('secret', quickSecretKey.trim());
-          return;
-        }
+      // Validation côté serveur : le RPC ne renvoie un appareil QUE si la clé
+      // correspond à un appareil réel créé par l'app HearMe. Une clé au hasard
+      // est refusée → on n'entre pas dans le tableau de bord.
+      const { data, error } = await supabase.rpc('panel_get_device', { p_secret: key });
+      if (error) throw error;
+      if (Array.isArray(data) && data.length > 0) {
+        onSuccess('secret', key);
+      } else {
+        setErrorMsg('Clé invalide. Utilisez la clé secrète affichée dans l\'app HearMe → Réglages.');
       }
-      // Direct emergency login with key
-      onSuccess('secret', quickSecretKey.trim());
-    } catch {
-      onSuccess('secret', quickSecretKey.trim());
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : '';
+      setErrorMsg(/tentatives/i.test(msg) ? msg : 'Clé invalide ou service indisponible. Réessayez.');
     } finally {
       setLoading(false);
     }
