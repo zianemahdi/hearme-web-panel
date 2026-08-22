@@ -83,7 +83,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Center: Device Pill */}
         <div
-          className={`flex items-center gap-2.5 px-3 sm:px-4 py-1.5 rounded-xl border shadow-inner transition-colors ${
+          className={`hidden md:flex items-center gap-2.5 px-3 sm:px-4 py-1.5 rounded-xl border shadow-inner transition-colors ${
             isDark
               ? 'bg-black/60 border-white/[0.08]'
               : 'bg-slate-100 border-slate-200/80'
