@@ -98,7 +98,9 @@ export const LiveMap: React.FC<LiveMapProps> = ({
   const radarRingsLayerRef = useRef<L.LayerGroup | null>(null);
 
   // States
-  const [activeLayer, setActiveLayer] = useState<MapLayerType>(isDark ? 'dark' : 'streets');
+  // Par défaut : Satellite (Esri World Imagery), comme la carte de l'app Android
+  // (les tuiles « plan » ont des trous en Algérie).
+  const [activeLayer, setActiveLayer] = useState<MapLayerType>('satellite');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showLayerMenu, setShowLayerMenu] = useState(false);
   const [isTacticalRadarActive, setIsTacticalRadarActive] = useState(false);
