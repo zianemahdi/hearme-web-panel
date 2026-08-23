@@ -30,7 +30,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 // hCaptcha — clé de TEST par défaut (passe toujours, sans protection réelle).
 // ⚠️ REMPLACER par ta vraie Site Key hCaptcha ; mettre la Secret Key dans
 // Supabase (Auth → Attack Protection → hCaptcha).
-const HCAPTCHA_SITE_KEY = '10000000-ffff-ffff-ffff-000000000001';
+const HCAPTCHA_SITE_KEY = '38540b54-70fe-4a76-80f6-1a964196d69c';
 
 type SB = ReturnType<typeof getSupabase>;
 
