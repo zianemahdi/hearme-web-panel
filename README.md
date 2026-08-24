@@ -1,191 +1,153 @@
 # HearMe — Panneau Web d'urgence
 
-Interface web d'urgence pour l'app **HearMe** : localisez votre téléphone en
-temps réel, consultez les photos de sécurité, verrouillez / faites sonner
-l'appareil à distance, et retrouvez votre clé secrète — depuis n'importe quel
-navigateur.
+Interface web d'urgence pour l'app **HearMe** : localise ton téléphone en temps
+réel (carte satellite), verrouille / fais sonner l'appareil à distance, gère ta
+clé secrète — depuis n'importe quel navigateur.
 
-- **Zéro build** : HTML + Tailwind (CDN) + `@supabase/supabase-js` + MapLibre.
-- **Hébergeable** sur GitHub Pages ou Vercel (fichiers statiques).
-- **Deux accès** : compte (e-mail + mot de passe) ou **clé secrète** (accès rapide).
+🔗 **En ligne : https://zianemahdi.github.io/hearme-web-panel/**
 
-> ⚠️ **Important — intégration app requise.** Le panneau lit/écrit de nouvelles
-> tables Supabase que **l'app Android ne remplit pas encore**. Voir
-> [§6 Intégration côté app](#6-intégration-côté-app-android). Tant que l'app ne
-> pousse pas ses données, le tableau de bord s'affiche mais reste vide.
+> **Note d'architecture (2026‑08).** Le panneau est désormais une **app React
+> (Vite + TypeScript)** dans `webapp/`, déployée automatiquement par **GitHub
+> Actions**. L'ancien panneau statique (HTML/JS à la racine du dépôt) est
+> conservé mais **n'est plus servi** (on peut le supprimer un jour).
 
 ---
 
-## 1. Fonctionnalités ↔ implémentation
+## 1. Pile technique
 
-| Demande | Où |
+| Couche | Techno |
 |---|---|
-| Connexion e-mail + mot de passe (Supabase Auth) | `assets/js/auth.js` |
-| Accès rapide par clé secrète | `auth.js` + RPC `panel_get_device` |
-| Carte temps réel (MapLibre + Realtime) | `map.js`, `dashboard.js`, `api.js#startLive` |
-| Galerie photos (Storage privé) | `api.js#getPhotos` + Edge Function `device-photos` |
-| Batterie / réseau / verrouillage | `dashboard.js#renderDevice` |
-| Affichage & régénération de la clé | carte « Clé secrète » du dashboard |
-| Alarme / verrouillage à distance | `panel_send_command` → table `device_commands` |
-| Page `/privacy` (Google Play) | `privacy.html` |
+| Front | **React 19 + Vite 6 + TypeScript + Tailwind v4** (`webapp/`) |
+| Carte | **Leaflet** — fond **Satellite (Esri World Imagery)** par défaut, comme l'app |
+| Backend | **Supabase** (Postgres + Auth + RLS + Storage) |
+| Anti‑bot | **hCaptcha** (`@hcaptcha/react-hcaptcha`, invisible) |
+| Hébergement | **GitHub Pages** via **GitHub Actions** (build Vite → `dist/`) |
 
 ---
 
-## 2. Structure
+## 2. Deux modes d'accès
+
+- **Compte (e‑mail + mot de passe)** — Supabase Auth + **RLS** : un compte ne voit
+  que **ses** appareils. Protégé par **hCaptcha** + **confirmation e‑mail**
+  (atterrit sur `confirm.html`, page HearMe). L'appareil est **rattaché
+  automatiquement** au compte depuis l'app (pas besoin de saisir la clé).
+- **Clé secrète** — accès rapide sans compte. La clé est **validée côté serveur**
+  (RPC `panel_get_device`) : une clé au hasard est **refusée**. Protégé par un
+  **anti‑force‑brute** (voir §5).
+
+---
+
+## 3. Structure
 
 ```
 hearme-web-panel/
-├── index.html            # Connexion (compte + clé secrète)
-├── dashboard.html        # Tableau de bord d'urgence
-├── privacy.html          # Politique de confidentialité (/privacy)
-├── assets/
-│   ├── css/app.css
-│   └── js/
-│       ├── config.js       # URL + clé anon Supabase (publique)
-│       ├── supabase.js     # init client
-│       ├── session.js      # modes d'accès + utilitaires
-│       ├── api.js          # couche données (auth vs clé)
-│       ├── map.js          # MapLibre (satellite/plan)
-│       ├── auth.js         # logique de connexion
-│       └── dashboard.js    # logique du tableau de bord
-├── supabase/
+├── webapp/                       # ★ l'app React servie en prod
+│   ├── index.html                # entrée Vite (SPA)
+│   ├── vite.config.ts            # base: '/hearme-web-panel/'
+│   ├── package.json
+│   ├── public/
+│   │   ├── privacy.html          # politique (URL Play Store) — servie telle quelle
+│   │   ├── confirm.html          # page de confirmation e‑mail (marque HearMe)
+│   │   └── assets/css/app.css
+│   └── src/
+│       ├── App.tsx               # état + grille bento + synchro live
+│       ├── components/           # LiveMap, EmergencyControls, Battery/Network,
+│       │                         #   SecretKeyCard, QuickProtectionBar, Navbar,
+│       │                         #   WelcomeAuthPortal (auth + hCaptcha), PrivacyModal, SiteFooter
+│       └── utils/                # supabaseClient.ts, mockData.ts (config Supabase), audio.ts
+├── supabase/                     # SQL à exécuter dans Supabase → SQL Editor
 │   ├── 01_panel_schema.sql       # tables + RLS + Realtime
-│   ├── 02_panel_functions.sql    # fonctions RPC
-│   ├── 03_panel_storage.sql      # bucket privé + policy
-│   └── functions/device-photos/  # Edge Function (URLs signées + upload)
-├── vercel.json           # cleanUrls (/privacy, /dashboard)
-└── .nojekyll             # GitHub Pages
+│   ├── 02_panel_functions.sql    # fonctions RPC SECURITY DEFINER
+│   ├── 03_panel_storage.sql      # bucket privé photos
+│   ├── 04_panel_grants.sql       # GRANT tables → rôle authenticated (mode compte)
+│   └── 05_panel_security.sql     # anti‑force‑brute (rate limit sur clés invalides)
+├── .github/workflows/deploy.yml  # build + déploiement Pages
+└── (racine)  index.html, dashboard.html, assets/…  # ANCIEN panneau statique (non servi)
 ```
 
 ---
 
-## 3. Configuration
+## 4. Configuration
 
-`assets/js/config.js` est déjà pré-rempli avec **votre** projet Supabase
-(`muggtgcwmawcpmzjrvxo`) et la clé **anon**. Cette clé est **publique par
-conception** (elle est déjà dans l'APK) ; la sécurité repose sur le RLS et les
-fonctions RPC. **Ne mettez jamais** ici la clé `service_role` ni le token Telegram.
+- **Supabase** : URL + clé **anon** codées dans `webapp/src/utils/mockData.ts`
+  (`DEFAULT_SUPABASE_CONFIG`). La clé anon est **publique par conception** (elle est
+  aussi dans l'APK) ; la sécurité repose sur RLS + RPC + rate‑limit + captcha.
+- **hCaptcha** : constante `HCAPTCHA_SITE_KEY` dans
+  `webapp/src/components/WelcomeAuthPortal.tsx` (Site Key **publique**).
+- ⚠️ **Ne mets jamais** ici la clé `service_role` ni le token Telegram.
 
 ---
 
-## 4. Backend Supabase (≈ 5 min)
+## 5. Backend Supabase (SQL Editor, dans l'ordre)
 
-Sur le **même** projet que le Module 3, dans **SQL Editor**, exécutez dans l'ordre :
+```
+01_panel_schema.sql   → tables devices / device_locations / security_photos / device_commands + RLS + Realtime
+02_panel_functions.sql→ RPC : push_device_state, push_location, poll_commands, ack_command,
+                        panel_get_device, panel_get_locations, panel_send_command,
+                        claim_device_by_secret, rotate_secret, …
+04_panel_grants.sql   → GRANT select/insert/update/delete aux tables pour 'authenticated'
+                        (INDISPENSABLE au mode compte : une policy RLS filtre un droit, elle ne l'accorde pas)
+05_panel_security.sql → table panel_rate_limit + panel_rl_check() ; panel_get_device réécrit
+                        pour bloquer après 15 clés INVALIDES / 10 min / IP (le polling clé valide n'est jamais limité)
+03_panel_storage.sql  → bucket privé 'security-photos' (galerie = V2)
+```
 
-1. `supabase/01_panel_schema.sql`
-2. `supabase/02_panel_functions.sql`
-3. `supabase/03_panel_storage.sql`
+**CAPTCHA (Supabase dashboard)** : Authentication → **Attack Protection** →
+*Enable CAPTCHA protection* → **hCaptcha** → coller la **Secret Key** (`ES_…`) → Save.
+⚠️ À activer **en dernier**, une fois le panneau redéployé ET l'app rebuildée avec
+la vraie Site Key (le CAPTCHA est **global au projet** : il s'applique app + panneau).
 
-Puis déployez l'Edge Function (galerie en mode clé secrète + uploads) :
+---
+
+## 6. Déploiement (GitHub Actions → Pages)
+
+Le workflow `.github/workflows/deploy.yml` se déclenche à chaque push sous
+`webapp/**` : `npm install --legacy-peer-deps` → `vite build` → publie
+`webapp/dist` sur GitHub Pages.
+
+**Réglage requis une fois** : repo → **Settings → Pages → Source = « GitHub
+Actions »** (⚠️ pas « Deploy from a branch », sinon Pages sert l'ancien site
+statique de la racine). Après un changement de Source, **relancer un déploiement**
+(un simple push) pour publier.
+
+URL : `https://zianemahdi.github.io/hearme-web-panel/`
+Pages conservées : `…/privacy.html` (politique) et `…/confirm.html` (confirmation e‑mail).
+
+---
+
+## 7. Développement local
 
 ```bash
-supabase functions deploy device-photos --no-verify-jwt
-```
-
-> Le Realtime (positions live en mode compte) est activé par le bloc
-> `alter publication supabase_realtime …` de `01_panel_schema.sql`.
-
----
-
-## 5. Déploiement
-
-### GitHub Pages
-```bash
-cd hearme-web-panel
-git init && git add . && git commit -m "HearMe web panel"
-git branch -M main
-git remote add origin https://github.com/<vous>/hearme-web-panel.git
-git push -u origin main
-```
-Puis **Settings → Pages → Deploy from a branch → `main` / `(root)`**.
-URL : `https://<vous>.github.io/hearme-web-panel/` — la politique est à
-`…/privacy.html`.
-
-### Vercel
-Importez le repo (ou `vercel` en CLI). Aucune commande de build. Grâce à
-`vercel.json` (`cleanUrls`), la politique est servie proprement sur **`/privacy`**.
-
----
-
-## 6. Intégration côté app (Android)
-
-Le panneau attend que l'app **HearMe** alimente Supabase avec sa **clé secrète**
-(le `command_secret` existant). Toutes les fonctions sont appelables comme
-`CommunityReporter` le fait déjà (POST `…/rest/v1/rpc/<fn>` avec la clé anon).
-
-**À ajouter dans l'app :**
-
-| Quand | Appel RPC |
-|---|---|
-| Périodiquement / au démarrage | `push_device_state(p_secret, p_name, p_battery, p_network, p_locked)` |
-| À chaque position | `push_location(p_secret, p_lat, p_lon, p_accuracy, p_battery)` |
-| Boucle de commandes (toutes 5–15 s) | `poll_commands(p_secret)` → exécuter → `ack_command(p_secret, id, ok)` |
-| Après capture photo | upload via Edge Function `device-photos` (`action:"upload"`) **ou** `record_photo(p_secret, path, event)` |
-| Sur commande `regenerate_key` | générer une nouvelle clé locale puis `rotate_secret(ancienne, nouvelle)` |
-
-Les commandes `poll_commands` (`lock`, `alarm`, `stopalarm`, `locate`, `photo`)
-correspondent exactement à ce que gère déjà `AntiTheftService.executeCommand`
-pour Telegram — il suffit de router la file Supabase vers le même dispatcher.
-
-**Exemple (Kotlin, style `CommunityReporter`) :**
-```kotlin
-fun pushLocation(lat: Double, lon: Double, acc: Float?, battery: Int?) {
-    val url = URL("${BuildConfig.SUPABASE_URL}/rest/v1/rpc/push_location")
-    (url.openConnection() as HttpURLConnection).apply {
-        requestMethod = "POST"
-        setRequestProperty("apikey", BuildConfig.SUPABASE_ANON_KEY)
-        setRequestProperty("Authorization", "Bearer ${BuildConfig.SUPABASE_ANON_KEY}")
-        setRequestProperty("Content-Type", "application/json")
-        doOutput = true
-        val body = JSONObject().apply {
-            put("p_secret", commandSecret)   // = clé secrète Telegram
-            put("p_lat", lat); put("p_lon", lon)
-            put("p_accuracy", acc); put("p_battery", battery)
-        }
-        outputStream.use { it.write(body.toString().toByteArray()) }
-        responseCode   // 204 attendu
-    }
-}
+cd webapp
+npm install --legacy-peer-deps
+npm run dev        # http://localhost:3000
 ```
 
 ---
 
-## 7. Modèle d'accès & sécurité
+## 8. Modèle de sécurité
 
-- **Mode compte** : RLS via `auth.uid()` — un compte ne voit **que** ses
-  appareils. Positions live par **Realtime**. Photos par **URL signée** (client).
-- **Mode clé secrète** : uniquement les fonctions `panel_*` / `push_*` /
-  `poll_*`, chacune cloisonnée à l'appareil de la clé. Rafraîchissement par
-  **polling** (`config.POLL_INTERVAL_MS`). Photos via l'**Edge Function**.
-- L'anon **n'a aucun accès direct** aux tables (aucune policy anon).
-- La clé `service_role` n'est utilisée **que** dans l'Edge Function
-  (variable d'environnement injectée par Supabase), jamais côté navigateur.
-
-**⚠️ À durcir avant un usage large :**
-1. **Longueur de la clé secrète.** L'accès par clé n'est aussi fort que la clé.
-   Le `command_secret` actuel est court → **passez-le à ≥ 12 caractères**
-   aléatoires pour résister au brute-force.
-2. **Rate-limiting** sur les fonctions `panel_*` (essais par IP/clé) via une
-   Edge Function ou un WAF (Cloudflare), comme pour `report_incident`.
-3. **Confirmation e-mail** activée dans Supabase Auth (Settings → Auth).
+- **Anon = aucun accès direct aux tables** (vérifié : `GET /rest/v1/devices` → **401**).
+  Tout passe par les fonctions `SECURITY DEFINER` (mode clé) ou par RLS (mode compte).
+- **Mode compte** : RLS `user_id = auth.uid()` + **hCaptcha** + confirmation e‑mail.
+- **Mode clé** : la clé est **validée** (RPC) et **rate‑limitée** contre le brute‑force.
+- **Clés à 12 caractères** côté app (31¹² combinaisons) — voir l'app HearMe.
+- La clé `service_role` n'est utilisée **que** dans l'Edge Function (jamais côté navigateur).
 
 ---
 
-## 8. Test en local
+## 9. Intégration côté app (déjà faite)
 
-Les scripts sont des `<script>` classiques (pas d'ES modules) : un simple
-serveur statique suffit.
-```bash
-npx serve .
-# ou : python -m http.server 8080
-```
-Puis ouvrez `http://localhost:8080`.
+L'app HearMe (`../HearMe`) alimente le backend et se rattache au compte :
+- `SupabaseSync` : `push_device_state` / `push_location` / `poll_commands` / `ack_command`.
+- `SupabaseAuth` + `LoginActivity` : inscription/connexion e‑mail (**+ hCaptcha**).
+- `AccountLinker` : **rattachement auto** de l'appareil au compte (`claim_device_by_secret`).
 
 ---
 
-## 9. Reste à faire
+## 10. Reste possible (non bloquant)
+- [ ] Galerie photos réelle via Edge Function `device-photos` (aujourd'hui V2, non déployée).
+- [ ] Supprimer les anciens fichiers statiques de la racine (non servis).
+- [ ] Supprimer l'appareil de démo `HearMeDemo2026` de la table `devices`.
 
-- [ ] Brancher l'app Android sur les RPC ci-dessus (§6).
-- [ ] Rallonger le `command_secret` (≥ 12 car.).
-- [ ] Faire relire `privacy.html` par un juriste ; renseigner le responsable de traitement.
-- [ ] (Option) rate-limiting sur `panel_*`.
+Voir [`CHANGELOG.md`](CHANGELOG.md) pour l'historique détaillé.
