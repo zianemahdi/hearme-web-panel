@@ -41,6 +41,7 @@ export default function App() {
   const [isSendingCommand, setIsSendingCommand] = useState(false);
   const [, setLastUpdateText] = useState('il y a quelques secondes');
   const [isOnline, setIsOnline] = useState(true);
+  const [accessMsg, setAccessMsg] = useState<string | null>(null);
 
   // Thème → <html> + localStorage
   useEffect(() => {
@@ -213,6 +214,33 @@ export default function App() {
     if (deviceSecretKey) setDevice(prev => ({ ...prev, secret_key: deviceSecretKey }));
   };
 
+  // Accès d'urgence par magic link : ?access=TOKEN (usage unique, expiration serveur).
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tok = params.get('access');
+    if (!tok) return;
+    (async () => {
+      const { data, error } = await callRpc<{ ok: boolean; secret?: string; error?: string }>(
+        'consume_access_token', { p_token: tok }
+      );
+      // Nettoie l'URL : le jeton est à usage unique, on ne le laisse pas dans la barre d'adresse.
+      params.delete('access');
+      const qs = params.toString();
+      window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
+      if (error || !data || !data.ok || !data.secret) {
+        const reason =
+          data?.error === 'expired' ? 'Ce lien a expiré.' :
+          data?.error === 'used' ? 'Ce lien a déjà été utilisé.' :
+          'Lien d’accès invalide.';
+        setAccessMsg(reason + ' Demandez un nouveau lien depuis le téléphone (bouton « 🆘 Nouvel accès » sur Telegram).');
+        return;
+      }
+      setAccessMsg(null);
+      handleAuthSuccess('secret', data.secret);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const currentLocation = locations.length > 0 ? locations[0] : null;
 
   return (
@@ -221,6 +249,11 @@ export default function App() {
         theme === 'dark' ? 'hm-mesh text-slate-100' : 'hm-mesh-light text-slate-900'
       }`}
     >
+      {accessMsg && (
+        <div className="fixed top-0 inset-x-0 z-50 bg-amber-500/95 text-slate-900 text-sm font-medium px-4 py-2 text-center shadow-lg">
+          {accessMsg}
+        </div>
+      )}
       {!session ? (
         <WelcomeAuthPortal
           onSuccess={handleAuthSuccess}
