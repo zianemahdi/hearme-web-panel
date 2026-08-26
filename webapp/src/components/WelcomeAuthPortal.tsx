@@ -77,6 +77,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   // Login Form State
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [pinCode, setPinCode] = useState('');
 
   // Secret Key Access State
   const [quickSecretKey, setQuickSecretKey] = useState('');
@@ -255,6 +256,36 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Identifiants invalides';
       setErrorMsg(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Connexion par PIN maître (identifiant = e-mail du champ ci-dessus + PIN).
+  const handlePinLogin = async () => {
+    if (!loginEmail.trim() || !pinCode.trim()) {
+      setErrorMsg('Saisissez votre e-mail et votre PIN.');
+      return;
+    }
+    setLoading(true);
+    setErrorMsg(null);
+    try {
+      const supabase = getSupabase();
+      if (!supabase) { setErrorMsg('Service indisponible.'); return; }
+      const { data, error } = await supabase.rpc('panel_pin_login', {
+        p_email: loginEmail.trim(),
+        p_pin: pinCode.trim(),
+      });
+      const res = data as { ok?: boolean; secret?: string; error?: string } | null;
+      if (error || !res || !res.ok || !res.secret) {
+        setErrorMsg(res?.error === 'locked'
+          ? 'Trop de tentatives. Réessayez dans 15 minutes.'
+          : 'E-mail ou PIN incorrect.');
+        return;
+      }
+      onSuccess('secret', res.secret, loginEmail.trim());
+    } catch {
+      setErrorMsg('Connexion impossible.');
     } finally {
       setLoading(false);
     }
@@ -767,6 +798,37 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
                   <span>Se connecter</span>
+                </button>
+
+                <div className="relative flex items-center gap-3 py-1">
+                  <div className="flex-1 h-px bg-white/10" />
+                  <span className="text-[10px] uppercase tracking-wider text-slate-500">ou par PIN de secours</span>
+                  <div className="flex-1 h-px bg-white/10" />
+                </div>
+                <div>
+                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">
+                    PIN de secours (avec l'e-mail ci-dessus)
+                  </label>
+                  <div className="relative">
+                    <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                    <input
+                      type="password"
+                      inputMode="numeric"
+                      value={pinCode}
+                      onChange={(e) => setPinCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
+                      placeholder="4 à 8 chiffres"
+                      className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40 tracking-[0.3em]"
+                    />
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handlePinLogin}
+                  disabled={loading}
+                  className="w-full py-3 px-4 rounded-xl bg-white/10 border border-white/15 text-white font-bold text-xs hover:bg-white/15 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-95"
+                >
+                  <Lock className="w-4 h-4" />
+                  <span>Se connecter par PIN</span>
                 </button>
 
                 <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between text-xs text-slate-400">
