@@ -40,7 +40,7 @@ export interface SecurityPhoto {
   storage_path?: string;
 }
 
-export type CommandType = 'lock' | 'alarm' | 'stopalarm' | 'locate' | 'photo' | 'audio' | 'message' | 'regenerate_key';
+export type CommandType = 'lock' | 'alarm' | 'ring' | 'stopalarm' | 'locate' | 'photo' | 'audio' | 'message' | 'regenerate_key' | 'activate_search' | 'stop_search' | 'declare_stolen' | 'clear_stolen';
 
 export interface DeviceCommand {
   id: string;

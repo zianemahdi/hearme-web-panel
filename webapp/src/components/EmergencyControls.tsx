@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Bell, BellOff, MapPin, Camera, CheckCircle2, Loader2, Volume2, ShieldAlert } from 'lucide-react';
+import { Lock, Bell, BellOff, MapPin, Camera, CheckCircle2, Loader2, Volume2, ShieldAlert, Search } from 'lucide-react';
 import { CommandType } from '../types';
 
 interface EmergencyControlsProps {
@@ -20,6 +20,20 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
   const [lockMessage, setLockMessage] = useState('Téléphone perdu ou volé. Merci de contacter le propriétaire d\'urgence.');
   const [lockPin, setLockPin] = useState('');
   const [lastActionStatus, setLastActionStatus] = useState<string | null>(null);
+  const [searchActive, setSearchActive] = useState(false);
+
+  // Mode recherche / perdu : débloque photo + localisation sur le téléphone.
+  const toggleSearch = async () => {
+    const next = !searchActive;
+    const ok = await onSendCommand(next ? 'activate_search' : 'stop_search');
+    if (ok) {
+      setSearchActive(next);
+      setLastActionStatus(next
+        ? 'Mode recherche activé — localisation et photo débloquées'
+        : 'Mode recherche arrêté — retour à la confidentialité');
+      setTimeout(() => setLastActionStatus(null), 4000);
+    }
+  };
 
   const handleAction = async (command: CommandType, params?: Record<string, unknown>) => {
     // Pas de son côté navigateur : on envoie juste la commande au téléphone.
@@ -76,6 +90,28 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
           </span>
         )}
       </div>
+
+      {/* Mode recherche / perdu — débloque photo + GPS (confidentialité par défaut) */}
+      <button
+        onClick={toggleSearch}
+        disabled={isSending}
+        className={`w-full flex items-center gap-3 p-3 rounded-xl border transition active:scale-[0.99] disabled:opacity-50 ${
+          searchActive
+            ? 'border-violet-400/60 bg-violet-500/20 text-violet-100'
+            : 'border-violet-500/30 bg-violet-500/[0.08] hover:bg-violet-500/15 text-violet-200'
+        }`}
+      >
+        <div className="p-2 rounded-lg bg-violet-500/20 border border-violet-500/30 text-violet-300 shrink-0">
+          <Search className="w-4 h-4" />
+        </div>
+        <div className="text-left flex-1 min-w-0">
+          <div className="text-sm font-bold">{searchActive ? 'Recherche active — appuyez pour arrêter' : 'Activer la recherche'}</div>
+          <div className="text-[11px] opacity-70">Débloque la localisation et la photo à distance</div>
+        </div>
+        <div className={`w-9 h-5 rounded-full relative transition shrink-0 ${searchActive ? 'bg-violet-400' : 'bg-white/20'}`}>
+          <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${searchActive ? 'left-[18px]' : 'left-0.5'}`} />
+        </div>
+      </button>
 
       {/* Main Action Grid */}
       <div className="grid grid-cols-2 gap-2.5">
