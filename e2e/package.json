@@ -1,0 +1,12 @@
+{
+  "name": "hearme-e2e",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Tests end-to-end du panneau HearMe (Playwright).",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0"
+  }
+}
