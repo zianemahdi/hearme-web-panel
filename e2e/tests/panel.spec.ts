@@ -36,3 +36,24 @@ test('connexion PIN incorrecte → message d’erreur', async ({ page }) => {
   // La fonction serveur panel_pin_login refuse proprement.
   await expect(page.getByText('E-mail ou PIN incorrect.')).toBeVisible();
 });
+
+/**
+ * ⚠️ LIMITE CONNUE DE CES TESTS — lire avant d'y ajouter quoi que ce soit.
+ *
+ * Le 29/08/2026, le magic link et le PIN maître étaient TOTALEMENT hors service
+ * en production… et ces trois tests restaient au vert.
+ *
+ * Pourquoi : ils n'exercent que les chemins de REFUS (jeton bidon, e-mail
+ * inconnu). Or panel_pin_login retourne « invalid » dès qu'aucune ligne ne
+ * correspond à l'e-mail — AVANT d'appeler crypt(). Les seuls appels qui
+ * touchent pgcrypto (gen_random_bytes, crypt, gen_salt) exigent un appareil
+ * valide, donc un test en boîte noire ne peut pas les atteindre.
+ *
+ * Le chemin de SUCCÈS est couvert côté base, par une fonction qui crée un
+ * appareil jetable puis le supprime :
+ *
+ *     select selftest_emergency_flow();     -- supabase/10_selftest.sql
+ *
+ * À lancer après chaque déploiement SQL. Si tu ajoutes un test ici, garde en
+ * tête qu'un refus propre ne prouve pas que la fonctionnalité marche.
+ */

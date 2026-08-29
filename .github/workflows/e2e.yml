@@ -1,8 +1,17 @@
 name: E2E — tests du panneau (Playwright)
 
 # Lance les tests end-to-end contre le panneau DÉPLOYÉ (aucun Node requis en local).
+#
+# ⚠️ Le déclencheur le plus important est `workflow_run`. Avant, ce fichier ne
+# réagissait qu'aux changements sous e2e/** : modifier le panneau le déployait
+# SANS jamais lancer les tests, qui ne tournaient donc que si on touchait aux
+# tests eux-mêmes. Les tests ne gardaient rien. Ils s'exécutent maintenant
+# APRÈS chaque déploiement réussi — et sur ce qui vient d'être mis en ligne.
 on:
   workflow_dispatch:          # bouton « Run workflow » dans l'onglet Actions
+  workflow_run:
+    workflows: ["Deploy panel (Vite) to GitHub Pages"]
+    types: [completed]
   push:
     paths:
       - 'e2e/**'
@@ -13,11 +22,20 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    # Après un déploiement : uniquement s'il a réussi (inutile de tester un déploiement raté).
+    if: >-
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
     defaults:
       run:
         working-directory: e2e
     steps:
       - uses: actions/checkout@v4
+      - name: Laisser GitHub Pages propager
+        # Pages met quelques dizaines de secondes à servir la nouvelle version :
+        # sans cette pause, on testerait l'ancienne.
+        if: github.event_name == 'workflow_run'
+        run: sleep 45
       - uses: actions/setup-node@v4
         with:
           node-version: 20
