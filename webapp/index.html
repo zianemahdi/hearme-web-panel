@@ -3,6 +3,35 @@
   <head>
     <!-- deploy: force fresh Pages publish via GitHub Actions source -->
     <meta charset="UTF-8" />
+
+    <!-- Anti-clickjacking. GitHub Pages ne permet pas l'en-tête X-Frame-Options ;
+         si la page est chargée dans un cadre étranger, on s'en extrait. Ce script
+         inline est autorisé par son hash dans la CSP ci-dessous — pas par
+         'unsafe-inline', qui rouvrirait la porte à tout script injecté.
+         ⚠️ Si tu modifies la ligne ci-dessous, recalcule le hash sha256 dans la CSP. -->
+    <script>if(window.top!==window.self){try{window.top.location=window.self.location}catch(e){document.documentElement.style.display='none'}}</script>
+
+    <!-- Politique de sécurité du contenu. GitHub Pages n'expose pas d'en-têtes HTTP
+         personnalisés : on la déclare donc en meta. Limite d'où viennent scripts,
+         styles, images (tuiles de carte), connexions (Supabase + realtime) et
+         cadres (hCaptcha). frame-ancestors n'est pas pris en compte en meta, d'où
+         le frame-buster ci-dessus. -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'sha256-h+WNSju1n+8FlB6liB4QQuAwl3Wh7DqTdCo4HXXHySs=' https://hcaptcha.com https://*.hcaptcha.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://hcaptcha.com https://*.hcaptcha.com;
+      font-src 'self' data: https://fonts.gstatic.com;
+      img-src 'self' data: blob: https://server.arcgisonline.com https://*.arcgisonline.com https://*.supabase.co https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org;
+      connect-src 'self' https://*.supabase.co wss://*.supabase.co https://hcaptcha.com https://*.hcaptcha.com;
+      frame-src https://hcaptcha.com https://*.hcaptcha.com;
+      worker-src 'self' blob:;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      upgrade-insecure-requests;
+    " />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HearMe — Panneau d'urgence & Antivol</title>
     <meta name="description" content="Panneau web d'urgence HearMe : localisez et sécurisez votre téléphone en temps réel." />
