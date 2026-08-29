@@ -378,20 +378,6 @@ export default function App() {
                 />
               </div>
             </div>
-
-            <div className="text-center pt-2 pb-4 space-y-1.5">
-              <button
-                onClick={() => setIsPrivacyOpen(true)}
-                className={`text-xs hover:underline transition cursor-pointer ${
-                  theme === 'dark' ? 'text-slate-400 hover:text-purple-300' : 'text-slate-600 hover:text-purple-600'
-                }`}
-              >
-                Politique de confidentialité (Conforme Google Play Protect & RGPD)
-              </button>
-              <div className={`text-[11px] ${theme === 'dark' ? 'text-slate-500' : 'text-slate-400'}`}>
-                HearMe — Panneau de contrôle
-              </div>
-            </div>
           </main>
 
           <SiteFooter onOpenPrivacy={() => setIsPrivacyOpen(true)} theme={theme} />

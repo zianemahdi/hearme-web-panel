@@ -128,16 +128,23 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
             <span>Commandes Telegram d'urgence</span>
           </div>
           <p className={`text-[11px] leading-relaxed ${isDark ? 'text-slate-400' : 'text-purple-800'}`}>
-            Envoyez un message direct à votre bot HearMe avec votre clé pour commander votre mobile à distance :
+            Écrivez à votre bot HearMe. Un simple bouton suffit : le bot vous demande la clé, vous la
+            renvoyez. Un proche que vous avez ajouté n'a même pas besoin de la clé.
           </p>
           <div className={`space-y-1.5 font-mono text-[11px] p-2.5 rounded-xl border ${
             isDark ? 'bg-black/60 border-white/[0.06] text-purple-200' : 'bg-white border-purple-200 text-purple-900'
           }`}>
-            <div><strong className="text-pink-500">/lock &lt;clé&gt;</strong> — Verrouiller l'écran avec alerte</div>
-            <div><strong className="text-pink-500">/alarm &lt;clé&gt;</strong> — Déclencher la sirène antivol</div>
-            <div><strong className="text-pink-500">/locate &lt;clé&gt;</strong> — Obtenir la position GPS live</div>
-            <div><strong className="text-pink-500">/photo &lt;clé&gt;</strong> — Capturer la photo du ravisseur</div>
+            <div><strong className="text-emerald-500">/ring</strong> — Faire sonner à plein volume <span className="opacity-70">(toujours)</span></div>
+            <div><strong className="text-pink-500">/locate</strong> — Position GPS <span className="opacity-70">(si volé/perdu)</span></div>
+            <div><strong className="text-pink-500">/photo</strong> — Photo du porteur <span className="opacity-70">(si volé/perdu)</span></div>
+            <div><strong className="text-pink-500">/report</strong> — État + batterie <span className="opacity-70">(+ photo/GPS si alerte)</span></div>
+            <div><strong className="text-pink-500">/lock</strong> — Verrouiller l'écran</div>
+            <div><strong className="text-pink-500">/access</strong> — Envoyer un accès d'urgence à vos proches</div>
           </div>
+          <p className={`text-[10.5px] leading-relaxed ${isDark ? 'text-slate-500' : 'text-purple-700'}`}>
+            🔒 Photo et localisation ne fonctionnent que si le téléphone est déclaré volé, ou en mode
+            recherche — jamais en temps normal. Chaque photo prévient à l'écran du téléphone.
+          </p>
         </div>
       )}
 
