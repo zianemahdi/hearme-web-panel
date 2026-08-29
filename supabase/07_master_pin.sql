@@ -32,7 +32,7 @@ alter table device_pins enable row level security;   -- aucune policy : accès v
 -- ----------------------------------------------------------------------------
 create or replace function set_device_pin(p_secret text, p_email text, p_pin text)
 returns jsonb
-language plpgsql security definer set search_path = public
+language plpgsql security definer set search_path = public, extensions
 as $$
 declare
     d_id  uuid;
@@ -73,7 +73,7 @@ $$;
 -- ----------------------------------------------------------------------------
 create or replace function panel_pin_login(p_email text, p_pin text)
 returns jsonb
-language plpgsql security definer set search_path = public
+language plpgsql security definer set search_path = public, extensions
 as $$
 declare
     r   device_pins;
