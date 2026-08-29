@@ -72,6 +72,12 @@ export interface AuthSession {
   secretKey?: string;
   deviceId?: string;
   token?: string;
+  /**
+   * Session ouverte par un lien d'urgence : elle donne la main sur le téléphone
+   * (photo, GPS, mode recherche) et doit donc s'éteindre d'elle-même. Horodatage
+   * d'ouverture, en millisecondes. Absent = session normale, sans échéance.
+   */
+  crisisSince?: number;
 }
 
 export interface SupabaseConfig {

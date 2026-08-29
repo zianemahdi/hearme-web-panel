@@ -34,7 +34,7 @@ create or replace function mint_access_token(p_secret text, p_ttl_minutes int de
 returns text
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions   -- pgcrypto (gen_random_bytes) vit dans "extensions" sur Supabase
 as $$
 declare
     d_id uuid;

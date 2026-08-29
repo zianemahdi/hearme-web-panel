@@ -17,6 +17,11 @@ import { QuickProtectionBar } from './components/QuickProtectionBar';
 import { BatteryEnergyCard } from './components/BatteryEnergyCard';
 import { NetworkMatrixCard } from './components/NetworkMatrixCard';
 
+// Une session ouverte par lien d'urgence expire au bout de 6 h : le lien dure
+// 15 min et ne sert qu'une fois, mais sans cela le navigateur du proche gardait
+// un accès permanent au téléphone (photo, GPS) longtemps après la crise.
+const CRISIS_SESSION_MS = 6 * 60 * 60 * 1000;
+
 export default function App() {
   // Thème
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
@@ -28,10 +33,17 @@ export default function App() {
   // Session
   const [session, setSession] = useState<AuthSession | null>(() => {
     const saved = localStorage.getItem('hearme_session');
-    if (saved) {
-      try { return JSON.parse(saved); } catch { return null; }
+    if (!saved) return null;
+    try {
+      const s: AuthSession = JSON.parse(saved);
+      if (s.crisisSince && Date.now() - s.crisisSince > CRISIS_SESSION_MS) {
+        localStorage.removeItem('hearme_session');
+        return null;
+      }
+      return s;
+    } catch {
+      return null;
     }
-    return null;
   });
 
   const [device, setDevice] = useState<Device>(INITIAL_DEMO_DEVICE);
@@ -204,15 +216,37 @@ export default function App() {
 
   const handleLogout = () => { setSession(null); };
 
-  const handleAuthSuccess = (mode: AuthMode, deviceSecretKey?: string, userEmail?: string) => {
+  const handleAuthSuccess = (
+    mode: AuthMode,
+    deviceSecretKey?: string,
+    userEmail?: string,
+    isCrisis = false
+  ) => {
     const newSession: AuthSession = {
       mode,
       userEmail,
-      secretKey: deviceSecretKey || (mode === 'demo' ? INITIAL_DEMO_DEVICE.secret_key : undefined)
+      secretKey: deviceSecretKey || (mode === 'demo' ? INITIAL_DEMO_DEVICE.secret_key : undefined),
+      ...(isCrisis ? { crisisSince: Date.now() } : {})
     };
     setSession(newSession);
     if (deviceSecretKey) setDevice(prev => ({ ...prev, secret_key: deviceSecretKey }));
   };
+
+  // Une session de crise s'éteint aussi pendant que l'onglet reste ouvert.
+  useEffect(() => {
+    if (!session?.crisisSince) return;
+    const remaining = session.crisisSince + CRISIS_SESSION_MS - Date.now();
+    if (remaining <= 0) {
+      setSession(null);
+      setAccessMsg('Votre accès d’urgence a expiré. Demandez un nouveau lien depuis le téléphone.');
+      return;
+    }
+    const t = window.setTimeout(() => {
+      setSession(null);
+      setAccessMsg('Votre accès d’urgence a expiré. Demandez un nouveau lien depuis le téléphone.');
+    }, remaining);
+    return () => window.clearTimeout(t);
+  }, [session]);
 
   // Accès d'urgence par magic link : ?access=TOKEN (usage unique, expiration serveur).
   useEffect(() => {
@@ -236,7 +270,8 @@ export default function App() {
         return;
       }
       setAccessMsg(null);
-      handleAuthSuccess('secret', data.secret);
+      // Session de crise : bornée dans le temps (voir CRISIS_SESSION_MS).
+      handleAuthSuccess('secret', data.secret, undefined, true);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
