@@ -291,10 +291,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
     }
   };
 
-  const handleDemoAccess = () => {
-    onSuccess('demo');
-  };
-
   return (
     <div className="relative min-h-screen z-10 flex flex-col justify-between px-4 sm:px-6 py-6 sm:py-10">
       <HCaptcha ref={captchaRef} sitekey={HCAPTCHA_SITE_KEY} size="invisible" />
@@ -333,19 +329,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 <span className="hidden sm:inline text-slate-800">Mode Sombre</span>
               </>
             )}
-          </button>
-
-          {/* Quick Demo Access */}
-          <button
-            onClick={handleDemoAccess}
-            className={`px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-              theme === 'dark'
-                ? 'bg-purple-600/20 hover:bg-purple-600/30 text-purple-200 border border-purple-500/30'
-                : 'bg-purple-100 hover:bg-purple-200 text-purple-900 border border-purple-300 shadow-sm'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5 text-pink-500" />
-            <span className="hidden sm:inline">Démo Immédiate</span>
           </button>
         </div>
       </header>
@@ -849,18 +832,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 </div>
               </form>
             )}
-
-            {/* Quick Demo Footer Action */}
-            <div className="mt-5 pt-4 border-t border-white/[0.08] text-center">
-              <button
-                type="button"
-                onClick={handleDemoAccess}
-                className="w-full py-2.5 px-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-300 hover:text-white text-xs font-semibold flex items-center justify-center gap-2 transition active:scale-95 cursor-pointer"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-pink-400" />
-                <span>Tester immédiatement en Mode Démo Interactive</span>
-              </button>
-            </div>
           </div>
         </section>
       </main>
