@@ -14,8 +14,6 @@ import {
   MapPin,
   Volume2,
   Smartphone,
-  Sun,
-  Moon,
   Check,
   ChevronRight,
   Eye,
@@ -54,14 +52,12 @@ async function resolveAccountDeviceKey(supabase: SB): Promise<string | undefined
 interface WelcomeAuthPortalProps {
   onSuccess: (mode: AuthMode, deviceSecretKey?: string, userEmail?: string) => void;
   theme: 'dark' | 'light';
-  onToggleTheme: () => void;
   onOpenPrivacy: () => void;
 }
 
 export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   onSuccess,
   theme,
-  onToggleTheme,
   onOpenPrivacy,
 }) => {
   const [activeTab, setActiveTab] = useState<'secret' | 'register' | 'login'>('secret');
@@ -323,31 +319,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
           />
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* Theme Switcher Button */}
-          <button
-            onClick={onToggleTheme}
-            id="btn-theme-toggle-welcome"
-            className={`p-2.5 rounded-xl border transition cursor-pointer flex items-center gap-2 text-xs font-bold ${
-              theme === 'dark'
-                ? 'bg-white/[0.06] hover:bg-white/[0.12] border-white/[0.1] text-yellow-300'
-                : 'bg-black/[0.05] hover:bg-black/[0.1] border-black/[0.1] text-indigo-700 shadow-sm'
-            }`}
-            title={`Passer en mode ${theme === 'dark' ? 'Clair' : 'Sombre'}`}
-          >
-            {theme === 'dark' ? (
-              <>
-                <Sun className="w-4 h-4 text-yellow-400 animate-spin-slow" />
-                <span className="hidden sm:inline text-white">Mode Clair</span>
-              </>
-            ) : (
-              <>
-                <Moon className="w-4 h-4 text-indigo-600" />
-                <span className="hidden sm:inline text-slate-800">Mode Sombre</span>
-              </>
-            )}
-          </button>
-        </div>
       </header>
 
       {/* Main Content: Hero & Auth Grid */}

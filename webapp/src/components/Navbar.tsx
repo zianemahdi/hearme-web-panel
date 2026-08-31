@@ -1,5 +1,5 @@
 import React from 'react';
-import { Smartphone, LogOut, FileText, Sun, Moon } from 'lucide-react';
+import { Smartphone, LogOut, FileText } from 'lucide-react';
 import { Device, AuthMode } from '../types';
 import { HearMeLogo } from './HearMeLogo';
 
@@ -8,7 +8,6 @@ interface NavbarProps {
   authMode: AuthMode;
   isOnline: boolean;
   theme: 'dark' | 'light';
-  onToggleTheme: () => void;
   onOpenPrivacy: () => void;
   onLogout: () => void;
   customLogoUrl?: string;
@@ -19,7 +18,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   authMode,
   isOnline,
   theme,
-  onToggleTheme,
   onOpenPrivacy,
   onLogout,
   customLogoUrl
@@ -113,20 +111,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right: Quick Action Toolbar */}
         <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Theme Switcher Toggle */}
-          <button
-            id="btn-nav-theme-toggle"
-            onClick={onToggleTheme}
-            className={`p-2 rounded-xl border text-xs transition cursor-pointer flex items-center justify-center ${
-              isDark
-                ? 'bg-white/[0.06] hover:bg-white/[0.12] text-yellow-300 border-white/[0.08]'
-                : 'bg-slate-100 hover:bg-slate-200 text-indigo-600 border-slate-200 shadow-xs'
-            }`}
-            title={`Passer en mode ${isDark ? 'Clair' : 'Sombre'}`}
-          >
-            {isDark ? <Sun className="w-4 h-4 text-yellow-400" /> : <Moon className="w-4 h-4 text-indigo-600" />}
-          </button>
-
           {/* Privacy Policy */}
           <button
             id="btn-nav-privacy"

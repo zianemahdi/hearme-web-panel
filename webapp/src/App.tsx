@@ -23,12 +23,10 @@ import { NetworkMatrixCard } from './components/NetworkMatrixCard';
 const CRISIS_SESSION_MS = 6 * 60 * 60 * 1000;
 
 export default function App() {
-  // Thème
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    const savedTheme = localStorage.getItem('hearme_theme');
-    if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
-    return 'dark';
-  });
+  // Thème : le site est volontairement 100 % sombre (panneau d'urgence + fond
+  // animé conçu pour le sombre). Plus de bascule clair/sombre. L'app Android
+  // garde son propre thème, ceci ne la concerne pas.
+  const theme = 'dark' as const;
 
   // Session
   const [session, setSession] = useState<AuthSession | null>(() => {
@@ -55,15 +53,14 @@ export default function App() {
   const [isOnline, setIsOnline] = useState(true);
   const [accessMsg, setAccessMsg] = useState<string | null>(null);
 
-  // Thème → <html> + localStorage
+  // Force le sombre sur <html>, et nettoie une éventuelle préférence claire
+  // laissée par une ancienne version.
   useEffect(() => {
-    localStorage.setItem('hearme_theme', theme);
     const root = document.documentElement;
-    if (theme === 'dark') { root.classList.add('dark'); root.classList.remove('light'); }
-    else { root.classList.add('light'); root.classList.remove('dark'); }
-  }, [theme]);
-
-  const toggleTheme = () => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+    root.classList.add('dark');
+    root.classList.remove('light');
+    try { localStorage.removeItem('hearme_theme'); } catch { /* ignore */ }
+  }, []);
 
   // Session → localStorage
   useEffect(() => {
@@ -293,7 +290,6 @@ export default function App() {
         <WelcomeAuthPortal
           onSuccess={handleAuthSuccess}
           theme={theme}
-          onToggleTheme={toggleTheme}
           onOpenPrivacy={() => setIsPrivacyOpen(true)}
         />
       ) : (
@@ -303,7 +299,6 @@ export default function App() {
             authMode={session.mode}
             isOnline={isOnline}
             theme={theme}
-            onToggleTheme={toggleTheme}
             onOpenPrivacy={() => setIsPrivacyOpen(true)}
             onLogout={handleLogout}
           />
