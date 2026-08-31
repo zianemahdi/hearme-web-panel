@@ -7,6 +7,8 @@ interface HearMeLogoProps {
   className?: string;
   showSubtitle?: boolean;
   animatedLight?: boolean;
+  /** Intro jouée une fois au chargement : la tuile monte, le monogramme apparaît en cascade. */
+  intro?: boolean;
 }
 
 /**
@@ -25,6 +27,7 @@ export const HearMeLogo: React.FC<HearMeLogoProps> = ({
   className = '',
   showSubtitle = false,
   animatedLight = true,
+  intro = false,
 }) => {
   const sizeMap = {
     xs: { icon: 24, font: 'text-xs', height: 24 },
@@ -43,9 +46,14 @@ export const HearMeLogo: React.FC<HearMeLogoProps> = ({
   // Tuile arrondie (dégradé violet de l'app) + monogramme officiel blanc, centré.
   // Le monogramme officiel fait 700×400 ; on le place dans une tuile carrée de
   // 100×100 avec marge : échelle 0.10286, décalé de (14 ; 29,4) pour le centrer.
+  // Classe de pièce du monogramme : en intro, chaque élément apparaît en cascade
+  // (délai croissant). Sans intro, aucune classe (rendu statique immédiat).
+  const piece = (delay: number) =>
+    intro ? { className: 'hm-piece', style: { animationDelay: `${delay}s` } } : {};
+
   const renderMonogram = (px: number) => (
     <div
-      className="relative group/logo inline-flex items-center justify-center shrink-0"
+      className={`relative group/logo inline-flex items-center justify-center shrink-0 ${intro ? 'hm-logo-intro-wrap' : ''}`}
       style={{ width: px, height: px }}
     >
       {animatedLight && (
@@ -61,7 +69,7 @@ export const HearMeLogo: React.FC<HearMeLogoProps> = ({
         xmlns="http://www.w3.org/2000/svg"
         role="img"
         aria-label="HearMe"
-        className="relative z-10 shrink-0 transition-transform duration-300 group-hover/logo:scale-105"
+        className={`relative z-10 shrink-0 transition-transform duration-300 group-hover/logo:scale-105 ${intro ? 'hm-logo-intro' : ''}`}
       >
         <defs>
           <linearGradient id={`tile-${uid}`} x1="0" y1="0" x2="1" y2="1">
@@ -84,17 +92,19 @@ export const HearMeLogo: React.FC<HearMeLogoProps> = ({
         {/* Tuile */}
         <rect width="100" height="100" rx="24" fill={`url(#tile-${uid})`} />
 
-        {/* Monogramme officiel « HM » (blanc), centré */}
+        {/* Monogramme officiel « HM » (blanc), centré. En intro, les 4 pièces
+            (barre gauche → œil haut → œil bas → M) apparaissent en cascade. */}
         <g transform="translate(14, 29.4) scale(0.10286)" fill="#ffffff">
-          <rect x="20" y="10" width="34" height="380" rx="17" />
-          <rect x="105" y="10" width="80" height="175" rx="18" />
-          <rect x="105" y="215" width="80" height="175" rx="18" />
+          <rect x="20" y="10" width="34" height="380" rx="17" {...piece(0)} />
+          <rect x="105" y="10" width="80" height="175" rx="18" {...piece(0.09)} />
+          <rect x="105" y="215" width="80" height="175" rx="18" {...piece(0.18)} />
           <path
             d="M235,390 V10 H360 L457,250 L555,10 H680 V390 H555 V175 L457,320 L360,175 V390 Z"
             stroke="#ffffff"
             strokeWidth="16"
             strokeLinejoin="round"
             strokeLinecap="round"
+            {...piece(0.27)}
           />
         </g>
 

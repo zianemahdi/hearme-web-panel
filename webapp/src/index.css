@@ -380,3 +380,34 @@ html.dark .text-slate-500 {
 }
 
 
+
+/* ============================================================
+   Intro animée du logo (jouée une fois au chargement du portail)
+   La tuile monte en fondu, puis chaque pièce du monogramme
+   « HM » apparaît en cascade, avant le balayage de lumière.
+   ============================================================ */
+.hm-logo-intro-wrap {
+  animation: hm-logo-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes hm-logo-rise {
+  from { opacity: 0; transform: translateY(8px) scale(0.82); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* Chaque rect/path du monogramme apparaît en pop, en cascade. */
+.hm-logo-intro .hm-piece {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hm-piece-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes hm-piece-pop {
+  from { opacity: 0; transform: scale(0.35); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+/* Respecte « réduire les animations » : logo affiché d'emblée, sans mouvement. */
+@media (prefers-reduced-motion: reduce) {
+  .hm-logo-intro-wrap { animation: none; }
+  .hm-logo-intro .hm-piece { opacity: 1; animation: none; }
+}

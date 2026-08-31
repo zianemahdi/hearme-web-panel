@@ -316,6 +316,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
             theme={theme === 'dark' ? 'white' : 'dark'}
             animatedLight={true}
             showSubtitle={true}
+            intro={true}
           />
         </div>
 
