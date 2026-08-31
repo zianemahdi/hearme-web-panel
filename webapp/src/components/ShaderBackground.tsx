@@ -73,9 +73,30 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
 
     const gl = (canvas.getContext('webgl') ||
       canvas.getContext('experimental-webgl')) as WebGLRenderingContext | null;
-    // Pas de WebGL (vieux navigateur, accélération désactivée) : on laisse le
-    // fond du parent, la page reste parfaitement utilisable.
-    if (!gl) return;
+    // Respecte le réglage système « réduire les animations » : image figée.
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Pas de WebGL (accélération matérielle coupée, pilote GPU ancien, drapeau
+    // navigateur) : très courant sur Windows. On ne laisse PAS un canevas vide —
+    // sinon la page paraît sans lumière. On peint un dégradé cyan de repli, dans
+    // la même teinte Ice et la même composition (foyer en haut à droite, derrière
+    // la carte de connexion), avec une pulsation douce. Résultat : tout le monde
+    // voit la lumière ; WebGL n'ajoute que l'animation des arcs.
+    if (!gl) {
+      canvas.style.background = [
+        'radial-gradient(120% 95% at 78% 12%, rgba(90,205,255,0.30), transparent 55%)',
+        'radial-gradient(80% 70% at 62% 45%, rgba(60,170,235,0.20), transparent 62%)',
+        'radial-gradient(60% 55% at 30% 85%, rgba(70,150,220,0.12), transparent 60%)',
+        '#05070d',
+      ].join(', ');
+      if (!reduced) {
+        canvas.animate(
+          [{ filter: 'brightness(0.92)' }, { filter: 'brightness(1.12)' }],
+          { duration: 6000, direction: 'alternate', iterations: Infinity, easing: 'ease-in-out' },
+        );
+      }
+      return;
+    }
 
     const compile = (type: number, src: string) => {
       const s = gl.createShader(type)!;
@@ -126,9 +147,6 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
       gl.uniform2f(uRes, w, h);
     };
     syncSize();
-
-    // Respecte le réglage système « réduire les animations » : image figée.
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let raf = 0;
     let time = 1.0;
