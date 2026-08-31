@@ -57,3 +57,18 @@ test('connexion PIN incorrecte → message d’erreur', async ({ page }) => {
  * À lancer après chaque déploiement SQL. Si tu ajoutes un test ici, garde en
  * tête qu'un refus propre ne prouve pas que la fonctionnalité marche.
  */
+
+test('le fond animé se dimensionne et couvre le portail', async ({ page }) => {
+  await page.goto('./');
+  const canvas = page.locator('canvas').first();
+  await expect(canvas).toBeAttached();
+  // Garde-fou : le canevas se dimensionnait à 0x0 quand on le mesurait via
+  // clientWidth au montage (un <canvas> sans taille CSS effective retombe sur
+  // son attribut width, qui restait donc bloqué à 0). Le fond était noir.
+  const size = await canvas.evaluate((c: HTMLCanvasElement) => ({
+    buffer: c.width * c.height,
+    rect: Math.round(c.getBoundingClientRect().width),
+  }));
+  expect(size.buffer).toBeGreaterThan(0);
+  expect(size.rect).toBeGreaterThan(300);
+});

@@ -25,6 +25,7 @@ import {
 import { AuthMode } from '../types';
 import { getSupabase } from '../utils/supabaseClient';
 import { HearMeLogo } from './HearMeLogo';
+import { ShaderBackground } from './ShaderBackground';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 // hCaptcha — clé de TEST par défaut (passe toujours, sans protection réelle).
@@ -292,6 +293,22 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   };
 
   return (
+    <>
+      {/*
+        Fond animé « light ripple » — thème sombre uniquement. En thème clair, le
+        dégradé existant reprend la main : un canevas noir sous une interface
+        claire n'aurait aucun sens.
+        Réglages retenus : Ice (cyan) · vitesse équilibrée · épaisseur standard.
+      */}
+      {theme === 'dark' && (
+        <ShaderBackground
+          tint={[0.3, 0.8, 1.0]}
+          brightness={1.1}
+          speed={1}
+          lineWidth={0.002}
+        />
+      )}
+
     <div className="relative min-h-screen z-10 flex flex-col justify-between px-4 sm:px-6 py-6 sm:py-10">
       <HCaptcha ref={captchaRef} sitekey={HCAPTCHA_SITE_KEY} size="invisible" />
       {/* Top Bar with Logo & Theme Toggle */}
@@ -337,22 +354,38 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       <main className="max-w-6xl w-full mx-auto my-auto py-8 sm:py-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         {/* Left Side: Concept & Value Proposition */}
         <section className="lg:col-span-6 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold tracking-wide shadow-sm backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span className={theme === 'dark' ? 'text-slate-200' : 'text-slate-800'}>
-              Système Antivol & Protection Continue
-            </span>
+          {/* Surtitre : filets fins + petites capitales espacées */}
+          <div
+            className={`inline-flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] ${
+              theme === 'dark' ? 'text-white/45' : 'text-slate-500'
+            }`}
+          >
+            <span
+              className={`h-px w-7 ${theme === 'dark' ? 'bg-white/20' : 'bg-slate-300'}`}
+              aria-hidden="true"
+            />
+            Système antivol &amp; protection continue
           </div>
 
-          <div className="space-y-3">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.15]">
+          <div className="space-y-4">
+            <h1
+              className="font-semibold tracking-[-0.045em] leading-[0.98] text-balance
+                         text-4xl sm:text-5xl lg:text-[3.6rem]"
+            >
               <span className={theme === 'dark' ? 'text-white' : 'text-slate-950'}>
-                Retrouvez et sécurisez votre téléphone{' '}
+                Votre téléphone,{' '}
               </span>
-              <span className="hm-gradient-text">à tout instant.</span>
+              <span className={theme === 'dark' ? 'text-cyan-300' : 'text-cyan-600'}>
+                toujours à portée.
+              </span>
             </h1>
-            <p className={`text-sm sm:text-base leading-relaxed ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
-              HearMe est votre panneau de commande d'urgence. Localisez votre appareil égaré ou volé, déclenchez une sirène d'alerte maximale, prenez des clichés silencieux de l'intrus et verrouillez vos données.
+            <p
+              className={`text-sm sm:text-base font-light leading-relaxed max-w-xl ${
+                theme === 'dark' ? 'text-white/70' : 'text-slate-600'
+              }`}
+            >
+              Localisez-le, faites-le sonner, verrouillez-le — même s'il n'est plus entre vos mains.
+              HearMe veille, vous gardez la main.
             </p>
           </div>
 
@@ -852,5 +885,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
         </div>
       </footer>
     </div>
+    </>
   );
 };
