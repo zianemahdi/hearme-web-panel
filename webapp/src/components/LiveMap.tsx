@@ -445,32 +445,17 @@ export const LiveMap: React.FC<LiveMapProps> = ({
       <div className="relative w-full flex-1 rounded-xl overflow-hidden border border-white/[0.1] shadow-2xl">
         <div ref={mapContainerRef} className="w-full h-full" />
 
-        {/* Tactical Animated Radar Sweep Overlay */}
-        {isTacticalRadarActive && (
-          <div className="absolute inset-0 pointer-events-none z-[350] flex items-center justify-center overflow-hidden">
-            <div className="relative w-[340px] h-[340px] sm:w-[480px] sm:h-[480px] rounded-full border border-cyan-500/20 hm-tactical-sweep">
-              <div className="w-1/2 h-1/2 absolute top-0 right-0 bg-gradient-to-br from-cyan-500/25 via-cyan-400/10 to-transparent rounded-tr-full" />
-            </div>
-            {/* Center HUD Reticle */}
-            <div className="absolute w-12 h-12 border border-cyan-400/30 rounded-full flex items-center justify-center">
-              <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-ping" />
-            </div>
-          </div>
-        )}
-
-        {/* Top Left Floating Tactical Badges */}
+        {/* Top Left Floating Badge — statut GPS (vert = position en direct) */}
         <div className="absolute top-3 left-3 z-[400] flex flex-wrap items-center gap-2">
-          {/* Radar Status Badge */}
           <div className="px-3 py-1.5 rounded-xl bg-[#0d0d1a]/85 backdrop-blur-md border border-white/15 text-xs font-bold text-slate-200 flex items-center gap-2 shadow-xl">
             <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
             </span>
-            <span className="tracking-wider uppercase text-[11px] font-extrabold text-cyan-400">
+            <span className="tracking-wider uppercase text-[11px] font-extrabold text-emerald-400">
               Localisation GPS
             </span>
           </div>
-
         </div>
 
         {/* Top Right Floating Controls */}

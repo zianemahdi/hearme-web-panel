@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { KeyRound, Eye, EyeOff, Copy, Check, RefreshCw, AlertTriangle, Send, HelpCircle } from 'lucide-react';
+import { KeyRound, Eye, EyeOff, Copy, Check, RefreshCw, AlertTriangle, Send, HelpCircle, Lock } from 'lucide-react';
 
 interface SecretKeyCardProps {
   secretKey: string;
@@ -141,9 +141,10 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
             <div><strong className="text-pink-500">/lock</strong> — Verrouiller l'écran</div>
             <div><strong className="text-pink-500">/access</strong> — Envoyer un accès d'urgence à vos proches</div>
           </div>
-          <p className={`text-[10.5px] leading-relaxed ${isDark ? 'text-slate-500' : 'text-purple-700'}`}>
-            🔒 Photo et localisation ne fonctionnent que si le téléphone est déclaré volé, ou en mode
-            recherche — jamais en temps normal. Chaque photo prévient à l'écran du téléphone.
+          <p className={`text-[10.5px] leading-relaxed flex gap-1.5 ${isDark ? 'text-slate-500' : 'text-purple-700'}`}>
+            <Lock className="w-3 h-3 mt-0.5 shrink-0 text-emerald-400" aria-hidden="true" />
+            <span>Photo et localisation ne fonctionnent que si le téléphone est déclaré volé, ou en mode
+            recherche — jamais en temps normal. Chaque photo prévient à l'écran du téléphone.</span>
           </p>
         </div>
       )}

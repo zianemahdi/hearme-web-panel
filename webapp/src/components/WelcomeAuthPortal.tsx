@@ -294,14 +294,28 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
         Fond animé « light ripple » — thème sombre uniquement. En thème clair, le
         dégradé existant reprend la main : un canevas noir sous une interface
         claire n'aurait aucun sens.
-        Réglages retenus : Ice (cyan) · vitesse équilibrée · épaisseur standard.
+        Réglages retenus : teinte violette (marque HearMe) · mouvement lent ·
+        luminosité basse → un halo ambiant discret et rassurant, pas un show
+        lumineux. La lisibilité de la carte de connexion reste prioritaire.
       */}
       {theme === 'dark' && (
         <ShaderBackground
-          tint={[0.3, 0.8, 1.0]}
-          brightness={1.1}
-          speed={1}
-          lineWidth={0.002}
+          tint={[0.49, 0.36, 1.0]}
+          brightness={0.42}
+          speed={0.5}
+          lineWidth={0.0018}
+        />
+      )}
+      {/* Voile sombre au-dessus du fond animé : garantit la lisibilité du texte
+         clair par-dessus les bandes lumineuses du shader (sinon texte clair sur
+         halo clair = illisible). Le contenu (z-10) reste au-dessus du voile. */}
+      {theme === 'dark' && (
+        <div
+          className="fixed inset-0 z-[1] pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(130% 100% at 50% 0%, rgba(5,5,8,0.35), rgba(5,5,8,0.74) 55%, rgba(5,5,8,0.92) 100%)',
+          }}
         />
       )}
 
@@ -347,7 +361,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
               <span className={theme === 'dark' ? 'text-white' : 'text-slate-950'}>
                 Votre téléphone,{' '}
               </span>
-              <span className={theme === 'dark' ? 'text-cyan-300' : 'text-cyan-600'}>
+              <span className={theme === 'dark' ? 'hm-gradient-text' : 'hm-gradient-text-light'}>
                 toujours à portée.
               </span>
             </h1>
@@ -401,11 +415,11 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
 
             <div className={`p-3.5 rounded-2xl border transition-all ${
               theme === 'dark'
-                ? 'bg-white/[0.03] border-white/[0.08] hover:border-cyan-500/30'
-                : 'bg-white/80 border-slate-200 hover:border-cyan-300 shadow-sm'
+                ? 'bg-white/[0.03] border-white/[0.08] hover:border-indigo-500/30'
+                : 'bg-white/80 border-slate-200 hover:border-indigo-300 shadow-sm'
             }`}>
               <div className="flex items-center gap-2.5 mb-1.5">
-                <div className="w-7 h-7 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center">
                   <Camera className="w-4 h-4" />
                 </div>
                 <h2 className={`font-bold text-xs ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
@@ -427,11 +441,11 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   <ShieldCheck className="w-4 h-4" />
                 </div>
                 <h2 className={`font-bold text-xs ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-                  Zéro Fuite Cloud (RGPD)
+                  Vie privée protégée (RGPD)
                 </h2>
               </div>
               <p className={`text-[11px] leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                Chiffrement de bout en bout et contrôle exclusif par clé secrète d'appareil privée.
+                Chiffré en transit (TLS), cloisonné par compte. Vos données ne sont ni vendues ni partagées.
               </p>
             </div>
           </div>

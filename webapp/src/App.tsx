@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { AlertTriangle } from 'lucide-react';
 import { Device, LocationPoint, CommandType, AuthMode, AuthSession } from './types';
 import { INITIAL_DEMO_DEVICE, INITIAL_DEMO_LOCATIONS } from './utils/mockData';
 import { getSupabase, callRpc } from './utils/supabaseClient';
@@ -307,7 +308,7 @@ export default function App() {
             {geofenceBreachAlert && (
               <div className="p-4 rounded-2xl bg-rose-950/80 border border-rose-500/80 backdrop-blur-xl flex items-center justify-between shadow-[0_0_30px_rgba(244,63,94,0.35)] animate-pulse text-xs sm:text-sm">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400 font-bold">🚨</div>
+                  <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400"><AlertTriangle className="w-5 h-5" aria-hidden="true" /></div>
                   <div>
                     <div className="font-bold text-rose-200 uppercase tracking-wide">Alerte Périmètre de Sécurité Dépassé !</div>
                     <div className="text-rose-300 text-xs">Le smartphone <strong>{device.name}</strong> a franchi la zone sécurisée « {geofenceBreachAlert} ».</div>
