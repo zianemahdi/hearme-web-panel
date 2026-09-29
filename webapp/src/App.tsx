@@ -145,7 +145,13 @@ export default function App() {
       if (session && session.secretKey && session.mode !== 'demo') {
         const supabase = getSupabase();
         if (supabase) {
-          await supabase.rpc('panel_send_command', { p_secret: session.secretKey, p_command: command });
+          // Clé invalide → le serveur renvoie null (sans erreur, pour que
+          // l'anti-force-brute compte l'échec) : ce n'est pas un succès.
+          const { data, error } = await supabase.rpc('panel_send_command', {
+            p_secret: session.secretKey, p_command: command,
+          });
+          if (error) throw error;
+          if (!data) throw new Error('Clé secrète invalide ou expirée.');
         }
       }
 
@@ -175,21 +181,24 @@ export default function App() {
     }
   };
 
-  // Régénération de la clé secrète
-  const handleRegenerateKey = async (): Promise<string | null> => {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let newKey = 'Hm';
-    for (let i = 0; i < 10; i++) {
-      if (i === 2 || i === 6) newKey += '-';
-      newKey += chars.charAt(Math.floor(Math.random() * chars.length));
+  // Régénération de la clé secrète.
+  // C'est le TÉLÉPHONE qui détient la clé : le panneau lui demande d'en changer
+  // (panel_request_regenerate), il la fait tourner à sa prochaine synchronisation
+  // et l'affiche dans l'app. Changer la clé d'ici (rotate_secret) coupait le
+  // téléphone de son propre compte ; et le serveur n'accepte plus que des clés
+  // fortes générées par l'app (12_bruteforce_guard.sql).
+  const handleRegenerateKey = async (): Promise<boolean> => {
+    if (!session?.secretKey) return false;
+    if (session.mode === 'demo') {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let demoKey = '';
+      for (let i = 0; i < 12; i++) demoKey += chars.charAt(Math.floor(Math.random() * chars.length));
+      setDevice(prev => ({ ...prev, secret_key: demoKey }));
+      setSession({ ...session, secretKey: demoKey });
+      return true;
     }
-    setDevice(prev => ({ ...prev, secret_key: newKey }));
-    if (session) setSession({ ...session, secretKey: newKey });
-    if (session?.secretKey && session.mode !== 'demo') {
-      try { await callRpc('rotate_secret', { p_old: session.secretKey, p_new: newKey }); }
-      catch { /* mise à jour locale conservée */ }
-    }
-    return newKey;
+    const { data, error } = await callRpc<boolean>('panel_request_regenerate', { p_secret: session.secretKey });
+    return !error && data !== false;
   };
 
   // Alerte géorepérage

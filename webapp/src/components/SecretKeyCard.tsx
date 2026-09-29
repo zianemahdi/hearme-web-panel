@@ -3,7 +3,8 @@ import { KeyRound, Eye, EyeOff, Copy, Check, RefreshCw, AlertTriangle, Send, Hel
 
 interface SecretKeyCardProps {
   secretKey: string;
-  onRegenerateKey: () => Promise<string | null>;
+  /** Demande au téléphone de changer sa clé. true = demande enregistrée. */
+  onRegenerateKey: () => Promise<boolean>;
   theme?: 'dark' | 'light';
 }
 
@@ -14,6 +15,7 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [showRegenConfirm, setShowRegenConfirm] = useState(false);
   const [showTelegramHelp, setShowTelegramHelp] = useState(false);
+  const [regenResult, setRegenResult] = useState<'sent' | 'failed' | null>(null);
 
   const handleCopy = () => {
     if (!secretKey) return;
@@ -25,7 +27,9 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
   const handleConfirmRegen = async () => {
     setIsRegenerating(true);
     setShowRegenConfirm(false);
-    await onRegenerateKey();
+    setRegenResult(null);
+    const ok = await onRegenerateKey();
+    setRegenResult(ok ? 'sent' : 'failed');
     setIsRegenerating(false);
   };
 
@@ -114,6 +118,18 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
         </button>
       </div>
 
+      {regenResult && (
+        <p role="status" className={`text-[11px] leading-relaxed rounded-xl border p-2.5 ${
+          regenResult === 'sent'
+            ? (isDark ? 'border-emerald-500/30 bg-emerald-500/[0.08] text-emerald-300' : 'border-emerald-300 bg-emerald-50 text-emerald-800')
+            : (isDark ? 'border-red-500/30 bg-red-500/[0.08] text-red-300' : 'border-red-300 bg-red-50 text-red-800')
+        }`}>
+          {regenResult === 'sent'
+            ? "Demande envoyée. Le téléphone va créer sa nouvelle clé à sa prochaine synchronisation (quelques secondes s'il est en ligne) : retrouvez-la dans l'app, Réglages → Clé secrète, puis reconnectez-vous ici avec elle."
+            : "Demande refusée : la clé n'est plus valide ou le serveur est injoignable. Reconnectez-vous avec la clé affichée dans l'app."}
+        </p>
+      )}
+
       <p className={`text-[11px] leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
         Cette clé commande votre téléphone à distance en toute sécurité (via ce panneau ou le bot Telegram). Conservez-la en lieu sûr.
       </p>
@@ -166,7 +182,7 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
             </div>
 
             <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-              L'ancienne clé cessera immédiatement de fonctionner. Vous devrez mettre à jour vos raccourcis Telegram ou applications connectées.
+              Le téléphone créera sa nouvelle clé à sa prochaine synchronisation ; l'ancienne cessera alors de fonctionner, y compris sur ce panneau. La nouvelle clé s'affichera dans l'app HearMe.
             </p>
 
             <div className="pt-3 flex items-center justify-end gap-2 border-t border-white/[0.08]">
