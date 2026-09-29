@@ -148,12 +148,17 @@ HM.api = (function () {
   /*  Commandes d'urgence & clé secrète                                    */
   /* --------------------------------------------------------------------- */
 
+  // Depuis 12_bruteforce_guard.sql, une clé invalide ne lève plus d'erreur (pour que
+  // l'anti-force-brute puisse compter l'échec) : la fonction renvoie null / false.
+  const INVALID_KEY = "Clé secrète invalide ou expirée.";
+
   async function sendCommand(command) {
     if (mode() === "secret") {
-      const { error } = await sb().rpc("panel_send_command", {
+      const { data, error } = await sb().rpc("panel_send_command", {
         p_secret: secret(), p_command: command,
       });
       if (error) throw error;
+      if (!data) throw new Error(INVALID_KEY);
       return;
     }
     const id = HM.session.getDeviceId();
@@ -165,8 +170,9 @@ HM.api = (function () {
   /** Demande la régénération de la clé : l'app la fera tourner à sa prochaine sync. */
   async function requestRegenerate() {
     if (mode() === "secret") {
-      const { error } = await sb().rpc("panel_request_regenerate", { p_secret: secret() });
+      const { data, error } = await sb().rpc("panel_request_regenerate", { p_secret: secret() });
       if (error) throw error;
+      if (data === false) throw new Error(INVALID_KEY);
       return;
     }
     const id = HM.session.getDeviceId();
@@ -181,6 +187,7 @@ HM.api = (function () {
   async function claimDevice(secretKey) {
     const { data, error } = await sb().rpc("claim_device_by_secret", { p_secret: secretKey.trim() });
     if (error) throw error;
+    if (!data) throw new Error(INVALID_KEY);
     return data; // uuid de l'appareil
   }
 
