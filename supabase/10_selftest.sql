@@ -1,5 +1,7 @@
 -- ============================================================================
 --  10_selftest.sql — Autotest du parcours d'urgence
+--  ⚠️ OBSOLÈTE : cassé depuis 12 (clés « SELFTEST-… » refusées) et supprimé
+--  par 15. Remplacé par les autotests annulés 14 et 16. Gardé pour l'historique.
 -- ----------------------------------------------------------------------------
 --  POURQUOI CE FICHIER EXISTE
 --

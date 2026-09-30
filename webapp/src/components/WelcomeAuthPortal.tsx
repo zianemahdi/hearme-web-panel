@@ -248,7 +248,8 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
     }
   };
 
-  // Connexion par PIN maître (identifiant = e-mail du champ ci-dessus + PIN).
+  // Connexion par PIN de secours : e-mail du COMPTE + PIN (15_master_pin_account.sql).
+  // Le serveur ouvre le téléphone du compte vu le plus récemment.
   const handlePinLogin = async () => {
     if (!loginEmail.trim() || !pinCode.trim()) {
       setErrorMsg('Saisissez votre e-mail et votre PIN.');
@@ -265,8 +266,9 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       });
       const res = data as { ok?: boolean; secret?: string; error?: string } | null;
       if (error || !res || !res.ok || !res.secret) {
-        setErrorMsg(res?.error === 'locked'
-          ? 'Trop de tentatives. Réessayez dans 15 minutes.'
+        setErrorMsg(
+          res?.error === 'locked' ? 'Trop de tentatives. Réessayez dans 15 minutes.'
+          : res?.error === 'no_device' ? 'Aucun téléphone n’est relié à ce compte. Connectez-vous dans l’app HearMe.'
           : 'E-mail ou PIN incorrect.');
         return;
       }
@@ -775,7 +777,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 </div>
                 <div>
                   <label className="block text-[11px] text-slate-300 font-semibold mb-1">
-                    PIN de secours (avec l'e-mail ci-dessus)
+                    PIN de secours (avec l'e-mail de votre compte ci-dessus)
                   </label>
                   <div className="relative">
                     <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
