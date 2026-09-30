@@ -9,13 +9,11 @@ import {
   AlertCircle,
   Loader2,
   ShieldCheck,
-  Radio,
   Camera,
   MapPin,
   Volume2,
   Smartphone,
   Check,
-  ChevronRight,
   Eye,
   EyeOff,
   HelpCircle
@@ -67,7 +65,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
   const [regDeviceName, setRegDeviceName] = useState('Mon Smartphone Android');
-  const [regSecretKey, setRegSecretKey] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(true);
 
@@ -83,7 +80,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [infoMsg, setInfoMsg] = useState<string | null>(null);
-  const [showFaq, setShowFaq] = useState(false);
 
   // hCaptcha invisible : on exécute juste avant chaque appel d'auth pour obtenir
   // un jeton, transmis à Supabase. Sans jeton, Supabase refuse (quand le CAPTCHA
@@ -110,16 +106,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
     return score;
   };
   const passwordStrength = calculateStrength(regPassword);
-
-  // Generate random device key helper
-  const generateRandomKey = () => {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let part1 = '';
-    let part2 = '';
-    for (let i = 0; i < 4; i++) part1 += chars.charAt(Math.floor(Math.random() * chars.length));
-    for (let i = 0; i < 4; i++) part2 += chars.charAt(Math.floor(Math.random() * chars.length));
-    setRegSecretKey(`HM-${part1}-${part2}`);
-  };
 
   // Handle Secret Key Direct Unlock
   const handleSecretSubmit = async (e: React.FormEvent) => {
@@ -159,8 +145,9 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       setErrorMsg('Veuillez renseigner votre email et mot de passe');
       return;
     }
-    if (regPassword.length < 6) {
-      setErrorMsg('Le mot de passe doit contenir au moins 6 caractères');
+    // Mêmes règles que le serveur (Supabase Auth : 10 caractères, lettres ET chiffres).
+    if (regPassword.length < 10 || !/[A-Za-z]/.test(regPassword) || !/[0-9]/.test(regPassword)) {
+      setErrorMsg('Le mot de passe doit contenir au moins 10 caractères, avec des lettres et des chiffres');
       return;
     }
     if (!acceptTerms) {
@@ -183,8 +170,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
             captchaToken,
             data: {
               full_name: regName || 'Utilisateur HearMe',
-              device_name: regDeviceName || 'Mon Téléphone',
-              initial_secret_key: regSecretKey || undefined
+              device_name: regDeviceName || 'Mon Téléphone'
             }
           }
         });
@@ -194,6 +180,10 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
             setErrorMsg('Cette adresse email est déjà enregistrée. Veuillez vous connecter.');
             setActiveTab('login');
             setLoginEmail(regEmail);
+            return;
+          }
+          if (error.code === 'weak_password') {
+            setErrorMsg('Mot de passe trop faible ou trop courant. Choisissez-en un plus long et plus varié.');
             return;
           }
           throw error;
@@ -212,7 +202,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       }
 
       // Fallback local session if Supabase is pending setup
-      onSuccess('account', regSecretKey.trim() || undefined, regEmail.trim());
+      onSuccess('account', undefined, regEmail.trim());
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Erreur d\'inscription';
       setErrorMsg(message);
@@ -545,7 +535,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                       required
                       value={quickSecretKey}
                       onChange={(e) => setQuickSecretKey(e.target.value)}
-                      placeholder="ex. HM-9X44-KQ88"
+                      placeholder="ex. K7QM2XPA9RTD"
                       className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-10 pr-4 py-3 text-xs font-mono font-bold text-white placeholder-slate-500 focus:outline-none focus:border-white/40 tracking-wider uppercase"
                     />
                   </div>
@@ -651,7 +641,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                       required
                       value={regPassword}
                       onChange={(e) => setRegPassword(e.target.value)}
-                      placeholder="Minimum 6 caractères"
+                      placeholder="10 caractères min., lettres et chiffres"
                       className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-10 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
                     />
                     <button
@@ -680,30 +670,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                       </span>
                     </div>
                   )}
-                </div>
-
-                {/* Device Secret Key Pairing option */}
-                <div className="p-3 rounded-xl bg-black/40 border border-white/[0.08] space-y-2">
-                  <div className="flex items-center justify-between">
-                    <label className="text-[11px] text-slate-300 font-semibold flex items-center gap-1">
-                      <Radio className="w-3 h-3 text-purple-400" />
-                      <span>Clé de jumelage d'urgence (Optionnelle)</span>
-                    </label>
-                    <button
-                      type="button"
-                      onClick={generateRandomKey}
-                      className="text-[10px] text-purple-300 hover:text-purple-200 underline cursor-pointer"
-                    >
-                      Générer une clé
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    value={regSecretKey}
-                    onChange={(e) => setRegSecretKey(e.target.value)}
-                    placeholder="ex. HM-7821-X992 (Laissez vide pour configurer plus tard)"
-                    className="w-full rounded-lg bg-white/[0.04] border border-white/[0.08] px-3 py-1.5 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-white/30"
-                  />
                 </div>
 
                 {/* Consent Checkbox */}

@@ -9,7 +9,7 @@ export const INITIAL_DEMO_DEVICE: Device = {
   is_locked: true,
   is_alarm_active: false,
   last_seen_at: new Date().toISOString(),
-  secret_key: 'Hm9x-8812-Kq7v',
+  secret_key: 'HMDEMO7K2QXP',
   model: 'SM-S928B',
   os_version: 'Android 14 (One UI 6.1)',
   telegram_linked: true,

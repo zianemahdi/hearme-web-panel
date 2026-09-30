@@ -8,22 +8,12 @@ import {
   Maximize2,
   Minimize2,
   Navigation,
-  Compass,
-  MapPin,
   Shield,
-  ShieldAlert,
   ShieldCheck,
-  Radio,
-  Sliders,
   Plus,
   Trash2,
-  Check,
   Activity,
-  AlertTriangle,
-  Move,
-  Scan,
-  RefreshCw,
-  LocateFixed
+  AlertTriangle
 } from 'lucide-react';
 
 interface LiveMapProps {
@@ -36,32 +26,6 @@ interface LiveMapProps {
 }
 
 type MapLayerType = 'dark' | 'satellite' | 'streets' | 'tactical';
-
-// Default initial Geofence Zones
-const INITIAL_GEOFENCES: GeofenceZone[] = [
-  {
-    id: 'geo-home',
-    name: 'Périmètre Domicile / Sécurisé',
-    latitude: 36.7769,
-    longitude: 3.0538,
-    radius: 350,
-    enabled: true,
-    type: 'home',
-    color: '#10b981',
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'geo-work',
-    name: 'Zone Bureau / Campus',
-    latitude: 36.7820,
-    longitude: 3.0610,
-    radius: 450,
-    enabled: false,
-    type: 'work',
-    color: '#06b6d4',
-    created_at: new Date().toISOString()
-  }
-];
 
 // Helper: Haversine distance in meters
 function getDistanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -103,14 +67,14 @@ export const LiveMap: React.FC<LiveMapProps> = ({
   const [activeLayer, setActiveLayer] = useState<MapLayerType>('satellite');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showLayerMenu, setShowLayerMenu] = useState(false);
-  const [isTacticalRadarActive, setIsTacticalRadarActive] = useState(false);
+  const [isTacticalRadarActive] = useState(false);
   const [showGeofenceDrawer, setShowGeofenceDrawer] = useState(false);
   
   // Géofencing retiré : aucune zone de sécurité.
   const [geofences, setGeofences] = useState<GeofenceZone[]>([]);
 
   const [newZoneName, setNewZoneName] = useState('');
-  const [newZoneRadius, setNewZoneRadius] = useState<number>(300);
+  const [newZoneRadius] = useState<number>(300);
 
   // Compute Geofence Breach Status
   const geofenceStatus = useMemo(() => {

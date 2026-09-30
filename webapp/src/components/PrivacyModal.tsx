@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Shield, Lock, FileText, CheckCircle2, Globe, Heart } from 'lucide-react';
+import { X, Shield } from 'lucide-react';
 
 interface PrivacyModalProps {
   isOpen: boolean;

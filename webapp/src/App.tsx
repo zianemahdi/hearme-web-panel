@@ -89,16 +89,39 @@ export default function App() {
   useEffect(() => {
     if (!session || session.mode === 'demo') return;
     let isMounted = true;
+    let stopped = false;
+    let pausedUntil = 0;
+    let pollTimer: ReturnType<typeof setInterval> | undefined;
 
     const fetchRealDeviceData = async () => {
+      if (stopped || Date.now() < pausedUntil) return;
       try {
         const supabase = getSupabase();
         if (!supabase) return;
         if (session.secretKey && session.mode !== 'demo') {
           // panel_get_device renvoie un TABLEAU de lignes
-          const { data: devData } = await supabase.rpc('panel_get_device', { p_secret: session.secretKey });
+          const { data: devData, error: devErr } = await supabase.rpc('panel_get_device', { p_secret: session.secretKey });
+          if (devErr) {
+            // IP momentanément bloquée (trop d'échecs de clé) : on se tait 10 min
+            // au lieu d'insister. Autre erreur (réseau) : on réessaie au prochain tour.
+            if (/tentatives/i.test(devErr.message)) pausedUntil = Date.now() + 10 * 60 * 1000;
+            return;
+          }
           const d: Record<string, unknown> | undefined = Array.isArray(devData) ? devData[0] : devData;
-          if (d && isMounted) {
+          if (!d) {
+            // Clé refusée : elle a changé (régénérée depuis le téléphone ou ce panneau).
+            // On arrête TOUT DE SUITE : chaque nouvel essai compterait comme un échec
+            // de clé et finirait par bloquer l'IP — y compris le téléphone s'il est
+            // sur le même Wi-Fi.
+            stopped = true;
+            if (pollTimer) clearInterval(pollTimer);
+            if (isMounted) {
+              setSession(null);
+              setAccessMsg('La clé de ce téléphone a changé. Reconnectez-vous avec la nouvelle clé (app HearMe → Réglages).');
+            }
+            return;
+          }
+          if (isMounted) {
             const netMap: Record<string, string> = { wifi: 'wifi', mobile: '4g', offline: 'offline' };
             setDevice(prev => ({
               ...prev,
@@ -130,8 +153,8 @@ export default function App() {
     };
 
     fetchRealDeviceData();
-    const pollTimer = setInterval(fetchRealDeviceData, 8000);
-    return () => { isMounted = false; clearInterval(pollTimer); };
+    pollTimer = setInterval(fetchRealDeviceData, 8000);
+    return () => { isMounted = false; stopped = true; clearInterval(pollTimer); };
   }, [session, device.id]);
 
   // Envoi de commande
@@ -229,6 +252,7 @@ export default function App() {
     userEmail?: string,
     isCrisis = false
   ) => {
+    setAccessMsg(null);
     const newSession: AuthSession = {
       mode,
       userEmail,
@@ -377,7 +401,7 @@ export default function App() {
               {/* Clé secrète */}
               <div className="col-span-1 md:col-span-2 lg:col-span-12 flex flex-col">
                 <SecretKeyCard
-                  secretKey={device.secret_key || 'Hm9x-8812-Kq7v'}
+                  secretKey={device.secret_key || 'HMDEMO7K2QXP'}
                   onRegenerateKey={handleRegenerateKey}
                   theme={theme}
                 />

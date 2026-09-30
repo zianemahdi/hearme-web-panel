@@ -1,6 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { DEFAULT_SUPABASE_CONFIG } from './mockData';
-import { Device, LocationPoint, SecurityPhoto, DeviceCommand } from '../types';
 
 let cachedClient: SupabaseClient | null = null;
 let currentConfig = { ...DEFAULT_SUPABASE_CONFIG };
