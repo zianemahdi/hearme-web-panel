@@ -37,7 +37,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
         <div className="max-h-[65vh] overflow-y-auto pr-2 space-y-5 text-xs sm:text-sm leading-relaxed">
           <div className="p-4 rounded-2xl bg-purple-950/25 border border-purple-500/30 text-purple-200">
             <strong className="text-white block mb-1">En bref & Engagement de transparence :</strong>
-            HearMe traite vos données en priorité <strong>localement sur votre mobile</strong>. Le micro et les capteurs ne quittent jamais votre téléphone sans votre autorisation expresse. Le panneau web d'urgence est un outil sécurisé — chiffré en transit (TLS) et cloisonné par compte — pour vous aider à retrouver votre mobile volé ou égaré.
+            Aucune publicité, aucune revente de données. Votre position n'est envoyée qu'en mode volé, perdu ou recherche. Le panneau web d'urgence est chiffré en transit (TLS) et cloisonné par compte ; il sert uniquement à retrouver votre propre téléphone.
           </div>
 
           <section className="space-y-2">
@@ -45,9 +45,9 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
               <span className="text-purple-400">1.</span> Données traitées par l'application HearMe
             </h3>
             <ul className="list-disc pl-5 space-y-1.5 text-slate-400">
-              <li><strong>Microphone (Mot-clé vocal) :</strong> La détection du mot-clé se fait à 100% sur l'appareil. Aucun flux audio continu n'est conservé ni transmis sur le cloud.</li>
-              <li><strong>Géolocalisation GPS :</strong> Utilisée exclusivement pour le module antivol et le traçage sur carte en direct.</li>
-              <li><strong>Caméra frontale (Sécurité) :</strong> En cas de mauvais code PIN répété ou de commande distante, un cliché d'urgence est capturé pour identifier le ravisseur.</li>
+              <li><strong>Microphone (mot-clé vocal) :</strong> l'écoute passe par la reconnaissance vocale d'Android, qui peut traiter l'audio sur les serveurs de son fournisseur (en général Google). HearMe n'enregistre ni n'envoie l'audio.</li>
+              <li><strong>Géolocalisation GPS :</strong> envoyée uniquement en mode volé, perdu ou recherche, ou sur votre commande « Localiser ».</li>
+              <li><strong>Caméra frontale (sécurité) :</strong> après un déverrouillage raté ou sur votre commande en mode alerte, une photo est envoyée sur votre Telegram, sans être conservée sur nos serveurs.</li>
               <li><strong>Signalement communautaire anonyme :</strong> Carte préventive des zones à risque sans conservation d'IP ni d'identifiant personnel.</li>
             </ul>
           </section>
@@ -66,7 +66,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
               <span className="text-purple-400">3.</span> Vos droits (Suppression & RGPD)
             </h3>
             <p className="text-slate-400">
-              Vous pouvez à tout moment purger l'intégralité de votre historique de positions, vos clichés de sécurité et supprimer votre compte ou révoquer votre clé secrète.
+              Vous pouvez supprimer votre compte et toutes vos données depuis l'app (Réglages → Compte → Supprimer mon compte) ou par e-mail. Détails dans la <a href="privacy.html" className="text-purple-300 underline">politique de confidentialité complète</a>.
             </p>
           </section>
         </div>

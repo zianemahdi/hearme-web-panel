@@ -1,145 +1,312 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HearMe — Politique de confidentialité</title>
-  <meta name="description" content="Politique de confidentialité de l'application HearMe et de son panneau web d'urgence." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = { theme: { extend: {
-      colors: { brand: { violet: "#7c5cff", magenta: "#c24df0" } },
-      fontFamily: { sans: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"] },
-    } } };
-  </script>
-  <link rel="stylesheet" href="assets/css/app.css" />
+  <meta name="description" content="Politique de confidentialité de l'application HearMe et de son panneau web d'urgence. Privacy policy of the HearMe app." />
+  <!-- Aucune ressource externe (polices, scripts) : une page de confidentialité ne
+       transmet pas l'adresse IP de ses visiteurs à des tiers. -->
+  <style>
+    :root {
+      --bg: #f5f3fa; --surface: #ffffff; --ink: #161228; --ink-2: #5b5670;
+      --rule: #dad5ec; --accent: #5140b8; --note: #ecebfb;
+      color-scheme: light dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d0b17; --surface: #15121f; --ink: #e9e4ff; --ink-2: #a7a1bf;
+        --rule: #2c2740; --accent: #b3a4ff; --note: #1c1830;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Arabic", sans-serif;
+    }
+    main { max-width: 780px; margin: 0 auto; padding: 24px 16px 64px; }
+    header.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    a { color: var(--accent); }
+    .back { font-weight: 600; text-decoration: none; }
+    .langs a { margin-left: 12px; font-weight: 600; }
+    h1 { font-size: 30px; line-height: 1.2; margin: 28px 0 4px; letter-spacing: -0.02em; }
+    h2 { font-size: 20px; margin: 36px 0 8px; padding-top: 16px; border-top: 1px solid var(--rule); }
+    h3 { font-size: 16px; margin: 20px 0 4px; }
+    .meta { color: var(--ink-2); margin: 0 0 20px; }
+    .summary { background: var(--note); border: 1px solid var(--rule); padding: 14px 18px; }
+    .summary ul { margin: 6px 0 0; padding-left: 20px; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--rule); background: var(--surface); }
+    table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+    th, td { text-align: start; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--rule); }
+    th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-2); }
+    tr:last-child td { border-bottom: 0; }
+    td:first-child { font-weight: 600; min-width: 140px; }
+    ul { padding-left: 20px; }
+    article + article { margin-top: 72px; padding-top: 8px; border-top: 3px solid var(--rule); }
+    footer { margin-top: 56px; color: var(--ink-2); font-size: 14px; }
+    /* Téléphone : le tableau des données devient une fiche par ligne. */
+    @media (max-width: 640px) {
+      .stack table, .stack tbody, .stack tr, .stack td { display: block; width: 100%; }
+      .stack thead { display: none; }
+      .stack tr { padding: 12px 14px; border-bottom: 1px solid var(--rule); }
+      .stack tr:last-child { border-bottom: 0; }
+      .stack td { border: 0; padding: 3px 0; }
+      .stack td:first-child { font-size: 15.5px; margin-bottom: 4px; min-width: 0; }
+      .stack td:nth-child(n+2)::before { font-weight: 600; color: var(--ink-2); }
+      [lang=fr] .stack td:nth-child(2)::before { content: "Quand : "; }
+      [lang=fr] .stack td:nth-child(3)::before { content: "Pourquoi : "; }
+      [lang=fr] .stack td:nth-child(4)::before { content: "Conservation : "; }
+      [lang=en] .stack td:nth-child(2)::before { content: "When: "; }
+      [lang=en] .stack td:nth-child(3)::before { content: "Why: "; }
+      [lang=en] .stack td:nth-child(4)::before { content: "Retention: "; }
+    }
+  </style>
 </head>
-<body class="hm-mesh min-h-screen text-slate-200">
-  <div class="max-w-3xl mx-auto px-5 py-10">
-    <a href="index.html" class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-slate-200 mb-8">← Retour</a>
+<body>
+<main>
+  <header class="top">
+    <a class="back" href="./">← HearMe</a>
+    <nav class="langs" aria-label="Langue / Language">
+      <a href="#fr" hreflang="fr">Français</a>
+      <a href="#en" hreflang="en">English</a>
+    </nav>
+  </header>
 
-    <div class="flex items-center gap-3 mb-2">
-      <svg viewBox="0 0 48 48" class="w-9 h-9" aria-hidden="true">
-        <defs><linearGradient id="gp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#c24df0"/></linearGradient></defs>
-        <path d="M24 3l16 6v10.5C40 30 33 37.6 24 42 15 37.6 8 30 8 19.5V9l16-6z" fill="url(#gp)"/>
-        <g fill="#fff"><rect x="14.5" y="20" width="3" height="8" rx="1.5"/><rect x="18.5" y="17" width="3" height="14" rx="1.5"/><rect x="22.5" y="14" width="3" height="20" rx="1.5"/><rect x="26.5" y="17" width="3" height="14" rx="1.5"/><rect x="30.5" y="20" width="3" height="8" rx="1.5"/></g>
-      </svg>
-      <h1 class="text-3xl font-bold"><span class="hm-gradient-text">HearMe</span> — Politique de confidentialité</h1>
+  <!-- ============================== FRANÇAIS ============================== -->
+  <article id="fr" lang="fr">
+    <h1>Politique de confidentialité de HearMe</h1>
+    <p class="meta">Dernière mise à jour : 1er octobre 2026</p>
+
+    <p>HearMe est une application Android de sécurité personnelle (identifiant <code>com.zianemahdi.hearme</code>) accompagnée d'un panneau web d'urgence. Elle sert à retrouver et à protéger <strong>ton propre téléphone</strong>. Elle est éditée par [Prénom Nom], responsable du traitement des données. Contact : [E-MAIL DE CONTACT].</p>
+
+    <div class="summary">
+      <strong>L'essentiel</strong>
+      <ul>
+        <li>Aucune publicité, aucune revente de données, aucun profilage.</li>
+        <li>Ta position n'est envoyée au serveur que lorsque ton téléphone est en mode volé, perdu ou recherche, ou quand tu demandes à le localiser.</li>
+        <li>L'écoute du mot-clé passe par la reconnaissance vocale d'Android ; HearMe n'enregistre ni ne conserve l'audio.</li>
+        <li>Tes données sont hébergées dans l'Union européenne (Paris) et transmises chiffrées.</li>
+        <li>Tu peux supprimer ton compte et toutes tes données à tout moment (<a href="#suppression">voir comment</a>).</li>
+      </ul>
     </div>
-    <p class="text-sm text-slate-500 mb-8">Dernière mise à jour : 13 août 2026</p>
 
-    <div class="space-y-6 leading-relaxed text-[15px] text-slate-300
-                [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white [&_h2]:mt-8 [&_h2]:mb-2
-                [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-slate-100 [&_h3]:mt-4
-                [&_a]:text-brand-magenta [&_a:hover]:underline
-                [&_strong]:text-slate-100
-                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1 [&_ul]:mt-2">
-
-      <p>HearMe est une application de sécurité personnelle (anti-vol / localisation de votre propre téléphone). Cette politique explique quelles données sont utilisées, par l'<strong>application Android</strong> et par le <strong>panneau web d'urgence</strong> optionnel.</p>
-
-      <div class="hm-glass rounded-xl p-4 text-sm">
-        <strong class="text-white">En bref.</strong> Le traitement se fait d'abord <strong>sur l'appareil</strong>. Le micro et les photos ne quittent pas le téléphone, sauf les alertes que <em>vous</em> configurez. Le panneau web et la synchronisation cloud sont <strong>optionnels</strong> : ils ne s'activent que si vous créez un compte ou utilisez une clé secrète pour piloter votre téléphone à distance.
-      </div>
-
-      <h2>1. Données utilisées par l'application</h2>
-
-      <h3>Micro (mot-clé vocal)</h3>
-      <p>La reconnaissance du mot-clé se fait <strong>sur l'appareil</strong>. Aucun audio n'est enregistré ni transmis.</p>
-
-      <h3>Localisation</h3>
-      <p>Utilisée pour l'anti-vol (joindre la position à vos alertes) et pour afficher la carte. La localisation en arrière-plan n'est utilisée que si vous activez la carte communautaire.</p>
-
-      <h3>Caméra</h3>
-      <p>En cas de vol ou d'échec de déverrouillage (anti-vol armé), une photo de la caméra frontale peut être envoyée à votre canal Telegram et, si vous utilisez le panneau web, à votre espace de stockage privé (voir §2).</p>
-
-      <h3>Signalement communautaire (optionnel, désactivé par défaut)</h3>
-      <p>Si vous l'activez, un vol confirmé peut alimenter la carte des zones à risque via un signalement <strong>anonyme</strong> : coordonnées bruitées (±150 m), horodatage arrondi, <strong>aucun identifiant ni adresse IP</strong> conservés.</p>
-
-      <h2>2. Panneau web & synchronisation cloud (optionnel)</h2>
-      <p>Le panneau web vous permet de localiser et sécuriser votre téléphone depuis un navigateur. Il repose sur <strong>Supabase</strong> (hébergement des données). Cette synchronisation ne s'active que si <strong>vous</strong> l'utilisez (compte ou clé secrète). Sont alors stockées, pour <em>votre</em> appareil :</p>
-      <ul>
-        <li><strong>Positions GPS</strong> (dernière position et historique récent) ;</li>
-        <li><strong>État de l'appareil</strong> : niveau de batterie, type de réseau, statut de verrouillage, dernière activité ;</li>
-        <li><strong>Photos de sécurité</strong> (caméra frontale) dans un espace de stockage <strong>privé</strong> ;</li>
-        <li><strong>Commandes à distance</strong> que vous déclenchez (verrouiller, alarme, localiser…) ;</li>
-        <li>Si vous créez un compte : votre <strong>adresse e-mail</strong> (authentification) ;</li>
-        <li>La <strong>clé secrète</strong> de l'appareil, qui sert d'identifiant/mot de passe de commande.</li>
-      </ul>
-      <p>Ces données ne sont accessibles qu'à <strong>vous</strong> : soit via votre compte (isolation par « Row Level Security »), soit via la clé secrète de l'appareil. Elles ne sont ni vendues, ni partagées, ni utilisées à des fins publicitaires. Communications en <strong>HTTPS/TLS</strong>.</p>
-
-      <h2>2 bis. Suivi anti-vol en temps réel &amp; votre autorisation</h2>
-      <div class="hm-glass rounded-xl p-4 text-sm">
-        <strong class="text-white">Pour votre protection — jamais contre vous.</strong> Ces fonctions servent uniquement à <em>vous</em> aider à retrouver votre téléphone. Vos données ne sont ni vendues, ni partagées à des fins publicitaires, ni consultées par l'éditeur.
-      </div>
-      <p>Lorsque vous activez l'anti-vol, l'application vous demande votre <strong>autorisation explicite</strong> avant d'accéder aux fonctions sensibles. En cas de vol détecté (ou sur votre commande à distance depuis le panneau web), et <strong>avec votre accord préalable</strong>, HearMe peut :</p>
-      <ul>
-        <li>relever votre <strong>position en temps réel</strong> et l'envoyer, dès qu'une connexion est disponible, vers votre espace privé et votre panneau web — afin de conserver la <strong>trace du trajet</strong> de l'appareil ;</li>
-        <li>mémoriser les positions <strong>hors-ligne</strong> et les transmettre automatiquement au retour du réseau (aucune perte de trace) ;</li>
-        <li>prendre une <strong>photo</strong> de la caméra frontale ;</li>
-        <li><strong>verrouiller</strong> l'appareil et déclencher une <strong>alarme</strong> sonore.</li>
-      </ul>
-      <p>Vous <strong>donnez cette autorisation vous-même</strong> — à l'installation, puis à l'activation de l'anti-vol — et vous pouvez la <strong>retirer à tout moment</strong> dans les réglages Android. Sans votre accord, ces fonctions restent désactivées.</p>
-      <p class="text-sm text-slate-400"><strong>Limite technique, en toute transparence :</strong> l'application ne peut pas rallumer d'elle-même les données mobiles ou le GPS s'ils ont été désactivés — Android l'interdit aux applications, par sécurité. Le suivi reprend automatiquement dès que l'appareil retrouve la localisation et une connexion.</p>
-
-      <h2>3. Partage</h2>
-      <p>Nous ne vendons ni ne partageons vos données avec des tiers à des fins publicitaires. Les seules sorties de données sont celles que vous déclenchez et dirigez vous-même (alertes vers votre Telegram, votre propre panneau web) et le signalement anonyme si vous y avez consenti. Le sous-traitant technique d'hébergement est <strong>Supabase</strong> (base de données et stockage).</p>
-
-      <h2>4. Conservation et suppression</h2>
-      <ul>
-        <li>Les réglages et secrets locaux (code, token) restent <strong>chiffrés sur l'appareil</strong> et sont supprimés à la désinstallation.</li>
-        <li>Les données du panneau web (positions, photos, état) sont conservées dans votre espace jusqu'à leur suppression. Vous pouvez demander leur effacement (voir Contact) ; supprimer un appareil supprime en cascade ses positions, photos et commandes.</li>
-        <li>Les signalements communautaires anonymes ne contiennent aucun identifiant et décroissent avec le temps.</li>
-      </ul>
-
-      <h2>5. Permissions sensibles (détail)</h2>
-      <div class="overflow-x-auto">
-      <table class="w-full text-sm border-collapse [&_th]:text-left [&_th]:py-2 [&_th]:px-3 [&_td]:py-2 [&_td]:px-3 [&_td]:border-t [&_td]:border-white/10 [&_th]:border-b [&_th]:border-white/20">
-        <thead class="text-slate-400">
-          <tr><th>Permission</th><th>Pourquoi</th><th>Sortie des données</th></tr>
-        </thead>
-        <tbody class="text-slate-300">
-          <tr><td><strong>Microphone</strong></td><td>Détecter le mot-clé vocal</td><td>Aucune — traité sur l'appareil</td></tr>
-          <tr><td><strong>Localisation</strong></td><td>Joindre la position aux alertes ; carte</td><td>Votre Telegram / votre panneau web</td></tr>
-          <tr><td><strong>Localisation arrière-plan</strong></td><td>Alerte à l'entrée d'une zone à risque</td><td>Aucune en continu (opt-in)</td></tr>
-          <tr><td><strong>Caméra</strong></td><td>Photo en cas de vol / échec de déverrouillage</td><td>Votre Telegram / stockage privé</td></tr>
+    <h2>1. Données envoyées à nos serveurs</h2>
+    <div class="table-wrap stack">
+      <table>
+        <thead><tr><th>Donnée</th><th>Quand</th><th>Pourquoi</th><th>Conservation</th></tr></thead>
+        <tbody>
+          <tr><td>Compte : adresse e-mail, prénom, mot de passe, identifiant de compte</td><td>À l'inscription. Avec « Continuer avec Google », l'e-mail et le nom sont fournis par Google.</td><td>Te connecter, relier ton téléphone à ton compte, récupérer ton accès</td><td>Jusqu'à la suppression du compte. Le mot de passe n'est jamais stocké en clair.</td></tr>
+          <tr><td>Téléphone : clé secrète créée par l'app, nom du téléphone (modèle ou surnom), batterie, type de réseau, verrouillage, dernière activité</td><td>Quand la protection est active</td><td>Afficher l'état du téléphone dans le panneau et exécuter tes commandes à distance</td><td>Jusqu'à la suppression du compte</td></tr>
+          <tr><td>Position précise (GPS)</td><td>Uniquement en mode volé, perdu ou recherche, ou sur ta commande « Localiser »</td><td>Retrouver ton téléphone</td><td>Jusqu'à la suppression du téléphone ou du compte</td></tr>
+          <tr><td>Photos de sécurité (caméra frontale)</td><td>Après un déverrouillage raté quand la protection est armée, ou sur ta demande en mode alerte</td><td>Identifier la personne qui a ton téléphone</td><td>Transmises à ton Telegram et à celui de tes proches, sans être conservées sur nos serveurs</td></tr>
+          <tr><td>Telegram : identifiant et prénom Telegram de ton compte et de tes proches (2 au maximum), alertes envoyées (texte, photo, position), commandes reçues</td><td>Quand tu relies Telegram ou invites un proche</td><td>Te prévenir, prévenir tes proches et te laisser piloter ton téléphone</td><td>Liaisons : jusqu'à leur retrait. Commandes : effacées dès leur exécution.</td></tr>
+          <tr><td>PIN de secours</td><td>Si tu le définis</td><td>Te reconnecter au panneau web en cas d'urgence</td><td>Stocké sous forme hachée (illisible), jusqu'à la suppression du compte</td></tr>
+          <tr><td>Commandes à distance (sonner, localiser, verrouiller, photo)</td><td>Quand tu les envoies depuis le panneau ou Telegram</td><td>Les exécuter et en garder la trace</td><td>Jusqu'à la suppression du compte</td></tr>
+          <tr><td>Adresse IP</td><td>À chaque échange avec le serveur</td><td>Bloquer les tentatives répétées de deviner une clé ou un PIN</td><td>Compteurs effacés après quelques minutes à 24 heures</td></tr>
+          <tr><td>Carte communautaire (facultative, désactivée par défaut)</td><td>Si tu l'actives</td><td>Signaler un vol de façon anonyme et t'alerter des zones à risque</td><td>Signalement sans identifiant : position décalée d'environ 150 m, heure arrondie. La zone approximative envoyée pour télécharger les zones n'est pas enregistrée.</td></tr>
         </tbody>
       </table>
-      </div>
-      <p class="text-sm text-slate-400">Chaque permission est demandée au moment de l'usage, révocable dans les réglages Android ; l'app reste fonctionnelle (mode dégradé) si elle est refusée.</p>
-
-      <h2>6. Sécurité</h2>
-      <ul>
-        <li>Secrets locaux chiffrés via <strong>EncryptedSharedPreferences</strong> (clé dans le KeyStore Android).</li>
-        <li>Côté cloud : <strong>Row Level Security</strong> (chaque compte ne voit que ses appareils), stockage des photos <strong>privé</strong> (URLs signées, temporaires), accès par clé secrète via des fonctions serveur restreintes.</li>
-        <li>Toutes les communications réseau en <strong>HTTPS/TLS</strong>.</li>
-      </ul>
-
-      <h2>7. Conformité réglementaire</h2>
-      <h3>RGPD / GDPR (Union européenne)</h3>
-      <p><strong>Base légale</strong> : consentement (usage du panneau web, carte communautaire) et intérêt légitime (sécurité de l'utilisateur). <strong>Minimisation</strong> : seules les données nécessaires à la localisation/sécurisation de votre appareil sont traitées. <strong>Droits</strong> d'accès, rectification et effacement assurés (données locales supprimées à la désinstallation ; données cloud effaçables sur demande).</p>
-      <h3>CCPA / CPRA (Californie)</h3>
-      <p>Pas de « vente » ni de « partage » de données personnelles. Droits « Know / Delete / Opt-out » respectés ; le panneau web est désactivable à tout moment.</p>
-      <h3>LGPD (Brésil)</h3>
-      <p>Finalité et nécessité limitées à la sécurité ; consentement libre et éclairé ; anonymisation des signalements communautaires.</p>
-
-      <div class="hm-glass rounded-xl p-4 text-sm text-amber-200/90 border border-amber-500/20">
-        ⚠️ Ce document est un <strong>modèle</strong>. Faites-le relire par un juriste avant publication et renseignez le responsable de traitement / contact ci-dessous.
-      </div>
-
-      <h2>8. Vos choix</h2>
-      <ul>
-        <li>Le panneau web et la synchronisation cloud sont <strong>optionnels</strong> et cessent si vous ne les utilisez pas.</li>
-        <li>La contribution à la carte communautaire est <strong>opt-in</strong>, désactivable à tout moment.</li>
-        <li>Les permissions (micro, localisation, caméra) sont révocables dans les réglages Android.</li>
-      </ul>
-
-      <h2>9. Contact</h2>
-      <p>Pour toute question ou demande d'effacement : <a href="mailto:zianemahdi28@gmail.com">zianemahdi28@gmail.com</a>.</p>
     </div>
 
-    <p class="mt-10 text-center text-xs text-slate-600">© 2026 HearMe</p>
-  </div>
+    <h2>2. Données qui restent sur ton téléphone</h2>
+    <ul>
+      <li>Tes échantillons de voix : chiffrés, jamais envoyés, exclus des sauvegardes.</li>
+      <li>Ton mot-clé, tes réglages et l'historique de sécurité des actions à distance.</li>
+      <li>La clé secrète et ta session, chiffrées par le coffre-fort d'Android.</li>
+    </ul>
+    <p>Elles sont effacées quand tu désinstalles l'application.</p>
+
+    <h2>3. Le micro et l'écoute du mot-clé</h2>
+    <p>Quand tu actives l'écoute, HearMe utilise le service de reconnaissance vocale d'Android installé sur ton téléphone (en général celui de Google). Ce service peut traiter l'audio sur les serveurs de son fournisseur, selon sa propre politique de confidentialité. HearMe reçoit seulement le texte reconnu, pour y chercher ton mot-clé : il n'enregistre ni n'envoie l'audio. Une notification permanente indique que l'écoute est active, et tu peux l'arrêter à tout moment.</p>
+
+    <h2>4. Ce que nous ne faisons jamais</h2>
+    <ul>
+      <li>Vendre, louer ou échanger tes données.</li>
+      <li>Afficher de la publicité ou te profiler.</li>
+      <li>Lire tes contacts, tes SMS ou tes fichiers.</li>
+      <li>Surveiller un autre téléphone que le tien : HearMe reste visible, avec une notification quand la protection est active.</li>
+    </ul>
+
+    <h2>5. Prestataires</h2>
+    <p>Ces services traitent des données pour faire fonctionner HearMe. Telegram et Google peuvent les traiter hors de l'Union européenne, selon leurs propres règles.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Prestataire</th><th>Rôle</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://supabase.com/privacy">Supabase</a></td><td>Base de données, comptes et relais des alertes (serveurs à Paris)</td></tr>
+          <tr><td><a href="https://telegram.org/privacy">Telegram</a></td><td>Envoi des alertes à toi et à tes proches</td></tr>
+          <tr><td><a href="https://policies.google.com/privacy">Google</a></td><td>Reconnaissance vocale d'Android, services de localisation, connexion Google si tu la choisis</td></tr>
+          <tr><td><a href="https://www.hcaptcha.com/privacy">hCaptcha</a></td><td>Vérification anti-robots à l'inscription et à la connexion</td></tr>
+          <tr><td><a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub Pages</a></td><td>Hébergement du panneau web et de cette page</td></tr>
+          <tr><td><a href="https://openfreemap.org/">OpenFreeMap</a></td><td>Fonds de carte : les images de la zone affichée sont téléchargées depuis ce service</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>6. Sécurité</h2>
+    <ul>
+      <li>Toutes les communications sont chiffrées (HTTPS).</li>
+      <li>Chaque compte ne voit que ses propres téléphones.</li>
+      <li>Les clés secrètes sont longues, et les essais répétés sont bloqués.</li>
+      <li>Mots de passe et PIN sont stockés hachés ; les données du téléphone sont chiffrées et exclues des sauvegardes.</li>
+      <li>Chaque action à distance est notée dans un historique visible dans l'app. Si des entrées sont effacées, leur nombre reste affiché.</li>
+    </ul>
+
+    <h2 id="suppression">7. Supprimer ton compte et tes données</h2>
+    <ul>
+      <li><strong>Dans l'app</strong> : Réglages → Compte → Supprimer mon compte.</li>
+      <li><strong>Par e-mail</strong> : écris à [E-MAIL DE CONTACT] depuis l'adresse de ton compte, avec pour objet « Suppression de compte HearMe ». Nous traitons la demande sous 30 jours.</li>
+    </ul>
+    <p>Sont supprimés : ton compte, tes téléphones, leurs positions, photos et commandes, tes liaisons Telegram et ton PIN de secours. Les copies de sauvegarde de notre hébergeur disparaissent ensuite automatiquement, au plus tard sous 30 jours. Seuls restent les signalements anonymes de la carte communautaire, qui ne sont liés à personne.</p>
+
+    <h2>8. Tes droits</h2>
+    <p>Tu peux demander l'accès à tes données, leur correction, leur effacement, leur portabilité, ou t'opposer à leur traitement, en écrivant à [E-MAIL DE CONTACT]. Nous répondons sous un mois. Tu peux aussi retirer ton consentement à tout moment : désactiver la carte communautaire ou l'écoute, ou retirer une autorisation dans les réglages Android. En cas de désaccord, tu peux saisir l'autorité de protection des données de ton pays (par exemple la CNIL en France).</p>
+    <p>Bases légales : l'exécution du service que tu demandes (compte, protection, alertes) ; ton consentement (carte communautaire, écoute du mot-clé) ; l'intérêt légitime de sécuriser le service (blocage des abus).</p>
+
+    <h2>9. Autorisations Android</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Autorisation</th><th>Utilisation</th></tr></thead>
+        <tbody>
+          <tr><td>Micro</td><td>Détecter ton mot-clé quand l'écoute est active</td></tr>
+          <tr><td>Position</td><td>Retrouver ton téléphone en mode alerte, afficher la carte</td></tr>
+          <tr><td>Position en arrière-plan</td><td>Seulement si tu actives la carte communautaire : t'alerter en entrant dans une zone à risque</td></tr>
+          <tr><td>Caméra</td><td>Photo de sécurité après un déverrouillage raté ou sur ta demande en mode alerte</td></tr>
+          <tr><td>Notifications</td><td>Indiquer que l'écoute ou la protection est active, et t'alerter</td></tr>
+          <tr><td>Administrateur de l'appareil</td><td>Détecter les déverrouillages ratés et verrouiller l'écran à distance ; désactivable dans les réglages Android</td></tr>
+          <tr><td>Démarrage du téléphone</td><td>Relancer la protection après un redémarrage</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>10. Enfants</h2>
+    <p>HearMe n'est pas destinée aux enfants de moins de 16 ans, et nous ne collectons pas sciemment leurs données.</p>
+
+    <h2>11. Modifications</h2>
+    <p>La date en haut de page indique la dernière mise à jour. Tout changement important sera annoncé dans l'application.</p>
+
+    <h2>12. Contact</h2>
+    <p>[Prénom Nom] — [E-MAIL DE CONTACT]</p>
+  </article>
+
+  <!-- ============================== ENGLISH ============================== -->
+  <article id="en" lang="en">
+    <h1>HearMe Privacy Policy</h1>
+    <p class="meta">Last updated: October 1, 2026</p>
+
+    <p>HearMe is a personal-safety Android app (package <code>com.zianemahdi.hearme</code>) with an emergency web panel. It helps you find and protect <strong>your own phone</strong>. It is published by [First Last name], the data controller. Contact: [CONTACT EMAIL].</p>
+
+    <div class="summary">
+      <strong>The essentials</strong>
+      <ul>
+        <li>No ads, no selling of data, no profiling.</li>
+        <li>Your location is sent to our server only when your phone is in stolen, lost or search mode, or when you ask to locate it.</li>
+        <li>Keyword listening uses Android's speech recognition; HearMe does not record or keep the audio.</li>
+        <li>Your data is hosted in the European Union (Paris) and encrypted in transit.</li>
+        <li>You can delete your account and all your data at any time (<a href="#deletion">see how</a>).</li>
+      </ul>
+    </div>
+
+    <h2>1. Data sent to our servers</h2>
+    <div class="table-wrap stack">
+      <table>
+        <thead><tr><th>Data</th><th>When</th><th>Why</th><th>Retention</th></tr></thead>
+        <tbody>
+          <tr><td>Account: email address, first name, password, account ID</td><td>At sign-up. With “Continue with Google”, the email and name come from Google.</td><td>Sign you in, link your phone to your account, recover access</td><td>Until the account is deleted. The password is never stored in plain text.</td></tr>
+          <tr><td>Phone: secret key created by the app, phone name (model or nickname), battery, network type, lock state, last activity</td><td>While protection is on</td><td>Show the phone's status in the panel and run your remote commands</td><td>Until the account is deleted</td></tr>
+          <tr><td>Precise location (GPS)</td><td>Only in stolen, lost or search mode, or when you send “Locate”</td><td>Find your phone</td><td>Until the phone or the account is deleted</td></tr>
+          <tr><td>Security photos (front camera)</td><td>After a failed unlock while protection is armed, or on your request in alert mode</td><td>Identify the person holding your phone</td><td>Forwarded to your and your relatives' Telegram, not kept on our servers</td></tr>
+          <tr><td>Telegram: Telegram ID and first name of your account and your relatives (2 at most), alerts sent (text, photo, location), commands received</td><td>When you link Telegram or invite a relative</td><td>Alert you and your relatives, and let you control your phone</td><td>Links: until removed. Commands: erased once executed.</td></tr>
+          <tr><td>Backup PIN</td><td>If you set one</td><td>Sign you back in to the web panel in an emergency</td><td>Stored hashed (unreadable), until the account is deleted</td></tr>
+          <tr><td>Remote commands (ring, locate, lock, photo)</td><td>When you send them from the panel or Telegram</td><td>Run them and keep a record</td><td>Until the account is deleted</td></tr>
+          <tr><td>IP address</td><td>On every request to the server</td><td>Block repeated attempts to guess a key or a PIN</td><td>Counters erased after a few minutes up to 24 hours</td></tr>
+          <tr><td>Community map (optional, off by default)</td><td>If you turn it on</td><td>Report a theft anonymously and alert you about risk areas</td><td>Report without any identifier: location shifted by about 150 m, time rounded. The approximate area sent to download zones is not stored.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>2. Data that stays on your phone</h2>
+    <ul>
+      <li>Your voice samples: encrypted, never sent, excluded from backups.</li>
+      <li>Your keyword, your settings and the security history of remote actions.</li>
+      <li>The secret key and your session, encrypted by Android's keystore.</li>
+    </ul>
+    <p>They are erased when you uninstall the app.</p>
+
+    <h2>3. Microphone and keyword listening</h2>
+    <p>When you turn listening on, HearMe uses the Android speech recognition service installed on your phone (usually Google's). That service may process audio on its provider's servers, under its own privacy policy. HearMe only receives the recognized text to look for your keyword: it does not record or upload audio. A persistent notification shows that listening is on, and you can stop it at any time.</p>
+
+    <h2>4. What we never do</h2>
+    <ul>
+      <li>Sell, rent or trade your data.</li>
+      <li>Show ads or profile you.</li>
+      <li>Read your contacts, text messages or files.</li>
+      <li>Monitor any phone but your own: HearMe stays visible, with a notification while protection is on.</li>
+    </ul>
+
+    <h2>5. Service providers</h2>
+    <p>These services process data to run HearMe. Telegram and Google may process it outside the European Union, under their own rules.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Provider</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://supabase.com/privacy">Supabase</a></td><td>Database, accounts and alert relay (servers in Paris)</td></tr>
+          <tr><td><a href="https://telegram.org/privacy">Telegram</a></td><td>Delivering alerts to you and your relatives</td></tr>
+          <tr><td><a href="https://policies.google.com/privacy">Google</a></td><td>Android speech recognition, location services, Google sign-in if you choose it</td></tr>
+          <tr><td><a href="https://www.hcaptcha.com/privacy">hCaptcha</a></td><td>Bot check at sign-up and sign-in</td></tr>
+          <tr><td><a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub Pages</a></td><td>Hosting the web panel and this page</td></tr>
+          <tr><td><a href="https://openfreemap.org/">OpenFreeMap</a></td><td>Map tiles: images of the displayed area are downloaded from this service</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>6. Security</h2>
+    <ul>
+      <li>All communication is encrypted (HTTPS).</li>
+      <li>Each account sees only its own phones.</li>
+      <li>Secret keys are long, and repeated attempts are blocked.</li>
+      <li>Passwords and PINs are stored hashed; data on the phone is encrypted and excluded from backups.</li>
+      <li>Every remote action is recorded in a history visible in the app. If entries are deleted, their number stays visible.</li>
+    </ul>
+
+    <h2 id="deletion">7. Delete your account and data</h2>
+    <ul>
+      <li><strong>In the app</strong>: Settings → Account → Delete my account.</li>
+      <li><strong>By email</strong>: write to [CONTACT EMAIL] from your account's address, with the subject “HearMe account deletion”. We handle requests within 30 days.</li>
+    </ul>
+    <p>Deleted: your account, your phones, their locations, photos and commands, your Telegram links and your backup PIN. Our host's backup copies then expire automatically within 30 days. Only anonymous community-map reports remain, and they are not linked to anyone.</p>
+
+    <h2>8. Your rights</h2>
+    <p>You can ask to access, correct, delete or port your data, or object to its processing, by writing to [CONTACT EMAIL]. We reply within one month. You can also withdraw consent at any time: turn off the community map or listening, or revoke a permission in Android settings. If you disagree with our answer, you can contact your country's data-protection authority.</p>
+    <p>Legal bases: providing the service you ask for (account, protection, alerts); your consent (community map, keyword listening); our legitimate interest in keeping the service secure (abuse blocking).</p>
+
+    <h2>9. Android permissions</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Permission</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>Microphone</td><td>Detect your keyword while listening is on</td></tr>
+          <tr><td>Location</td><td>Find your phone in alert mode, show the map</td></tr>
+          <tr><td>Background location</td><td>Only if you turn on the community map: alert you on entering a risk area</td></tr>
+          <tr><td>Camera</td><td>Security photo after a failed unlock or on your request in alert mode</td></tr>
+          <tr><td>Notifications</td><td>Show that listening or protection is on, and alert you</td></tr>
+          <tr><td>Device admin</td><td>Detect failed unlocks and lock the screen remotely; can be turned off in Android settings</td></tr>
+          <tr><td>Run at startup</td><td>Restart protection after the phone reboots</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>10. Children</h2>
+    <p>HearMe is not intended for children under 16, and we do not knowingly collect their data.</p>
+
+    <h2>11. Changes</h2>
+    <p>The date at the top shows the last update. Any significant change will be announced in the app.</p>
+
+    <h2>12. Contact</h2>
+    <p>[First Last name] — [CONTACT EMAIL]</p>
+  </article>
+
+  <footer>© 2026 HearMe</footer>
+</main>
 </body>
 </html>
