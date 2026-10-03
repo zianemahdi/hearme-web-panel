@@ -133,6 +133,9 @@ export default function App() {
               battery_level: d.battery_level != null ? Number(d.battery_level) : prev.battery_level,
               network_type: (netMap[String(d.network_status)] as Device['network_type']) ?? prev.network_type,
               is_locked: d.is_locked != null ? Boolean(d.is_locked) : prev.is_locked,
+              // null : version de l'app qui ne signale pas encore son mode.
+              is_lost: d.is_lost == null ? null : Boolean(d.is_lost),
+              is_stolen: d.is_stolen == null ? null : Boolean(d.is_stolen),
               last_seen_at: (d.last_seen as string) || new Date().toISOString()
             }));
           }
@@ -365,6 +368,7 @@ export default function App() {
               <div className="col-span-1 md:col-span-2 lg:col-span-4 flex flex-col">
                 <EmergencyControls
                   isAlarmActive={device.is_alarm_active}
+                  phoneSearch={device.is_lost}
                   onSendCommand={handleSendCommand}
                   isSending={isSendingCommand}
                   theme={theme}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Lock, Bell, BellOff, MapPin, Camera, CheckCircle2, Loader2, Volume2, ShieldAlert, Search, AlertCircle } from 'lucide-react';
 import { CommandType } from '../types';
 import { useI18n } from '../i18n';
@@ -11,6 +11,8 @@ interface EmergencyControlsProps {
   theme?: 'dark' | 'light';
   /** Appelé quand une photo vient d'être demandée (la galerie se met à guetter). */
   onPhotoRequested?: () => void;
+  /** Mode recherche tel que le téléphone le signale (null = version de l'app qui ne le dit pas). */
+  phoneSearch?: boolean | null;
 }
 
 const DONE: Partial<Record<CommandType, I18nKey>> = {
@@ -26,13 +28,27 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
   onSendCommand,
   isSending,
   theme = 'dark',
-  onPhotoRequested
+  onPhotoRequested,
+  phoneSearch = null
 }) => {
   const isDark = theme === 'dark';
   const { t } = useI18n();
   const [showLockModal, setShowLockModal] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; text: string } | null>(null);
-  const [searchActive, setSearchActive] = useState(false);
+  // Mode recherche : l'état signalé par le téléphone fait foi. Juste après un clic, on
+  // affiche la demande « en attente » jusqu'à ce que le téléphone la confirme (3 min au
+  // plus : téléphone éteint ou hors réseau → la commande attend, l'état réel revient).
+  // Ancienne version de l'app (pas d'état signalé) : on garde ce que ce panneau a envoyé.
+  const [localSearch, setLocalSearch] = useState(false);
+  const [pendingSearch, setPendingSearch] = useState<{ value: boolean; until: number } | null>(null);
+  useEffect(() => {
+    if (!pendingSearch) return;
+    if (phoneSearch === pendingSearch.value) { setPendingSearch(null); return; }
+    const timer = setTimeout(() => setPendingSearch(null), Math.max(0, pendingSearch.until - Date.now()));
+    return () => clearTimeout(timer);
+  }, [phoneSearch, pendingSearch]);
+  const searchActive = pendingSearch ? pendingSearch.value : (phoneSearch ?? localSearch);
+  const searchWaiting = pendingSearch !== null && phoneSearch != null && phoneSearch !== pendingSearch.value;
 
   const flash = (ok: boolean, text: string) => {
     setStatus({ ok, text });
@@ -44,7 +60,8 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
     const next = !searchActive;
     const ok = await onSendCommand(next ? 'activate_search' : 'stop_search');
     if (!ok) { flash(false, t('ec.failed')); return; }
-    setSearchActive(next);
+    setLocalSearch(next);
+    if (phoneSearch != null) setPendingSearch({ value: next, until: Date.now() + 3 * 60_000 });
     flash(true, t(next ? 'ec.searchStarted' : 'ec.searchStopped'));
   };
 
@@ -114,7 +131,7 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
         </div>
         <div className="text-start flex-1 min-w-0">
           <div className="text-sm font-bold">{searchActive ? t('ec.searchOn') : t('ec.searchOff')}</div>
-          <div className="text-[11px] opacity-70">{t('ec.searchHint')}</div>
+          <div className="text-[11px] opacity-70">{t(searchWaiting ? 'ec.searchPending' : 'ec.searchHint')}</div>
         </div>
         <div className={`w-9 h-5 rounded-full relative transition shrink-0 ${searchActive ? 'bg-violet-400' : 'bg-white/20'}`} dir="ltr">
           <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${searchActive ? 'left-[18px]' : 'left-0.5'}`} />

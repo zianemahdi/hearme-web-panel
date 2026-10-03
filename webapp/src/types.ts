@@ -8,6 +8,9 @@ export interface Device {
   network_type: NetworkType;
   is_locked: boolean;
   is_alarm_active: boolean;
+  /** Mode recherche / perdu et état volé, tels que le téléphone les signale (null = inconnu). */
+  is_lost?: boolean | null;
+  is_stolen?: boolean | null;
   last_seen_at: string;
   secret_key?: string;
   model?: string;

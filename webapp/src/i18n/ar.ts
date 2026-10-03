@@ -84,6 +84,7 @@ export const ar: Dict = {
   'ec.searchOn': 'البحث نشط — اضغط للإيقاف',
   'ec.searchOff': 'تفعيل البحث',
   'ec.searchHint': 'يفتح تحديد الموقع والتصوير عن بُعد',
+  'ec.searchPending': 'في انتظار الهاتف…',
   'ec.searchStarted': 'تم تفعيل وضع البحث — تم فتح الموقع والتصوير',
   'ec.searchStopped': 'تم إيقاف وضع البحث — عودة إلى الخصوصية',
   'ec.lock': 'قفل',

@@ -84,6 +84,7 @@ export const es: Dict = {
   'ec.searchOn': 'Búsqueda activa — pulsa para detener',
   'ec.searchOff': 'Activar la búsqueda',
   'ec.searchHint': 'Desbloquea la ubicación y la foto a distancia',
+  'ec.searchPending': 'Esperando al teléfono…',
   'ec.searchStarted': 'Modo búsqueda activado — ubicación y foto desbloqueadas',
   'ec.searchStopped': 'Modo búsqueda detenido — vuelta a la privacidad',
   'ec.lock': 'Bloquear',

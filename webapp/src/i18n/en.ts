@@ -84,6 +84,7 @@ export const en: Dict = {
   'ec.searchOn': 'Search on — tap to stop',
   'ec.searchOff': 'Activate search',
   'ec.searchHint': 'Unlocks remote location and photo',
+  'ec.searchPending': 'Waiting for the phone…',
   'ec.searchStarted': 'Search mode on — location and photo unlocked',
   'ec.searchStopped': 'Search mode off — back to privacy',
   'ec.lock': 'Lock',

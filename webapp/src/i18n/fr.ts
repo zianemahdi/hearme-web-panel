@@ -84,6 +84,7 @@ export const fr = {
   'ec.searchOn': 'Recherche active — appuyez pour arrêter',
   'ec.searchOff': 'Activer la recherche',
   'ec.searchHint': 'Débloque la localisation et la photo à distance',
+  'ec.searchPending': 'En attente du téléphone…',
   'ec.searchStarted': 'Mode recherche activé — localisation et photo débloquées',
   'ec.searchStopped': 'Mode recherche arrêté — retour à la confidentialité',
   'ec.lock': 'Verrouiller',
