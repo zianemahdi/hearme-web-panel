@@ -68,6 +68,37 @@ export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, de
   const followRef = useRef(true);
   const lastPannedIdRef = useRef<string | null>(null);
   useEffect(() => { followRef.current = follow; }, [follow]);
+  const currentLocationRef = useRef(currentLocation);
+  currentLocationRef.current = currentLocation;
+
+  // Menu des fonds de carte : se ferme au clic ailleurs ou avec Échap.
+  const layerMenuRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!showLayerMenu) return;
+    const onDown = (e: PointerEvent) => {
+      if (!layerMenuRef.current?.contains(e.target as Node)) setShowLayerMenu(false);
+    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { e.stopImmediatePropagation(); setShowLayerMenu(false); } };
+    document.addEventListener('pointerdown', onDown);
+    window.addEventListener('keydown', onKey, true);
+    return () => {
+      document.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('keydown', onKey, true);
+    };
+  }, [showLayerMenu]);
+
+  // Plein écran : Échap pour sortir, et la page derrière ne défile plus.
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setIsFullscreen(false); };
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = overflow;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [isFullscreen]);
 
   // Âge de la position, rafraîchi toutes les 5 s : « en direct » seulement si elle est
   // vraiment récente (l'app n'envoie que des relevés GPS frais, datés à la réception).
@@ -95,7 +126,21 @@ export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, de
     mapInstanceRef.current = map;
     // L'utilisateur déplace la carte : on arrête de la recentrer sous ses doigts.
     map.on('dragstart', () => setFollow(false));
+    // La carte suit la taille de son cadre (plein écran, rotation, fenêtre) : sans ça,
+    // Leaflet garde l'ancienne taille et laisse des zones grises.
+    let frame = 0;
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        map.invalidateSize({ animate: false });
+        const loc = currentLocationRef.current;
+        if (followRef.current && loc) map.setView([loc.latitude, loc.longitude], map.getZoom(), { animate: false });
+      });
+    });
+    observer.observe(mapContainerRef.current);
     return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
       map.remove();
       mapInstanceRef.current = null;
       markerRef.current = null;
@@ -199,12 +244,12 @@ export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, de
   return (
     <div
       id="hearme-live-map-card"
-      className={`hm-card-interactive rounded-2xl p-3 sm:p-3.5 relative flex flex-col transition-all duration-300 ${
+      className={`isolate flex flex-col ${
         isFullscreen
-          ? `fixed inset-3 sm:inset-6 z-50 p-4 shadow-2xl backdrop-blur-2xl ${
-              isDark ? 'bg-[#090912]/98 border-purple-500/40' : 'bg-white/98 border-purple-300'
+          ? `fixed inset-0 sm:inset-4 z-[1500] p-2 sm:p-4 sm:rounded-2xl border shadow-[0_0_0_100vmax_rgba(0,0,0,0.8)] ${
+              isDark ? 'bg-[#090912] border-purple-500/40' : 'bg-white border-purple-300'
             }`
-          : 'h-[520px] sm:h-[560px]'
+          : 'hm-card-interactive relative rounded-2xl p-3 sm:p-3.5 h-[520px] sm:h-[560px]'
       }`}
     >
       {/* La carte reste de gauche à droite, même en arabe (contrôles Leaflet). */}
@@ -212,11 +257,12 @@ export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, de
         <div ref={mapContainerRef} className="w-full h-full" />
 
         {/* Âge réel de la position (vert = en direct) */}
-        <div className="absolute top-3 left-3 z-[400] flex flex-wrap items-center gap-2">
+        {/* Sur téléphone, les boutons sont en colonne à droite : le badge s'arrête avant. */}
+        <div className="absolute top-3 left-3 right-16 sm:right-auto z-[400] flex flex-wrap items-center gap-2">
           <div
             id="map-freshness"
             role="status"
-            className="px-3 py-1.5 rounded-xl bg-[#0d0d1a]/85 backdrop-blur-md border border-white/15 text-xs font-bold text-slate-200 flex items-center gap-2 shadow-xl"
+            className="px-3 py-1.5 rounded-xl bg-[#0d0d1a]/85 backdrop-blur-md border border-white/15 text-xs font-bold text-slate-200 flex flex-wrap items-center gap-x-2 gap-y-0.5 shadow-xl min-w-0"
           >
             <span className="relative flex h-2.5 w-2.5">
               {freshness === 'live' && (
@@ -244,8 +290,8 @@ export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, de
         </div>
 
         {/* Contrôles */}
-        <div className="absolute top-3 right-3 z-[400] flex items-center gap-2">
-          <div className="relative">
+        <div className="absolute top-3 right-3 z-[400] flex flex-col sm:flex-row items-end sm:items-center gap-2">
+          <div className="relative" ref={layerMenuRef}>
             <button
               id="btn-map-layer"
               onClick={() => setShowLayerMenu(!showLayerMenu)}
@@ -259,7 +305,7 @@ export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, de
             </button>
 
             {showLayerMenu && (
-              <div className="absolute right-0 mt-2 w-44 rounded-2xl bg-[#111122] border border-white/15 p-2 shadow-2xl z-50 text-xs space-y-1 backdrop-blur-xl">
+              <div className="absolute top-0 right-full me-2 sm:me-0 sm:top-full sm:right-0 mt-0 sm:mt-2 w-44 rounded-2xl bg-[#111122] border border-white/15 p-2 shadow-2xl z-50 text-xs space-y-1 backdrop-blur-xl">
                 {LAYER_ORDER.map((id) => (
                   <button
                     key={id}
@@ -301,10 +347,7 @@ export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, de
 
           <button
             id="btn-map-fullscreen"
-            onClick={() => {
-              setIsFullscreen(!isFullscreen);
-              setTimeout(() => mapInstanceRef.current?.invalidateSize(), 300);
-            }}
+            onClick={() => { setShowLayerMenu(false); setIsFullscreen(!isFullscreen); }}
             className={overlayBtn}
             title={isFullscreen ? t('map.exitFullscreen') : t('map.fullscreen')}
             aria-label={isFullscreen ? t('map.exitFullscreen') : t('map.fullscreen')}

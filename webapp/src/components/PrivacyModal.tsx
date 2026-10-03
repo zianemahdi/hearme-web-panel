@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { X, Shield } from 'lucide-react';
 import { useI18n } from '../i18n';
 
@@ -9,13 +9,32 @@ interface PrivacyModalProps {
 
 export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) => {
   const { t, lang } = useI18n();
+
+  // Échap ferme la fenêtre, et la page derrière ne défile plus.
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeRef.current(); };
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = overflow;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   // Politique complète : ancre de la version dans la langue choisie (#fr, #en, #es, #ar).
   const fullPolicy = `privacy.html#${lang}`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#05050a]/90 backdrop-blur-xl overflow-y-auto">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#05050a]/90 backdrop-blur-xl overflow-y-auto"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
       <div
         role="dialog"
         aria-modal="true"
@@ -75,7 +94,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
               <span className="text-purple-400">3.</span> {t('pm.s3')}
             </h3>
             <p className="text-slate-400">
-              {t('pm.rights')} <a href={fullPolicy} className="text-purple-300 underline">{t('pm.fullPolicy')}</a>.
+              {t('pm.rights')} <a href={fullPolicy} target="_blank" rel="noopener" className="text-purple-300 underline">{t('pm.fullPolicy')}</a>.
             </p>
           </section>
         </div>

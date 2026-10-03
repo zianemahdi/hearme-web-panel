@@ -64,7 +64,7 @@ export interface GeofenceZone {
   created_at: string;
 }
 
-export type AuthMode = 'secret' | 'auth' | 'demo';
+export type AuthMode = 'secret' | 'account' | 'demo';
 
 export interface AuthSession {
   mode: AuthMode;

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Device, LocationPoint, CommandType, AuthMode, AuthSession } from './types';
 import { INITIAL_DEMO_DEVICE, INITIAL_DEMO_LOCATIONS } from './utils/mockData';
 import { getSupabase, callRpc } from './utils/supabaseClient';
+import { X } from 'lucide-react';
 
 // Components
 import { Navbar } from './components/Navbar';
@@ -140,7 +141,9 @@ export default function App() {
           const { data: locData } = await supabase.rpc('panel_get_locations', { p_secret: session.secretKey, p_limit: 30 });
           if (locData && Array.isArray(locData) && locData.length > 0 && isMounted) {
             setLocations(locData.map((l: Record<string, unknown>, idx: number) => ({
-              id: String(l.id || `loc-${idx}`),
+              // Pas d'identifiant côté serveur : date + coordonnées (le suivi de la carte
+              // repère ainsi chaque nouvelle position).
+              id: String(l.id || `${l.recorded_at ?? idx}|${l.lat ?? l.latitude}|${l.lon ?? l.longitude}`),
               device_id: String(l.device_id || device.id),
               latitude: Number(l.lat ?? l.latitude),
               longitude: Number(l.lon ?? l.longitude),
@@ -164,10 +167,6 @@ export default function App() {
   const handleSendCommand = async (command: CommandType): Promise<boolean> => {
     setIsSendingCommand(true);
     try {
-      if (command === 'alarm') setDevice(prev => ({ ...prev, is_alarm_active: true }));
-      else if (command === 'stopalarm') setDevice(prev => ({ ...prev, is_alarm_active: false }));
-      else if (command === 'lock') setDevice(prev => ({ ...prev, is_locked: true }));
-
       if (session && session.secretKey && session.mode !== 'demo') {
         const supabase = getSupabase();
         if (supabase) {
@@ -180,6 +179,12 @@ export default function App() {
           if (!data) throw new Error('Clé secrète invalide ou expirée.');
         }
       }
+
+      // Commande acceptée seulement : en cas d'échec, l'écran ne doit pas afficher
+      // « Verrouillé » ou « alarme active » alors que rien n'est parti.
+      if (command === 'alarm') setDevice(prev => ({ ...prev, is_alarm_active: true }));
+      else if (command === 'stopalarm') setDevice(prev => ({ ...prev, is_alarm_active: false }));
+      else if (command === 'lock') setDevice(prev => ({ ...prev, is_locked: true }));
 
       // Démo : simule une nouvelle position pour « localiser »
       if (session?.mode === 'demo' && command === 'locate') {
@@ -229,6 +234,15 @@ export default function App() {
 
   const handleLogout = () => { setSession(null); };
 
+  // Pas de session ouverte (déconnexion, clé changée, accès d'urgence expiré, ou jeton
+  // oublié par une version précédente) : on ferme aussi la connexion Supabase de CE
+  // navigateur — jeton effacé et révoqué. Sur un ordinateur emprunté, aucun jeton ne
+  // doit rester. « local » : l'app du téléphone, sur le même compte, reste connectée.
+  useEffect(() => {
+    if (session) return;
+    getSupabase().auth.signOut({ scope: 'local' }).catch(() => { /* hors ligne : jeton effacé quand même */ });
+  }, [session]);
+
   const handleAuthSuccess = (
     mode: AuthMode,
     deviceSecretKey?: string,
@@ -244,6 +258,7 @@ export default function App() {
     };
     setSession(newSession);
     if (deviceSecretKey) setDevice(prev => ({ ...prev, secret_key: deviceSecretKey }));
+    window.scrollTo(0, 0);
   };
 
   // Une session de crise s'éteint aussi pendant que l'onglet reste ouvert.
@@ -294,13 +309,24 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen relative overflow-x-hidden font-['Poppins',sans-serif] transition-colors duration-300 ${
+      className={`min-h-screen relative overflow-x-clip font-['Poppins',sans-serif] transition-colors duration-300 ${
         theme === 'dark' ? 'hm-mesh text-slate-100' : 'hm-mesh-light text-slate-900'
       }`}
     >
+      {/* Dans le flux de la page (et non par-dessus) : il ne cache plus le logo ni le
+          choix de langue sur téléphone. */}
       {accessMsg && (
-        <div className="fixed top-0 inset-x-0 z-50 bg-amber-500/95 text-slate-900 text-sm font-medium px-4 py-2 text-center shadow-lg">
-          {accessMsg.map((k) => t(k)).join(' ')}
+        <div role="alert" className="relative z-20 flex items-start justify-center gap-3 bg-amber-500 text-slate-900 text-sm font-medium px-4 py-2.5 shadow-lg">
+          <span className="text-center">{accessMsg.map((k) => t(k)).join(' ')}</span>
+          <button
+            type="button"
+            onClick={() => setAccessMsg(null)}
+            className="shrink-0 p-1 -m-1 rounded-lg hover:bg-black/10"
+            aria-label={t('common.close')}
+            title={t('common.close')}
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
       {!session ? (

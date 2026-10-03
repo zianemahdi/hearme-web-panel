@@ -37,8 +37,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
         {/* Left: Brand Logo & Status matching Wix site */}
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3 group">
+        <div className="flex items-center gap-4 min-w-0">
+          <div className="flex items-center gap-3 group min-w-0">
             {customLogoUrl ? (
               <img src={customLogoUrl} alt="HearMe Logo" className="h-8 object-contain" />
             ) : (
@@ -112,8 +112,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Right: Quick Action Toolbar */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <LanguageSwitcher className="hidden sm:inline-flex" />
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Un seul choix de langue à la fois : boutons sur grand écran, menu sur téléphone.
+              (Le « hidden » est sur un conteneur : sur le sélecteur lui-même, son
+              « inline-flex » l'emportait et les deux s'affichaient sur téléphone.) */}
+          <div className="hidden sm:block">
+            <LanguageSwitcher />
+          </div>
           <LanguageSelect className="sm:hidden" />
           {/* Privacy Policy */}
           <button

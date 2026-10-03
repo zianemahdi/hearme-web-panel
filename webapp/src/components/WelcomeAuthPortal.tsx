@@ -4,7 +4,6 @@ import {
   Mail,
   Lock,
   ArrowRight,
-  Sparkles,
   CheckCircle2,
   AlertCircle,
   Loader2,
@@ -14,8 +13,6 @@ import {
   Volume2,
   Smartphone,
   Check,
-  Eye,
-  EyeOff,
   HelpCircle
 } from 'lucide-react';
 import { AuthMode } from '../types';
@@ -60,16 +57,9 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   onOpenPrivacy,
 }) => {
   const { t } = useI18n();
-  const [activeTab, setActiveTab] = useState<'secret' | 'register' | 'login'>('secret');
+  // Pas d'inscription ici : le compte se crée dans l'app HearMe.
+  const [activeTab, setActiveTab] = useState<'secret' | 'login'>('secret');
   
-  // Registration Form State
-  const [regName, setRegName] = useState('');
-  const [regEmail, setRegEmail] = useState('');
-  const [regPassword, setRegPassword] = useState('');
-  const [regDeviceName, setRegDeviceName] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [acceptTerms, setAcceptTerms] = useState(false);
-
   // Login Form State
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -89,7 +79,12 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   const captchaRef = useRef<HCaptcha>(null);
   const getCaptchaToken = async (): Promise<string | undefined> => {
     try {
-      const res = await captchaRef.current?.execute({ async: true });
+      // 15 s au plus : si le CAPTCHA ne répond pas (réseau, bloqueur de pub), on
+      // continue sans jeton et le serveur répond — le bouton ne tourne pas sans fin.
+      const res = await Promise.race([
+        captchaRef.current?.execute({ async: true }),
+        new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 15_000)),
+      ]);
       return res?.response;
     } catch {
       return undefined;
@@ -97,17 +92,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       try { captchaRef.current?.resetCaptcha(); } catch { /* ignore */ }
     }
   };
-
-  // Calculate Password Strength (0-4)
-  const calculateStrength = (pass: string) => {
-    let score = 0;
-    if (pass.length >= 6) score++;
-    if (pass.length >= 10) score++;
-    if (/[A-Z]/.test(pass)) score++;
-    if (/[0-9]/.test(pass) || /[^A-Za-z0-9]/.test(pass)) score++;
-    return score;
-  };
-  const passwordStrength = calculateStrength(regPassword);
 
   // Handle Secret Key Direct Unlock
   const handleSecretSubmit = async (e: React.FormEvent) => {
@@ -133,82 +117,9 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
         setErrorMsg(t('wa.errKeyInvalid'));
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : '';
+      // Les erreurs Supabase ne sont pas toujours des « Error » : on lit le message directement.
+      const msg = String((err as { message?: unknown } | null)?.message ?? '');
       setErrorMsg(/tentatives/i.test(msg) ? t('wa.errTooMany') : t('wa.errKeyService'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Handle Full User Registration
-  const handleRegisterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!regEmail.trim() || !regPassword) {
-      setErrorMsg(t('wa.errFields'));
-      return;
-    }
-    // Mêmes règles que le serveur (Supabase Auth : 10 caractères, lettres ET chiffres).
-    if (regPassword.length < 10 || !/[A-Za-z]/.test(regPassword) || !/[0-9]/.test(regPassword)) {
-      setErrorMsg(t('wa.errPasswordRules'));
-      return;
-    }
-    if (!acceptTerms) {
-      setErrorMsg(t('wa.errConsent'));
-      return;
-    }
-
-    setLoading(true);
-    setErrorMsg(null);
-    setInfoMsg(null);
-
-    try {
-      const supabase = getSupabase();
-      if (supabase) {
-        const captchaToken = await getCaptchaToken();
-        const { data, error } = await supabase.auth.signUp({
-          email: regEmail.trim(),
-          password: regPassword,
-          options: {
-            captchaToken,
-            data: {
-              full_name: regName.trim() || 'HearMe',
-              device_name: regDeviceName.trim() || 'HearMe'
-            }
-          }
-        });
-
-        if (error) {
-          if (error.message.includes('already registered')) {
-            setErrorMsg(t('wa.errAlready'));
-            setActiveTab('login');
-            setLoginEmail(regEmail);
-            return;
-          }
-          if (error.code === 'weak_password') {
-            setErrorMsg(t('wa.errWeak'));
-            return;
-          }
-          throw error;
-        }
-
-        if (data.session) {
-          const deviceKey = await resolveAccountDeviceKey(supabase);
-          onSuccess('account', deviceKey, regEmail.trim());
-          return;
-        } else {
-          setInfoMsg(t('wa.regDone'));
-          setActiveTab('login');
-          setLoginEmail(regEmail);
-          return;
-        }
-      }
-
-      // Fallback local session if Supabase is pending setup
-      onSuccess('account', undefined, regEmail.trim());
-    } catch (err: unknown) {
-      // Messages bruts de Supabase (en anglais) : on affiche un texte dans la langue choisie.
-      const message = err instanceof Error ? err.message : '';
-      setErrorMsg(/rate limit|too many/i.test(message) ? t('wa.errTooMany') : t('wa.errRegister'));
     } finally {
       setLoading(false);
     }
@@ -242,9 +153,9 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
           return;
         }
       }
-      onSuccess('account', undefined, loginEmail.trim());
+      setErrorMsg(t('wa.errConnect'));
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : '';
+      const message = String((err as { message?: unknown } | null)?.message ?? '');
       setErrorMsg(
         /not confirmed/i.test(message) ? t('wa.errNotConfirmed')
         : /rate limit|too many/i.test(message) ? t('wa.errTooMany')
@@ -461,14 +372,15 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
           </div>
         </section>
 
-        {/* Right Side: Comprehensive Auth & Registration Form */}
-        <section className="lg:col-span-6">
+        {/* Accès : clé du téléphone, ou compte créé dans l'app */}
+        {/* Sur téléphone, l'accès passe avant la présentation : en urgence, pas besoin de défiler. */}
+        <section className="lg:col-span-6 order-first lg:order-none">
           <div className="hm-card-pro rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
             {/* Ambient subtle light glow inside card */}
             <div className="absolute -top-16 -right-16 w-44 h-44 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
 
             {/* Tab selection */}
-            <div className="grid grid-cols-3 gap-1.5 p-1 rounded-2xl bg-black/20 border border-white/[0.08] mb-6">
+            <div className="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-black/20 border border-white/[0.08] mb-6">
               <button
                 type="button"
                 onClick={() => { setActiveTab('secret'); setErrorMsg(null); setInfoMsg(null); }}
@@ -482,21 +394,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
               >
                 <KeyRound className="w-3.5 h-3.5" />
                 <span>{t('wa.tabKey')}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => { setActiveTab('register'); setErrorMsg(null); setInfoMsg(null); }}
-                className={`py-2.5 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
-                  activeTab === 'register'
-                    ? theme === 'dark'
-                      ? 'bg-white text-black shadow-md'
-                      : 'bg-slate-900 text-white shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>{t('wa.tabRegister')}</span>
               </button>
 
               <button
@@ -556,7 +453,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 </div>
 
                 {errorMsg && (
-                  <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2">
+                  <div role="alert" className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2">
                     <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
                     <span>{errorMsg}</span>
                   </div>
@@ -575,150 +472,14 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   <span>{t('wa.keySubmit')}</span>
                 </button>
 
-                <div className="pt-2 border-t border-white/[0.08] text-center">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('register')}
-                    className="text-xs text-slate-400 hover:text-white transition inline-flex items-center gap-1"
-                  >
-                    <span>{t('wa.noDevice')}</span>
-                    <strong className="text-white underline">{t('wa.createAccount')}</strong>
-                  </button>
-                </div>
+                <p className="pt-3 border-t border-white/[0.08] text-center text-xs text-slate-400 flex items-center justify-center gap-1.5">
+                  <Smartphone className="w-3.5 h-3.5 shrink-0" />
+                  <span>{t('wa.noAccount')}</span>
+                </p>
               </form>
             )}
 
-            {/* TAB 2: DETAILED REGISTRATION FORM */}
-            {activeTab === 'register' && (
-              <form onSubmit={handleRegisterSubmit} className="space-y-4">
-                <div>
-                  <h2 className="text-sm font-black uppercase tracking-wider text-white">
-                    {t('wa.regTitle')}
-                  </h2>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    {t('wa.regIntro')}
-                  </p>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.regName')}</label>
-                    <input
-                      type="text"
-                      value={regName}
-                      onChange={(e) => setRegName(e.target.value)}
-                      placeholder={t('wa.regNamePh')}
-                      className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.regDevice')}</label>
-                    <div className="relative">
-                      <Smartphone className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
-                      <input
-                        type="text"
-                        value={regDeviceName}
-                        onChange={(e) => setRegDeviceName(e.target.value)}
-                        placeholder={t('wa.regDevicePh')}
-                        className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.email')}</label>
-                  <div className="relative">
-                    <Mail className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
-                    <input
-                      type="email"
-                      required
-                      value={regEmail}
-                      onChange={(e) => setRegEmail(e.target.value)}
-                      placeholder={t('wa.emailPh')}
-                      className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.password')}</label>
-                  <div className="relative">
-                    <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      required
-                      value={regPassword}
-                      onChange={(e) => setRegPassword(e.target.value)}
-                      placeholder={t('wa.passwordPh')}
-                      className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-10 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-2.5 text-slate-400 hover:text-white"
-                      aria-label={t('wa.showPassword')}
-                      aria-pressed={showPassword}
-                    >
-                      {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                    </button>
-                  </div>
-
-                  {/* Password Strength Indicator */}
-                  {regPassword && (
-                    <div className="mt-1.5 space-y-1">
-                      <div className="flex gap-1 h-1">
-                        <div className={`flex-1 rounded-full ${passwordStrength >= 1 ? 'bg-rose-500' : 'bg-white/10'}`}></div>
-                        <div className={`flex-1 rounded-full ${passwordStrength >= 2 ? 'bg-amber-500' : 'bg-white/10'}`}></div>
-                        <div className={`flex-1 rounded-full ${passwordStrength >= 3 ? 'bg-emerald-400' : 'bg-white/10'}`}></div>
-                        <div className={`flex-1 rounded-full ${passwordStrength >= 4 ? 'bg-purple-400' : 'bg-white/10'}`}></div>
-                      </div>
-                      <span className="text-[10px] text-slate-400">
-                        {passwordStrength <= 1 && t('wa.strength1')}
-                        {passwordStrength === 2 && t('wa.strength2')}
-                        {passwordStrength === 3 && t('wa.strength3')}
-                        {passwordStrength >= 4 && t('wa.strength4')}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Consent Checkbox */}
-                <label className="flex items-start gap-2 text-[11px] text-slate-400 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={acceptTerms}
-                    onChange={(e) => setAcceptTerms(e.target.checked)}
-                    className="mt-0.5 rounded border-white/20 bg-white/10 text-white focus:ring-0"
-                  />
-                  <span>
-                    {t('wa.consentA')}{' '}
-                    <button type="button" onClick={onOpenPrivacy} className="underline text-slate-200 hover:text-white">
-                      {t('wa.consentB')}
-                    </button>.
-                  </span>
-                </label>
-
-                {errorMsg && (
-                  <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
-                    <span>{errorMsg}</span>
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full py-3.5 px-4 rounded-xl bg-white text-black font-black text-xs hover:bg-slate-200 transition shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-95"
-                >
-                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
-                  <span>{t('wa.regSubmit')}</span>
-                </button>
-              </form>
-            )}
-
-            {/* TAB 3: LOGIN FORM */}
+            {/* Connexion au compte créé dans l'app */}
             {activeTab === 'login' && (
               <form onSubmit={handleLoginSubmit} className="space-y-4">
                 <div>
@@ -731,7 +492,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 </div>
 
                 {infoMsg && (
-                  <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs flex items-center gap-2">
+                  <div role="status" className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
                     <span>{infoMsg}</span>
                   </div>
@@ -768,7 +529,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 </div>
 
                 {errorMsg && (
-                  <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2">
+                  <div role="alert" className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2">
                     <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
                     <span>{errorMsg}</span>
                   </div>
@@ -814,7 +575,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   <span>{t('wa.pinSubmit')}</span>
                 </button>
 
-                <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between text-xs text-slate-400">
+                <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between gap-3 text-xs text-slate-400">
                   <button
                     type="button"
                     onClick={() => setActiveTab('secret')}
@@ -822,13 +583,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   >
                     {t('wa.forgot')}
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('register')}
-                    className="text-white underline font-bold"
-                  >
-                    {t('wa.createAccount')}
-                  </button>
+                  <span className="text-end">{t('wa.accountInApp')}</span>
                 </div>
               </form>
             )}

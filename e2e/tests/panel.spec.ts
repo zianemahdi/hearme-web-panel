@@ -14,9 +14,12 @@ import { test, expect } from '@playwright/test';
 test('le portail d’accueil se charge', async ({ page }) => {
   await page.goto('./');
   await expect(page).toHaveTitle(/HearMe/i);
-  // Les 3 onglets d'accès sont présents.
+  // Deux accès : la clé du téléphone, ou le compte créé dans l'app.
+  await expect(page.getByRole('button', { name: 'Clé secrète' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Connexion' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Créer un compte', exact: true })).toBeVisible();
+  // Pas d'inscription sur le site : le compte se crée dans l'app HearMe.
+  await expect(page.getByRole('button', { name: /Créer un compte/i })).toHaveCount(0);
+  await expect(page.getByText(/se crée dans l'app HearMe/i)).toBeVisible();
 });
 
 test('le panneau existe en 4 langues (arabe de droite à gauche)', async ({ page }) => {
