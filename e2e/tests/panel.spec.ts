@@ -16,7 +16,22 @@ test('le portail d’accueil se charge', async ({ page }) => {
   await expect(page).toHaveTitle(/HearMe/i);
   // Les 3 onglets d'accès sont présents.
   await expect(page.getByRole('button', { name: 'Connexion' })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Créer Compte/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Créer un compte', exact: true })).toBeVisible();
+});
+
+test('le panneau existe en 4 langues (arabe de droite à gauche)', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: 'EN', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await page.getByRole('button', { name: 'ES', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Entrar', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'ع', exact: true }).click();
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+  await expect(page.getByRole('button', { name: 'تسجيل الدخول', exact: true })).toBeVisible();
+  // Le choix est gardé : on revient en français pour les tests suivants.
+  await page.getByRole('button', { name: 'FR', exact: true }).click();
+  await expect(page.locator('html')).toHaveAttribute('dir', 'ltr');
 });
 
 test('magic link invalide → bannière + URL nettoyée', async ({ page }) => {
@@ -32,7 +47,7 @@ test('connexion PIN incorrecte → message d’erreur', async ({ page }) => {
   await page.getByRole('button', { name: 'Connexion' }).click();
   await page.locator('input[type="email"]').fill('e2e-ci@hearme.test');
   await page.getByPlaceholder(/chiffres/i).fill('999999');
-  await page.getByRole('button', { name: /Se connecter par PIN/i }).click();
+  await page.getByRole('button', { name: /Se connecter avec le PIN/i }).click();
   // La fonction serveur panel_pin_login refuse proprement.
   await expect(page.getByText('E-mail ou PIN incorrect.')).toBeVisible();
 });

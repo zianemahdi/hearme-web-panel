@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { AlertTriangle } from 'lucide-react';
 import { Device, LocationPoint, CommandType, AuthMode, AuthSession } from './types';
 import { INITIAL_DEMO_DEVICE, INITIAL_DEMO_LOCATIONS } from './utils/mockData';
 import { getSupabase, callRpc } from './utils/supabaseClient';
@@ -12,6 +11,9 @@ import { SecretKeyCard } from './components/SecretKeyCard';
 import { PrivacyModal } from './components/PrivacyModal';
 import { SiteFooter } from './components/SiteFooter';
 import { WelcomeAuthPortal } from './components/WelcomeAuthPortal';
+import { PhotoGallery } from './components/PhotoGallery';
+import { useI18n } from './i18n';
+import type { I18nKey } from './i18n/fr';
 
 // Bento Grid Modules (fonctionnels uniquement)
 import { QuickProtectionBar } from './components/QuickProtectionBar';
@@ -48,11 +50,15 @@ export default function App() {
   const [device, setDevice] = useState<Device>(INITIAL_DEMO_DEVICE);
   const [locations, setLocations] = useState<LocationPoint[]>(INITIAL_DEMO_LOCATIONS);
 
+  const { t } = useI18n();
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isSendingCommand, setIsSendingCommand] = useState(false);
-  const [, setLastUpdateText] = useState('il y a quelques secondes');
   const [isOnline, setIsOnline] = useState(true);
-  const [accessMsg, setAccessMsg] = useState<string | null>(null);
+  // Message d'accès (lien d'urgence, clé changée) : des clés de texte, traduites à
+  // l'affichage pour suivre un changement de langue.
+  const [accessMsg, setAccessMsg] = useState<I18nKey[] | null>(null);
+  // Incrémenté à chaque photo demandée : la galerie guette son arrivée.
+  const [photoSignal, setPhotoSignal] = useState(0);
 
   // Force le sombre sur <html>, et nettoie une éventuelle préférence claire
   // laissée par une ancienne version.
@@ -69,14 +75,11 @@ export default function App() {
     else localStorage.removeItem('hearme_session');
   }, [session]);
 
-  // Temps relatif / en ligne
+  // En ligne : vu par le serveur il y a moins de 3 minutes.
   const updateRelativeTime = useCallback(() => {
-    if (!device.last_seen_at) { setLastUpdateText('Inconnu'); setIsOnline(false); return; }
+    if (!device.last_seen_at) { setIsOnline(false); return; }
     const diffSec = Math.floor((Date.now() - new Date(device.last_seen_at).getTime()) / 1000);
-    if (diffSec < 25) { setLastUpdateText('à l\'instant'); setIsOnline(true); }
-    else if (diffSec < 60) { setLastUpdateText(`il y a ${diffSec}s`); setIsOnline(true); }
-    else if (diffSec < 3600) { setLastUpdateText(`il y a ${Math.floor(diffSec / 60)} min`); setIsOnline(diffSec < 180); }
-    else { setLastUpdateText(`il y a ${Math.floor(diffSec / 3600)}h`); setIsOnline(false); }
+    setIsOnline(diffSec < 180);
   }, [device.last_seen_at]);
 
   useEffect(() => {
@@ -117,7 +120,7 @@ export default function App() {
             if (pollTimer) clearInterval(pollTimer);
             if (isMounted) {
               setSession(null);
-              setAccessMsg('La clé de ce téléphone a changé. Reconnectez-vous avec la nouvelle clé (app HearMe → Réglages).');
+              setAccessMsg(['app.keyChanged']);
             }
             return;
           }
@@ -224,26 +227,6 @@ export default function App() {
     return !error && data !== false;
   };
 
-  // Alerte géorepérage
-  const [geofenceBreachAlert, setGeofenceBreachAlert] = useState<string | null>(null);
-
-  const handleLocationSimulate = (offsetLat: number, offsetLng: number) => {
-    if (locations.length === 0) return;
-    const current = locations[0];
-    const newLoc: LocationPoint = {
-      id: `loc-${Date.now()}`,
-      device_id: device.id,
-      latitude: current.latitude + offsetLat,
-      longitude: current.longitude + offsetLng,
-      accuracy: 6,
-      battery_level: device.battery_level,
-      recorded_at: new Date().toISOString()
-    };
-    setLocations(prev => [newLoc, ...prev.slice(0, 30)]);
-  };
-
-  const handleGeofenceBreach = (zoneName: string) => setGeofenceBreachAlert(zoneName);
-
   const handleLogout = () => { setSession(null); };
 
   const handleAuthSuccess = (
@@ -269,12 +252,12 @@ export default function App() {
     const remaining = session.crisisSince + CRISIS_SESSION_MS - Date.now();
     if (remaining <= 0) {
       setSession(null);
-      setAccessMsg('Votre accès d’urgence a expiré. Demandez un nouveau lien depuis le téléphone.');
+      setAccessMsg(['app.crisisExpired']);
       return;
     }
     const t = window.setTimeout(() => {
       setSession(null);
-      setAccessMsg('Votre accès d’urgence a expiré. Demandez un nouveau lien depuis le téléphone.');
+      setAccessMsg(['app.crisisExpired']);
     }, remaining);
     return () => window.clearTimeout(t);
   }, [session]);
@@ -293,11 +276,11 @@ export default function App() {
       const qs = params.toString();
       window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
       if (error || !data || !data.ok || !data.secret) {
-        const reason =
-          data?.error === 'expired' ? 'Ce lien a expiré.' :
-          data?.error === 'used' ? 'Ce lien a déjà été utilisé.' :
-          'Lien d’accès invalide.';
-        setAccessMsg(reason + ' Demandez un nouveau lien depuis le téléphone (bouton « 🆘 Nouvel accès » sur Telegram).');
+        const reason: I18nKey =
+          data?.error === 'expired' ? 'app.linkExpired' :
+          data?.error === 'used' ? 'app.linkUsed' :
+          'app.linkInvalid';
+        setAccessMsg([reason, 'app.linkAskNew']);
         return;
       }
       setAccessMsg(null);
@@ -317,7 +300,7 @@ export default function App() {
     >
       {accessMsg && (
         <div className="fixed top-0 inset-x-0 z-50 bg-amber-500/95 text-slate-900 text-sm font-medium px-4 py-2 text-center shadow-lg">
-          {accessMsg}
+          {accessMsg.map((k) => t(k)).join(' ')}
         </div>
       )}
       {!session ? (
@@ -338,22 +321,6 @@ export default function App() {
           />
 
           <main className="max-w-7xl mx-auto p-4 sm:p-6 w-full flex-1 space-y-5">
-            {geofenceBreachAlert && (
-              <div className="p-4 rounded-2xl bg-rose-950/80 border border-rose-500/80 backdrop-blur-xl flex items-center justify-between shadow-[0_0_30px_rgba(244,63,94,0.35)] animate-pulse text-xs sm:text-sm">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400"><AlertTriangle className="w-5 h-5" aria-hidden="true" /></div>
-                  <div>
-                    <div className="font-bold text-rose-200 uppercase tracking-wide">Alerte Périmètre de Sécurité Dépassé !</div>
-                    <div className="text-rose-300 text-xs">Le smartphone <strong>{device.name}</strong> a franchi la zone sécurisée « {geofenceBreachAlert} ».</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => handleSendCommand('alarm')} className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition active:scale-95 shadow">Activer Sirène</button>
-                  <button onClick={() => setGeofenceBreachAlert(null)} className="px-2 py-1 rounded-lg text-rose-400 hover:text-white hover:bg-white/10 text-xs transition">Fermer</button>
-                </div>
-              </div>
-            )}
-
             <QuickProtectionBar device={device} isOnline={isOnline} theme={theme} />
 
             {/* Grille bento (modules fonctionnels) */}
@@ -365,8 +332,6 @@ export default function App() {
                   currentLocation={currentLocation}
                   deviceName={device.name}
                   theme={theme}
-                  onLocationSimulate={handleLocationSimulate}
-                  onGeofenceBreachAlert={handleGeofenceBreach}
                 />
               </div>
 
@@ -377,8 +342,16 @@ export default function App() {
                   onSendCommand={handleSendCommand}
                   isSending={isSendingCommand}
                   theme={theme}
+                  onPhotoRequested={() => setPhotoSignal((n) => n + 1)}
                 />
               </div>
+
+              {/* Photos du porteur (espace privé, 30 jours) */}
+              {session.mode !== 'demo' && session.secretKey && (
+                <div className="col-span-1 md:col-span-2 lg:col-span-12 flex flex-col">
+                  <PhotoGallery secretKey={session.secretKey} requestSignal={photoSignal} />
+                </div>
+              )}
 
               {/* Batterie */}
               <div className="col-span-1 md:col-span-1 lg:col-span-6 flex flex-col">

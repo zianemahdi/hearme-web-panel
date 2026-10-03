@@ -1,5 +1,6 @@
 import React from 'react';
 import { Battery, Zap } from 'lucide-react';
+import { useI18n } from '../i18n';
 
 interface BatteryEnergyCardProps {
   batteryLevel: number;
@@ -13,6 +14,7 @@ export const BatteryEnergyCard: React.FC<BatteryEnergyCardProps> = ({
   theme = 'dark'
 }) => {
   const isDark = theme === 'dark';
+  const { t } = useI18n();
 
   // Anneau circulaire (valeur réelle)
   const radius = 38;
@@ -20,9 +22,9 @@ export const BatteryEnergyCard: React.FC<BatteryEnergyCardProps> = ({
   const strokeDashoffset = circumference - (batteryLevel / 100) * circumference;
 
   const getStatus = () => {
-    if (batteryLevel > 50) return { label: 'Bon', text: 'text-emerald-400', stroke: '#10b981' };
-    if (batteryLevel > 20) return { label: 'Faible', text: 'text-amber-400', stroke: '#f59e0b' };
-    return { label: 'Critique', text: 'text-rose-400', stroke: '#f43f5e' };
+    if (batteryLevel > 50) return { label: t('bat.good'), text: 'text-emerald-400', stroke: '#10b981' };
+    if (batteryLevel > 20) return { label: t('bat.low'), text: 'text-amber-400', stroke: '#f59e0b' };
+    return { label: t('bat.critical'), text: 'text-rose-400', stroke: '#f43f5e' };
   };
   const status = getStatus();
 
@@ -42,10 +44,10 @@ export const BatteryEnergyCard: React.FC<BatteryEnergyCardProps> = ({
             </div>
             <div>
               <h2 className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
-                Batterie
+                {t('bat.title')}
               </h2>
               <span className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                Niveau du téléphone
+                {t('bat.subtitle')}
               </span>
             </div>
           </div>
@@ -53,7 +55,7 @@ export const BatteryEnergyCard: React.FC<BatteryEnergyCardProps> = ({
           {isCharging && (
             <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
               <Zap className="w-3 h-3 text-emerald-400 animate-bounce" />
-              En charge
+              {t('bat.charging')}
             </span>
           )}
         </div>
@@ -67,18 +69,18 @@ export const BatteryEnergyCard: React.FC<BatteryEnergyCardProps> = ({
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
               <span className="text-xl font-mono font-extrabold tracking-tight">{batteryLevel}%</span>
-              <span className="text-[9px] uppercase font-bold text-slate-400">{isCharging ? 'Charge' : 'Restant'}</span>
+              <span className="text-[9px] uppercase font-bold text-slate-400">{isCharging ? t('bat.chargeShort') : t('bat.remaining')}</span>
             </div>
           </div>
 
           <div className="space-y-1.5 flex-1">
             <div className={`p-2 rounded-xl border ${isDark ? 'bg-black/30 border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-              <span className={`text-[10px] uppercase font-semibold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Niveau</span>
+              <span className={`text-[10px] uppercase font-semibold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('bat.level')}</span>
               <span className={`text-xs font-bold ${status.text}`}>{status.label}</span>
             </div>
             <div className={`p-2 rounded-xl border ${isDark ? 'bg-black/30 border-white/[0.06]' : 'bg-slate-50 border-slate-200'}`}>
-              <span className={`text-[10px] uppercase font-semibold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Alimentation</span>
-              <span className={`text-xs font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{isCharging ? 'Sur secteur' : 'Sur batterie'}</span>
+              <span className={`text-[10px] uppercase font-semibold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('bat.power')}</span>
+              <span className={`text-xs font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{isCharging ? t('bat.onMains') : t('bat.onBattery')}</span>
             </div>
           </div>
         </div>

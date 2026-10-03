@@ -1,4 +1,5 @@
 import React from 'react';
+import { useI18n } from '../i18n';
 
 interface HearMeLogoProps {
   variant?: 'monogram' | 'full' | 'horizontal';
@@ -29,6 +30,7 @@ export const HearMeLogo: React.FC<HearMeLogoProps> = ({
   animatedLight = true,
   intro = false,
 }) => {
+  const { t } = useI18n();
   const sizeMap = {
     xs: { icon: 24, font: 'text-xs', height: 24 },
     sm: { icon: 32, font: 'text-sm', height: 32 },
@@ -162,7 +164,7 @@ export const HearMeLogo: React.FC<HearMeLogoProps> = ({
           </div>
           {showSubtitle && (
             <span className="text-[10px] tracking-widest uppercase font-bold mt-1.5 text-slate-400">
-              Antivol &amp; Géolocalisation Live
+              {t('logo.tagline')}
             </span>
           )}
         </div>
@@ -183,7 +185,7 @@ export const HearMeLogo: React.FC<HearMeLogoProps> = ({
         </div>
         {showSubtitle && (
           <span className="text-[9px] tracking-widest uppercase font-bold mt-0.5 text-slate-400">
-            Panneau d'urgence
+            {t('logo.panel')}
           </span>
         )}
       </div>

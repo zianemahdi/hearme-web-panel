@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { HearMeLogo } from './HearMeLogo';
+import { useI18n } from '../i18n';
 
 interface SiteFooterProps {
   onOpenPrivacy: () => void;
@@ -9,6 +10,7 @@ interface SiteFooterProps {
 
 export const SiteFooter: React.FC<SiteFooterProps> = ({ onOpenPrivacy, theme = 'dark' }) => {
   const isDark = theme === 'dark';
+  const { t } = useI18n();
 
   return (
     <footer
@@ -36,7 +38,7 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({ onOpenPrivacy, theme = '
                 isDark ? 'text-slate-400' : 'text-slate-500'
               }`}
             >
-              Plateforme antivol et panneau d'urgence intelligent. Sécurisation matérielle, géolocalisation et prise de photo à distance.
+              {t('foot.tagline')}
             </p>
           </div>
 
@@ -50,7 +52,7 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({ onOpenPrivacy, theme = '
               onClick={onOpenPrivacy}
               className="hover:text-purple-400 transition cursor-pointer"
             >
-              Politique de confidentialité
+              {t('common.privacyPolicy')}
             </button>
           </div>
 
@@ -64,10 +66,10 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({ onOpenPrivacy, theme = '
         >
           <div className="flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-            <span>© 2026 par HearMe. Propulsé et sécurisé.</span>
+            <span>{t('foot.rights')}</span>
           </div>
           <div>
-            <span>Conforme RGPD & Directives de sécurité Google Play Android</span>
+            <span>{t('foot.hosting')}</span>
           </div>
         </div>
       </div>

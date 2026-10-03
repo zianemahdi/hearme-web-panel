@@ -14,10 +14,12 @@ export default defineConfig({
   use: {
     baseURL: process.env.PANEL_URL || 'https://zianemahdi.github.io/hearme-web-panel/',
     headless: true,
+    // Le panneau prend la langue du navigateur : les tests vérifient les textes français.
+    locale: 'fr-FR',
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
   },
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'chromium', use: { ...devices['Desktop Chrome'], locale: 'fr-FR' } },
   ],
 });

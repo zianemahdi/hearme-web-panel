@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HearMe — Politique de confidentialité</title>
-  <meta name="description" content="Politique de confidentialité de l'application HearMe et de son panneau web d'urgence. Privacy policy of the HearMe app." />
+  <meta name="description" content="Politique de confidentialité de l'application HearMe et de son panneau web d'urgence. Privacy policy · Política de privacidad · سياسة الخصوصية." />
   <!-- Aucune ressource externe (polices, scripts) : une page de confidentialité ne
        transmet pas l'adresse IP de ses visiteurs à des tiers. -->
   <style>
@@ -28,20 +28,20 @@
     header.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
     a { color: var(--accent); }
     .back { font-weight: 600; text-decoration: none; }
-    .langs a { margin-left: 12px; font-weight: 600; }
+    .langs a { margin-inline-start: 12px; font-weight: 600; }
     h1 { font-size: 30px; line-height: 1.2; margin: 28px 0 4px; letter-spacing: -0.02em; }
     h2 { font-size: 20px; margin: 36px 0 8px; padding-top: 16px; border-top: 1px solid var(--rule); }
     h3 { font-size: 16px; margin: 20px 0 4px; }
     .meta { color: var(--ink-2); margin: 0 0 20px; }
     .summary { background: var(--note); border: 1px solid var(--rule); padding: 14px 18px; }
-    .summary ul { margin: 6px 0 0; padding-left: 20px; }
+    .summary ul { margin: 6px 0 0; padding-inline-start: 20px; }
     .table-wrap { overflow-x: auto; border: 1px solid var(--rule); background: var(--surface); }
     table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
     th, td { text-align: start; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--rule); }
     th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-2); }
     tr:last-child td { border-bottom: 0; }
     td:first-child { font-weight: 600; min-width: 140px; }
-    ul { padding-left: 20px; }
+    ul { padding-inline-start: 20px; }
     article + article { margin-top: 72px; padding-top: 8px; border-top: 3px solid var(--rule); }
     footer { margin-top: 56px; color: var(--ink-2); font-size: 14px; }
     /* Téléphone : le tableau des données devient une fiche par ligne. */
@@ -59,6 +59,12 @@
       [lang=en] .stack td:nth-child(2)::before { content: "When: "; }
       [lang=en] .stack td:nth-child(3)::before { content: "Why: "; }
       [lang=en] .stack td:nth-child(4)::before { content: "Retention: "; }
+      [lang=es] .stack td:nth-child(2)::before { content: "Cuándo: "; }
+      [lang=es] .stack td:nth-child(3)::before { content: "Para qué: "; }
+      [lang=es] .stack td:nth-child(4)::before { content: "Conservación: "; }
+      [lang=ar] .stack td:nth-child(2)::before { content: "متى: "; }
+      [lang=ar] .stack td:nth-child(3)::before { content: "لماذا: "; }
+      [lang=ar] .stack td:nth-child(4)::before { content: "مدة الحفظ: "; }
     }
   </style>
 </head>
@@ -66,9 +72,11 @@
 <main>
   <header class="top">
     <a class="back" href="./">← HearMe</a>
-    <nav class="langs" aria-label="Langue / Language">
+    <nav class="langs" aria-label="Langue / Language / Idioma / اللغة">
       <a href="#fr" hreflang="fr">Français</a>
       <a href="#en" hreflang="en">English</a>
+      <a href="#es" hreflang="es">Español</a>
+      <a href="#ar" hreflang="ar" lang="ar">العربية</a>
     </nav>
   </header>
 
@@ -98,7 +106,7 @@
           <tr><td>Compte : adresse e-mail, prénom, mot de passe, identifiant de compte</td><td>À l'inscription. Avec « Continuer avec Google », l'e-mail et le nom sont fournis par Google.</td><td>Te connecter, relier ton téléphone à ton compte, récupérer ton accès</td><td>Jusqu'à la suppression du compte. Le mot de passe n'est jamais stocké en clair.</td></tr>
           <tr><td>Téléphone : clé secrète créée par l'app, nom du téléphone (modèle ou surnom), batterie, type de réseau, verrouillage, dernière activité</td><td>Quand la protection est active</td><td>Afficher l'état du téléphone dans le panneau et exécuter tes commandes à distance</td><td>Jusqu'à la suppression du compte</td></tr>
           <tr><td>Position précise (GPS)</td><td>Uniquement en mode volé, perdu ou recherche, ou sur ta commande « Localiser »</td><td>Retrouver ton téléphone</td><td>30 jours, supprimées automatiquement chaque nuit. Seule la dernière position connue de chaque téléphone est gardée plus longtemps, pour l'afficher dans le panneau, jusqu'à la suppression du téléphone ou du compte</td></tr>
-          <tr><td>Photos de sécurité (caméra frontale)</td><td>Après un déverrouillage raté quand la protection est armée, ou sur ta demande en mode alerte</td><td>Identifier la personne qui a ton téléphone</td><td>Transmises à ton Telegram et à celui de tes proches, sans être conservées sur nos serveurs</td></tr>
+          <tr><td>Photos de sécurité (caméra frontale)</td><td>Après un déverrouillage raté quand la protection est armée, ou sur ta demande en mode alerte</td><td>Identifier la personne qui a ton téléphone</td><td>Envoyées sur ton Telegram et celui de tes proches, et rangées dans ton espace privé du panneau web (visibles seulement avec ton compte ou la clé du téléphone). Supprimées automatiquement au bout de 30 jours, ou avant si tu les effaces.</td></tr>
           <tr><td>Telegram : identifiant et prénom Telegram de ton compte et de tes proches (2 au maximum), alertes envoyées (texte, photo, position), commandes reçues</td><td>Quand tu relies Telegram ou invites un proche</td><td>Te prévenir, prévenir tes proches et te laisser piloter ton téléphone</td><td>Liaisons : jusqu'à leur retrait. Commandes : effacées dès leur exécution.</td></tr>
           <tr><td>PIN de secours</td><td>Si tu le définis</td><td>Te reconnecter au panneau web en cas d'urgence</td><td>Stocké sous forme hachée (illisible), jusqu'à la suppression du compte</td></tr>
           <tr><td>Commandes à distance (sonner, localiser, verrouiller, photo)</td><td>Quand tu les envoies depuis le panneau ou Telegram</td><td>Les exécuter et en garder la trace</td><td>Jusqu'à la suppression du compte</td></tr>
@@ -133,12 +141,13 @@
       <table>
         <thead><tr><th>Prestataire</th><th>Rôle</th></tr></thead>
         <tbody>
-          <tr><td><a href="https://supabase.com/privacy">Supabase</a></td><td>Base de données, comptes et relais des alertes (serveurs à Paris)</td></tr>
+          <tr><td><a href="https://supabase.com/privacy">Supabase</a></td><td>Base de données, comptes, relais des alertes et stockage privé des photos (serveurs à Paris)</td></tr>
           <tr><td><a href="https://telegram.org/privacy">Telegram</a></td><td>Envoi des alertes à toi et à tes proches</td></tr>
           <tr><td><a href="https://policies.google.com/privacy">Google</a></td><td>Reconnaissance vocale d'Android, services de localisation, connexion Google si tu la choisis</td></tr>
           <tr><td><a href="https://www.hcaptcha.com/privacy">hCaptcha</a></td><td>Vérification anti-robots à l'inscription et à la connexion</td></tr>
           <tr><td><a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub Pages</a></td><td>Hébergement du panneau web et de cette page</td></tr>
-          <tr><td><a href="https://openfreemap.org/">OpenFreeMap</a></td><td>Fonds de carte : les images de la zone affichée sont téléchargées depuis ce service</td></tr>
+          <tr><td><a href="https://openfreemap.org/">OpenFreeMap</a></td><td>Fonds de carte de l'app : les images de la zone affichée sont téléchargées depuis ce service</td></tr>
+          <tr><td><a href="https://www.esri.com/en-us/privacy/overview">Esri</a>, <a href="https://carto.com/privacy">CARTO</a>, <a href="https://osmfoundation.org/wiki/Privacy_Policy">OpenStreetMap</a></td><td>Images satellite et fonds de carte de l'app et du panneau web, téléchargés pour la zone affichée</td></tr>
         </tbody>
       </table>
     </div>
@@ -146,7 +155,7 @@
     <h2>6. Sécurité</h2>
     <ul>
       <li>Toutes les communications sont chiffrées (HTTPS).</li>
-      <li>Chaque compte ne voit que ses propres téléphones.</li>
+      <li>Chaque compte ne voit que ses propres téléphones. Les photos sont dans un stockage privé, affichées par des liens temporaires (10 minutes).</li>
       <li>Les clés secrètes sont longues, et les essais répétés sont bloqués.</li>
       <li>Mots de passe et PIN sont stockés hachés ; les données du téléphone sont chiffrées et exclues des sauvegardes.</li>
       <li>Chaque action à distance est notée dans un historique visible dans l'app. Si des entrées sont effacées, leur nombre reste affiché.</li>
@@ -154,7 +163,7 @@
 
     <h2 id="suppression">7. Supprimer ton compte et tes données</h2>
     <ul>
-      <li><strong>Dans l'app</strong> : Réglages → Compte → Supprimer mon compte.</li>
+      <li><strong>Dans l'app</strong> : Paramètres → Compte → Supprimer mon compte.</li>
       <li><strong>Par e-mail</strong> : écris à <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a> depuis l'adresse de ton compte, avec pour objet « Suppression de compte HearMe ». Nous traitons la demande sous 30 jours.</li>
     </ul>
     <p>Sont supprimés : ton compte, tes téléphones, leurs positions, photos et commandes, tes liaisons Telegram et ton PIN de secours. Les copies de sauvegarde de notre hébergeur disparaissent ensuite automatiquement, au plus tard sous 30 jours. Seuls restent les signalements anonymes de la carte communautaire, qui ne sont liés à personne.</p>
@@ -215,7 +224,7 @@
           <tr><td>Account: email address, first name, password, account ID</td><td>At sign-up. With “Continue with Google”, the email and name come from Google.</td><td>Sign you in, link your phone to your account, recover access</td><td>Until the account is deleted. The password is never stored in plain text.</td></tr>
           <tr><td>Phone: secret key created by the app, phone name (model or nickname), battery, network type, lock state, last activity</td><td>While protection is on</td><td>Show the phone's status in the panel and run your remote commands</td><td>Until the account is deleted</td></tr>
           <tr><td>Precise location (GPS)</td><td>Only in stolen, lost or search mode, or when you send “Locate”</td><td>Find your phone</td><td>30 days, deleted automatically every night. Only each phone's last known location is kept longer, to show it in the panel, until the phone or the account is deleted</td></tr>
-          <tr><td>Security photos (front camera)</td><td>After a failed unlock while protection is armed, or on your request in alert mode</td><td>Identify the person holding your phone</td><td>Forwarded to your and your relatives' Telegram, not kept on our servers</td></tr>
+          <tr><td>Security photos (front camera)</td><td>After a failed unlock while protection is armed, or on your request in alert mode</td><td>Identify the person holding your phone</td><td>Sent to your and your relatives' Telegram, and stored in your private space on the web panel (visible only with your account or the phone's key). Deleted automatically after 30 days, or earlier if you erase them.</td></tr>
           <tr><td>Telegram: Telegram ID and first name of your account and your relatives (2 at most), alerts sent (text, photo, location), commands received</td><td>When you link Telegram or invite a relative</td><td>Alert you and your relatives, and let you control your phone</td><td>Links: until removed. Commands: erased once executed.</td></tr>
           <tr><td>Backup PIN</td><td>If you set one</td><td>Sign you back in to the web panel in an emergency</td><td>Stored hashed (unreadable), until the account is deleted</td></tr>
           <tr><td>Remote commands (ring, locate, lock, photo)</td><td>When you send them from the panel or Telegram</td><td>Run them and keep a record</td><td>Until the account is deleted</td></tr>
@@ -250,12 +259,13 @@
       <table>
         <thead><tr><th>Provider</th><th>Role</th></tr></thead>
         <tbody>
-          <tr><td><a href="https://supabase.com/privacy">Supabase</a></td><td>Database, accounts and alert relay (servers in Paris)</td></tr>
+          <tr><td><a href="https://supabase.com/privacy">Supabase</a></td><td>Database, accounts, alert relay and private photo storage (servers in Paris)</td></tr>
           <tr><td><a href="https://telegram.org/privacy">Telegram</a></td><td>Delivering alerts to you and your relatives</td></tr>
           <tr><td><a href="https://policies.google.com/privacy">Google</a></td><td>Android speech recognition, location services, Google sign-in if you choose it</td></tr>
           <tr><td><a href="https://www.hcaptcha.com/privacy">hCaptcha</a></td><td>Bot check at sign-up and sign-in</td></tr>
           <tr><td><a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub Pages</a></td><td>Hosting the web panel and this page</td></tr>
-          <tr><td><a href="https://openfreemap.org/">OpenFreeMap</a></td><td>Map tiles: images of the displayed area are downloaded from this service</td></tr>
+          <tr><td><a href="https://openfreemap.org/">OpenFreeMap</a></td><td>App map tiles: images of the displayed area are downloaded from this service</td></tr>
+          <tr><td><a href="https://www.esri.com/en-us/privacy/overview">Esri</a>, <a href="https://carto.com/privacy">CARTO</a>, <a href="https://osmfoundation.org/wiki/Privacy_Policy">OpenStreetMap</a></td><td>Satellite imagery and map tiles in the app and the web panel, downloaded for the displayed area</td></tr>
         </tbody>
       </table>
     </div>
@@ -263,7 +273,7 @@
     <h2>6. Security</h2>
     <ul>
       <li>All communication is encrypted (HTTPS).</li>
-      <li>Each account sees only its own phones.</li>
+      <li>Each account sees only its own phones. Photos are in private storage, shown through temporary links (10 minutes).</li>
       <li>Secret keys are long, and repeated attempts are blocked.</li>
       <li>Passwords and PINs are stored hashed; data on the phone is encrypted and excluded from backups.</li>
       <li>Every remote action is recorded in a history visible in the app. If entries are deleted, their number stays visible.</li>
@@ -304,6 +314,242 @@
 
     <h2>12. Contact</h2>
     <p>Mahdi Ziane — <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a></p>
+  </article>
+
+  <!-- ============================== ESPAÑOL ============================== -->
+  <article id="es" lang="es">
+    <h1>Política de privacidad de HearMe</h1>
+    <p class="meta">Última actualización: 2 de octubre de 2026</p>
+
+    <p>HearMe es una app Android de seguridad personal (identificador <code>com.zianemahdi.hearme</code>) con un panel web de emergencia. Sirve para encontrar y proteger <strong>tu propio teléfono</strong>. La publica Mahdi Ziane, responsable del tratamiento de los datos. Contacto: <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a>.</p>
+
+    <div class="summary">
+      <strong>Lo esencial</strong>
+      <ul>
+        <li>Sin publicidad, sin venta de datos y sin elaboración de perfiles.</li>
+        <li>Tu ubicación solo se envía al servidor cuando tu teléfono está en modo robado, perdido o búsqueda, o cuando pides localizarlo.</li>
+        <li>La escucha de la palabra clave usa el reconocimiento de voz de Android; HearMe no graba ni guarda el audio.</li>
+        <li>Tus datos se alojan en la Unión Europea (París) y se transmiten cifrados.</li>
+        <li>Puedes eliminar tu cuenta y todos tus datos en cualquier momento (<a href="#eliminacion">ver cómo</a>).</li>
+      </ul>
+    </div>
+
+    <h2>1. Datos enviados a nuestros servidores</h2>
+    <div class="table-wrap stack">
+      <table>
+        <thead><tr><th>Dato</th><th>Cuándo</th><th>Para qué</th><th>Conservación</th></tr></thead>
+        <tbody>
+          <tr><td>Cuenta: correo electrónico, nombre, contraseña, identificador de cuenta</td><td>Al registrarte. Con «Continuar con Google», el correo y el nombre los proporciona Google.</td><td>Iniciar tu sesión, vincular tu teléfono a tu cuenta y recuperar el acceso</td><td>Hasta que se elimine la cuenta. La contraseña nunca se guarda en claro.</td></tr>
+          <tr><td>Teléfono: clave secreta creada por la app, nombre del teléfono (modelo o apodo), batería, tipo de red, bloqueo, última actividad</td><td>Mientras la protección está activa</td><td>Mostrar el estado del teléfono en el panel y ejecutar tus órdenes a distancia</td><td>Hasta que se elimine la cuenta</td></tr>
+          <tr><td>Ubicación precisa (GPS)</td><td>Solo en modo robado, perdido o búsqueda, o cuando pides «Localizar»</td><td>Encontrar tu teléfono</td><td>30 días, borradas automáticamente cada noche. Solo la última ubicación conocida de cada teléfono se guarda más tiempo, para mostrarla en el panel, hasta que se elimine el teléfono o la cuenta</td></tr>
+          <tr><td>Fotos de seguridad (cámara frontal)</td><td>Tras un desbloqueo fallido con la protección activada, o cuando las pides en modo alerta</td><td>Identificar a la persona que tiene tu teléfono</td><td>Enviadas a tu Telegram y al de tus contactos, y guardadas en tu espacio privado del panel web (visibles solo con tu cuenta o la clave del teléfono). Se borran automáticamente a los 30 días, o antes si las eliminas.</td></tr>
+          <tr><td>Telegram: identificador y nombre de Telegram de tu cuenta y de tus contactos (2 como máximo), alertas enviadas (texto, foto, ubicación), órdenes recibidas</td><td>Cuando vinculas Telegram o invitas a un contacto</td><td>Avisarte a ti y a tus contactos, y dejarte controlar tu teléfono</td><td>Vínculos: hasta que los quites. Órdenes: se borran al ejecutarse.</td></tr>
+          <tr><td>PIN de respaldo</td><td>Si lo defines</td><td>Volver a entrar en el panel web en caso de emergencia</td><td>Guardado en forma de hash (ilegible), hasta que se elimine la cuenta</td></tr>
+          <tr><td>Órdenes a distancia (sonar, localizar, bloquear, foto)</td><td>Cuando las envías desde el panel o Telegram</td><td>Ejecutarlas y dejar constancia</td><td>Hasta que se elimine la cuenta</td></tr>
+          <tr><td>Dirección IP</td><td>En cada intercambio con el servidor</td><td>Bloquear intentos repetidos de adivinar una clave o un PIN</td><td>Contadores borrados entre unos minutos y 24 horas después</td></tr>
+          <tr><td>Mapa comunitario (opcional, desactivado por defecto)</td><td>Si lo activas</td><td>Avisar de un robo de forma anónima y alertarte de las zonas de riesgo</td><td>Aviso sin identificador: ubicación desplazada unos 150 m, hora redondeada. La zona aproximada enviada para descargar las zonas no se guarda.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>2. Datos que se quedan en tu teléfono</h2>
+    <ul>
+      <li>Tus muestras de voz: cifradas, nunca enviadas, excluidas de las copias de seguridad.</li>
+      <li>Tu palabra clave, tus ajustes y el historial de seguridad de las acciones a distancia.</li>
+      <li>La clave secreta y tu sesión, cifradas por el almacén seguro de Android.</li>
+    </ul>
+    <p>Se borran cuando desinstalas la app.</p>
+
+    <h2>3. El micrófono y la escucha de la palabra clave</h2>
+    <p>Cuando activas la escucha, HearMe usa el servicio de reconocimiento de voz de Android instalado en tu teléfono (normalmente el de Google). Ese servicio puede procesar el audio en los servidores de su proveedor, según su propia política de privacidad. HearMe solo recibe el texto reconocido para buscar tu palabra clave: no graba ni envía el audio. Una notificación permanente indica que la escucha está activa, y puedes detenerla en cualquier momento.</p>
+
+    <h2>4. Lo que nunca hacemos</h2>
+    <ul>
+      <li>Vender, alquilar o intercambiar tus datos.</li>
+      <li>Mostrar publicidad o elaborar tu perfil.</li>
+      <li>Leer tus contactos, tus SMS o tus archivos.</li>
+      <li>Vigilar un teléfono que no sea el tuyo: HearMe sigue visible, con una notificación mientras la protección está activa.</li>
+    </ul>
+
+    <h2>5. Proveedores</h2>
+    <p>Estos servicios tratan datos para que HearMe funcione. Telegram y Google pueden tratarlos fuera de la Unión Europea, según sus propias normas.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Proveedor</th><th>Función</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://supabase.com/privacy">Supabase</a></td><td>Base de datos, cuentas, envío de alertas y almacenamiento privado de las fotos (servidores en París)</td></tr>
+          <tr><td><a href="https://telegram.org/privacy">Telegram</a></td><td>Envío de las alertas a ti y a tus contactos</td></tr>
+          <tr><td><a href="https://policies.google.com/privacy">Google</a></td><td>Reconocimiento de voz de Android, servicios de ubicación e inicio de sesión con Google si lo eliges</td></tr>
+          <tr><td><a href="https://www.hcaptcha.com/privacy">hCaptcha</a></td><td>Verificación anti-robots al registrarte y al entrar</td></tr>
+          <tr><td><a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub Pages</a></td><td>Alojamiento del panel web y de esta página</td></tr>
+          <tr><td><a href="https://openfreemap.org/">OpenFreeMap</a></td><td>Mapas de la app: las imágenes de la zona mostrada se descargan de este servicio</td></tr>
+          <tr><td><a href="https://www.esri.com/en-us/privacy/overview">Esri</a>, <a href="https://carto.com/privacy">CARTO</a>, <a href="https://osmfoundation.org/wiki/Privacy_Policy">OpenStreetMap</a></td><td>Imágenes de satélite y mapas de la app y del panel web, descargados para la zona mostrada</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>6. Seguridad</h2>
+    <ul>
+      <li>Todas las comunicaciones están cifradas (HTTPS).</li>
+      <li>Cada cuenta solo ve sus propios teléfonos. Las fotos están en un almacenamiento privado y se muestran mediante enlaces temporales (10 minutos).</li>
+      <li>Las claves secretas son largas y los intentos repetidos se bloquean.</li>
+      <li>Las contraseñas y los PIN se guardan en forma de hash; los datos del teléfono están cifrados y excluidos de las copias de seguridad.</li>
+      <li>Cada acción a distancia queda anotada en un historial visible en la app. Si se borran entradas, su número sigue visible.</li>
+    </ul>
+
+    <h2 id="eliminacion">7. Eliminar tu cuenta y tus datos</h2>
+    <ul>
+      <li><strong>En la app</strong>: Ajustes → Cuenta → Eliminar mi cuenta.</li>
+      <li><strong>Por correo</strong>: escribe a <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a> desde la dirección de tu cuenta, con el asunto «Eliminación de cuenta HearMe». Tramitamos la solicitud en un plazo de 30 días.</li>
+    </ul>
+    <p>Se eliminan: tu cuenta, tus teléfonos, sus ubicaciones, fotos y órdenes, tus vínculos de Telegram y tu PIN de respaldo. Las copias de seguridad de nuestro proveedor desaparecen después automáticamente, como máximo en 30 días. Solo quedan los avisos anónimos del mapa comunitario, que no están vinculados a nadie.</p>
+
+    <h2>8. Tus derechos</h2>
+    <p>Puedes solicitar el acceso a tus datos, su rectificación, su supresión o su portabilidad, u oponerte a su tratamiento, escribiendo a <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a>. Respondemos en el plazo de un mes. También puedes retirar tu consentimiento en cualquier momento: desactivar el mapa comunitario o la escucha, o retirar un permiso en los ajustes de Android. Si no estás de acuerdo con nuestra respuesta, puedes acudir a la autoridad de protección de datos de tu país (por ejemplo, la AEPD en España).</p>
+    <p>Bases legales: la prestación del servicio que solicitas (cuenta, protección, alertas); tu consentimiento (mapa comunitario, escucha de la palabra clave); nuestro interés legítimo en proteger el servicio (bloqueo de abusos).</p>
+
+    <h2>9. Permisos de Android</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Permiso</th><th>Uso</th></tr></thead>
+        <tbody>
+          <tr><td>Micrófono</td><td>Detectar tu palabra clave cuando la escucha está activa</td></tr>
+          <tr><td>Ubicación</td><td>Encontrar tu teléfono en modo alerta y mostrar el mapa</td></tr>
+          <tr><td>Ubicación en segundo plano</td><td>Solo si activas el mapa comunitario: avisarte al entrar en una zona de riesgo</td></tr>
+          <tr><td>Cámara</td><td>Foto de seguridad tras un desbloqueo fallido o cuando la pides en modo alerta</td></tr>
+          <tr><td>Notificaciones</td><td>Indicar que la escucha o la protección está activa, y avisarte</td></tr>
+          <tr><td>Administrador del dispositivo</td><td>Detectar los desbloqueos fallidos y bloquear la pantalla a distancia; se puede desactivar en los ajustes de Android</td></tr>
+          <tr><td>Inicio del teléfono</td><td>Reactivar la protección tras un reinicio</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>10. Menores</h2>
+    <p>HearMe no está destinada a menores de 16 años, y no recogemos sus datos a sabiendas.</p>
+
+    <h2>11. Cambios</h2>
+    <p>La fecha de arriba indica la última actualización. Cualquier cambio importante se anunciará en la app.</p>
+
+    <h2>12. Contacto</h2>
+    <p>Mahdi Ziane — <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a></p>
+  </article>
+
+  <!-- ============================== العربية ============================== -->
+  <article id="ar" lang="ar" dir="rtl">
+    <h1>سياسة الخصوصية لتطبيق HearMe</h1>
+    <p class="meta">آخر تحديث: 2 أكتوبر 2026</p>
+
+    <p>HearMe تطبيق أندرويد للأمان الشخصي (المعرّف <code>com.zianemahdi.hearme</code>) مصحوب بلوحة طوارئ على الويب. يساعدك على العثور على <strong>هاتفك أنت</strong> وحمايته. ينشره مهدي زيان، المسؤول عن معالجة البيانات. للتواصل: <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a>.</p>
+
+    <div class="summary">
+      <strong>الأساسيات</strong>
+      <ul>
+        <li>لا إعلانات، ولا بيع للبيانات، ولا تنميط.</li>
+        <li>لا يُرسل موقعك إلى الخادم إلا عندما يكون هاتفك في وضع السرقة أو الفقدان أو البحث، أو عندما تطلب تحديد موقعه.</li>
+        <li>يمر الاستماع إلى الكلمة المفتاحية عبر ميزة التعرّف على الكلام في أندرويد؛ لا يسجّل HearMe الصوت ولا يحتفظ به.</li>
+        <li>بياناتك مستضافة في الاتحاد الأوروبي (باريس) وتُنقل مشفّرة.</li>
+        <li>يمكنك حذف حسابك وكل بياناتك في أي وقت (<a href="#hadhf">طريقة ذلك</a>).</li>
+      </ul>
+    </div>
+
+    <h2>1. البيانات المرسلة إلى خوادمنا</h2>
+    <div class="table-wrap stack">
+      <table>
+        <thead><tr><th>البيان</th><th>متى</th><th>لماذا</th><th>مدة الحفظ</th></tr></thead>
+        <tbody>
+          <tr><td>الحساب: البريد الإلكتروني، الاسم، كلمة المرور، معرّف الحساب</td><td>عند التسجيل. مع «المتابعة باستخدام Google» يقدّم Google البريد والاسم.</td><td>تسجيل دخولك، وربط هاتفك بحسابك، واستعادة الوصول</td><td>حتى حذف الحساب. لا تُحفظ كلمة المرور أبدًا كنص واضح.</td></tr>
+          <tr><td>الهاتف: المفتاح السري الذي ينشئه التطبيق، اسم الهاتف (الطراز أو لقب)، البطارية، نوع الشبكة، حالة القفل، آخر نشاط</td><td>أثناء تفعيل الحماية</td><td>عرض حالة الهاتف في اللوحة وتنفيذ أوامرك عن بُعد</td><td>حتى حذف الحساب</td></tr>
+          <tr><td>الموقع الدقيق (GPS)</td><td>فقط في وضع السرقة أو الفقدان أو البحث، أو عند طلبك «تحديد الموقع»</td><td>العثور على هاتفك</td><td>30 يومًا، تُحذف تلقائيًا كل ليلة. لا يُحفظ لمدة أطول إلا آخر موقع معروف لكل هاتف، لعرضه في اللوحة، حتى حذف الهاتف أو الحساب</td></tr>
+          <tr><td>صور الأمان (الكاميرا الأمامية)</td><td>بعد محاولة فتح قفل فاشلة والحماية مفعّلة، أو عند طلبك في وضع التنبيه</td><td>التعرّف على الشخص الذي يحمل هاتفك</td><td>تُرسل إلى Telegram الخاص بك وبأقاربك، وتُحفظ في مساحتك الخاصة في لوحة الويب (لا تظهر إلا بحسابك أو بمفتاح الهاتف). تُحذف تلقائيًا بعد 30 يومًا، أو قبل ذلك إذا حذفتها.</td></tr>
+          <tr><td>Telegram: معرّف Telegram واسم حسابك وأقاربك (اثنان كحد أقصى)، التنبيهات المرسلة (نص، صورة، موقع)، الأوامر المستلمة</td><td>عند ربط Telegram أو دعوة قريب</td><td>تنبيهك وتنبيه أقاربك، وتمكينك من التحكم بهاتفك</td><td>الروابط: حتى إزالتها. الأوامر: تُمحى فور تنفيذها.</td></tr>
+          <tr><td>رمز PIN الاحتياطي</td><td>إذا عيّنته</td><td>إعادة تسجيل دخولك إلى لوحة الويب في حالة الطوارئ</td><td>يُحفظ مُجزّأً (غير قابل للقراءة)، حتى حذف الحساب</td></tr>
+          <tr><td>الأوامر عن بُعد (رنين، تحديد الموقع، قفل، صورة)</td><td>عند إرسالها من اللوحة أو Telegram</td><td>تنفيذها والاحتفاظ بسجل لها</td><td>حتى حذف الحساب</td></tr>
+          <tr><td>عنوان IP</td><td>عند كل تبادل مع الخادم</td><td>منع المحاولات المتكررة لتخمين مفتاح أو رمز PIN</td><td>عدّادات تُمحى بعد بضع دقائق إلى 24 ساعة</td></tr>
+          <tr><td>الخريطة المجتمعية (اختيارية، معطّلة افتراضيًا)</td><td>إذا فعّلتها</td><td>الإبلاغ عن سرقة دون الكشف عن الهوية وتنبيهك إلى المناطق الخطرة</td><td>بلاغ دون أي معرّف: موقع مُزاح بنحو 150 م، ووقت مُقرّب. المنطقة التقريبية المرسلة لتنزيل المناطق لا تُحفظ.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>2. البيانات التي تبقى على هاتفك</h2>
+    <ul>
+      <li>عيّنات صوتك: مشفّرة، لا تُرسل أبدًا، ومستثناة من النسخ الاحتياطية.</li>
+      <li>كلمتك المفتاحية وإعداداتك وسجل الأمان للإجراءات عن بُعد.</li>
+      <li>المفتاح السري وجلستك، مشفّران بخزنة أندرويد الآمنة.</li>
+    </ul>
+    <p>تُمحى عند إلغاء تثبيت التطبيق.</p>
+
+    <h2>3. الميكروفون والاستماع إلى الكلمة المفتاحية</h2>
+    <p>عند تفعيل الاستماع، يستخدم HearMe خدمة التعرّف على الكلام في أندرويد المثبتة على هاتفك (غالبًا خدمة Google). قد تعالج هذه الخدمة الصوت على خوادم مزوّدها وفق سياسة الخصوصية الخاصة به. لا يتلقى HearMe إلا النص المتعرَّف عليه للبحث عن كلمتك المفتاحية: لا يسجّل الصوت ولا يرسله. يظهر إشعار دائم يدل على أن الاستماع نشط، ويمكنك إيقافه في أي وقت.</p>
+
+    <h2>4. ما لا نفعله أبدًا</h2>
+    <ul>
+      <li>بيع بياناتك أو تأجيرها أو مبادلتها.</li>
+      <li>عرض الإعلانات أو إنشاء ملف تعريفي عنك.</li>
+      <li>قراءة جهات اتصالك أو رسائلك القصيرة أو ملفاتك.</li>
+      <li>مراقبة أي هاتف غير هاتفك: يبقى HearMe ظاهرًا، مع إشعار أثناء تفعيل الحماية.</li>
+    </ul>
+
+    <h2>5. مقدّمو الخدمات</h2>
+    <p>تعالج هذه الخدمات بيانات لتشغيل HearMe. قد يعالجها Telegram وGoogle خارج الاتحاد الأوروبي وفق قواعدهما الخاصة.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>المزوّد</th><th>الدور</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://supabase.com/privacy">Supabase</a></td><td>قاعدة البيانات والحسابات وتمرير التنبيهات والتخزين الخاص للصور (خوادم في باريس)</td></tr>
+          <tr><td><a href="https://telegram.org/privacy">Telegram</a></td><td>إيصال التنبيهات إليك وإلى أقاربك</td></tr>
+          <tr><td><a href="https://policies.google.com/privacy">Google</a></td><td>التعرّف على الكلام في أندرويد، وخدمات الموقع، وتسجيل الدخول عبر Google إذا اخترته</td></tr>
+          <tr><td><a href="https://www.hcaptcha.com/privacy">hCaptcha</a></td><td>التحقق من أنك لست روبوتًا عند التسجيل وتسجيل الدخول</td></tr>
+          <tr><td><a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub Pages</a></td><td>استضافة لوحة الويب وهذه الصفحة</td></tr>
+          <tr><td><a href="https://openfreemap.org/">OpenFreeMap</a></td><td>خرائط التطبيق: تُنزَّل صور المنطقة المعروضة من هذه الخدمة</td></tr>
+          <tr><td><a href="https://www.esri.com/en-us/privacy/overview">Esri</a>، <a href="https://carto.com/privacy">CARTO</a>، <a href="https://osmfoundation.org/wiki/Privacy_Policy">OpenStreetMap</a></td><td>صور الأقمار الصناعية وخرائط التطبيق ولوحة الويب، تُنزَّل للمنطقة المعروضة</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>6. الأمان</h2>
+    <ul>
+      <li>كل الاتصالات مشفّرة (HTTPS).</li>
+      <li>لا يرى كل حساب إلا هواتفه. الصور في تخزين خاص، وتُعرض عبر روابط مؤقتة (10 دقائق).</li>
+      <li>المفاتيح السرية طويلة، والمحاولات المتكررة تُمنع.</li>
+      <li>كلمات المرور ورموز PIN تُحفظ مُجزّأة؛ وبيانات الهاتف مشفّرة ومستثناة من النسخ الاحتياطية.</li>
+      <li>كل إجراء عن بُعد يُسجَّل في سجل يظهر في التطبيق. إذا حُذفت مدخلات، يبقى عددها ظاهرًا.</li>
+    </ul>
+
+    <h2 id="hadhf">7. حذف حسابك وبياناتك</h2>
+    <ul>
+      <li><strong>في التطبيق</strong>: الإعدادات ← الحساب ← حذف حسابي.</li>
+      <li><strong>عبر البريد الإلكتروني</strong>: راسل <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a> من عنوان حسابك، بعنوان «حذف حساب HearMe». نعالج الطلب خلال 30 يومًا.</li>
+    </ul>
+    <p>يُحذف: حسابك وهواتفك ومواقعها وصورها وأوامرها، وروابط Telegram الخاصة بك ورمز PIN الاحتياطي. ثم تختفي النسخ الاحتياطية لدى مزوّد الاستضافة تلقائيًا خلال 30 يومًا على الأكثر. لا يبقى إلا البلاغات المجهولة في الخريطة المجتمعية، وهي غير مرتبطة بأي شخص.</p>
+
+    <h2>8. حقوقك</h2>
+    <p>يمكنك طلب الاطلاع على بياناتك أو تصحيحها أو محوها أو نقلها، أو الاعتراض على معالجتها، بمراسلة <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a>. نرد خلال شهر. ويمكنك أيضًا سحب موافقتك في أي وقت: إيقاف الخريطة المجتمعية أو الاستماع، أو سحب إذن من إعدادات أندرويد. إذا لم يرضك ردّنا، يمكنك اللجوء إلى سلطة حماية البيانات في بلدك.</p>
+    <p>الأسس القانونية: تقديم الخدمة التي تطلبها (الحساب، الحماية، التنبيهات)؛ موافقتك (الخريطة المجتمعية، الاستماع إلى الكلمة المفتاحية)؛ مصلحتنا المشروعة في تأمين الخدمة (منع إساءة الاستخدام).</p>
+
+    <h2>9. أذونات أندرويد</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>الإذن</th><th>الاستخدام</th></tr></thead>
+        <tbody>
+          <tr><td>الميكروفون</td><td>اكتشاف كلمتك المفتاحية عندما يكون الاستماع نشطًا</td></tr>
+          <tr><td>الموقع</td><td>العثور على هاتفك في وضع التنبيه وعرض الخريطة</td></tr>
+          <tr><td>الموقع في الخلفية</td><td>فقط إذا فعّلت الخريطة المجتمعية: تنبيهك عند دخول منطقة خطرة</td></tr>
+          <tr><td>الكاميرا</td><td>صورة أمان بعد محاولة فتح قفل فاشلة أو عند طلبك في وضع التنبيه</td></tr>
+          <tr><td>الإشعارات</td><td>الإشارة إلى أن الاستماع أو الحماية نشط، وتنبيهك</td></tr>
+          <tr><td>مسؤول الجهاز</td><td>اكتشاف محاولات فتح القفل الفاشلة وقفل الشاشة عن بُعد؛ يمكن إيقافه من إعدادات أندرويد</td></tr>
+          <tr><td>التشغيل عند بدء الهاتف</td><td>إعادة تشغيل الحماية بعد إعادة تشغيل الهاتف</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>10. الأطفال</h2>
+    <p>HearMe غير موجّه للأطفال دون 16 عامًا، ولا نجمع بياناتهم عن علم.</p>
+
+    <h2>11. التعديلات</h2>
+    <p>يشير التاريخ أعلى الصفحة إلى آخر تحديث. سيُعلن عن أي تغيير مهم داخل التطبيق.</p>
+
+    <h2>12. التواصل</h2>
+    <p>مهدي زيان — <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a></p>
   </article>
 
   <footer>© 2026 HearMe</footer>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShieldCheck, Smartphone, Lock } from 'lucide-react';
 import { Device } from '../types';
+import { useI18n } from '../i18n';
 
 interface QuickProtectionBarProps {
   device: Device;
@@ -14,6 +15,7 @@ export const QuickProtectionBar: React.FC<QuickProtectionBarProps> = ({
   theme = 'dark'
 }) => {
   const isDark = theme === 'dark';
+  const { t } = useI18n();
 
   return (
     <div
@@ -33,7 +35,7 @@ export const QuickProtectionBar: React.FC<QuickProtectionBarProps> = ({
               className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 ${
                 isDark ? 'border-[#0e0e1a]' : 'border-white'
               } ${isOnline ? 'bg-emerald-500' : 'bg-rose-500'}`}
-              title={isOnline ? 'En ligne' : 'Hors ligne'}
+              title={isOnline ? t('common.online') : t('common.offline')}
             />
           </div>
 
@@ -43,7 +45,7 @@ export const QuickProtectionBar: React.FC<QuickProtectionBarProps> = ({
             </h1>
             <p className={`text-xs flex items-center gap-1.5 mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Panneau de contrôle HearMe</span>
+              <span>{t('qp.subtitle')}</span>
             </p>
           </div>
         </div>
@@ -54,14 +56,14 @@ export const QuickProtectionBar: React.FC<QuickProtectionBarProps> = ({
             isDark ? 'bg-black/40 border-white/[0.08] text-slate-300' : 'bg-slate-100 border-slate-200 text-slate-700'
           }`}>
             <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-emerald-400 animate-pulse' : 'bg-slate-400'}`} />
-            <span>État : <strong className={isOnline ? 'text-emerald-400' : 'text-slate-400'}>{isOnline ? 'En ligne' : 'Hors ligne'}</strong></span>
+            <span>{t('qp.state')} <strong className={isOnline ? 'text-emerald-400' : 'text-slate-400'}>{isOnline ? t('common.online') : t('common.offline')}</strong></span>
           </div>
 
           <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border ${
             isDark ? 'bg-black/40 border-white/[0.08] text-slate-300' : 'bg-slate-100 border-slate-200 text-slate-700'
           }`}>
             <Lock className={`w-3.5 h-3.5 ${device.is_locked ? 'text-emerald-400' : 'text-amber-400'}`} />
-            <span>Écran : <strong className={device.is_locked ? 'text-emerald-400' : 'text-amber-400'}>{device.is_locked ? 'Verrouillé' : 'Déverrouillé'}</strong></span>
+            <span>{t('qp.screen')} <strong className={device.is_locked ? 'text-emerald-400' : 'text-amber-400'}>{device.is_locked ? t('qp.locked') : t('qp.unlocked')}</strong></span>
           </div>
         </div>
       </div>

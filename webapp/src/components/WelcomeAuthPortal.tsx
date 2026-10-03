@@ -23,6 +23,7 @@ import { getSupabase } from '../utils/supabaseClient';
 import { HearMeLogo } from './HearMeLogo';
 import { ShaderBackground } from './ShaderBackground';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
+import { useI18n, LanguageSwitcher } from '../i18n';
 
 // hCaptcha — clé de TEST par défaut (passe toujours, sans protection réelle).
 // ⚠️ REMPLACER par ta vraie Site Key hCaptcha ; mettre la Secret Key dans
@@ -58,15 +59,16 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   theme,
   onOpenPrivacy,
 }) => {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState<'secret' | 'register' | 'login'>('secret');
   
   // Registration Form State
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
-  const [regDeviceName, setRegDeviceName] = useState('Mon Smartphone Android');
+  const [regDeviceName, setRegDeviceName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [acceptTerms, setAcceptTerms] = useState(true);
+  const [acceptTerms, setAcceptTerms] = useState(false);
 
   // Login Form State
   const [loginEmail, setLoginEmail] = useState('');
@@ -112,7 +114,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
     e.preventDefault();
     const key = quickSecretKey.trim();
     if (!key) {
-      setErrorMsg('Veuillez saisir la clé secrète de votre téléphone');
+      setErrorMsg(t('wa.errKeyEmpty'));
       return;
     }
 
@@ -128,11 +130,11 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       if (Array.isArray(data) && data.length > 0) {
         onSuccess('secret', key);
       } else {
-        setErrorMsg('Clé invalide. Utilisez la clé secrète affichée dans l\'app HearMe → Réglages.');
+        setErrorMsg(t('wa.errKeyInvalid'));
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : '';
-      setErrorMsg(/tentatives/i.test(msg) ? msg : 'Clé invalide ou service indisponible. Réessayez.');
+      setErrorMsg(/tentatives/i.test(msg) ? t('wa.errTooMany') : t('wa.errKeyService'));
     } finally {
       setLoading(false);
     }
@@ -142,16 +144,16 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!regEmail.trim() || !regPassword) {
-      setErrorMsg('Veuillez renseigner votre email et mot de passe');
+      setErrorMsg(t('wa.errFields'));
       return;
     }
     // Mêmes règles que le serveur (Supabase Auth : 10 caractères, lettres ET chiffres).
     if (regPassword.length < 10 || !/[A-Za-z]/.test(regPassword) || !/[0-9]/.test(regPassword)) {
-      setErrorMsg('Le mot de passe doit contenir au moins 10 caractères, avec des lettres et des chiffres');
+      setErrorMsg(t('wa.errPasswordRules'));
       return;
     }
     if (!acceptTerms) {
-      setErrorMsg('Veuillez accepter les conditions de confidentialité');
+      setErrorMsg(t('wa.errConsent'));
       return;
     }
 
@@ -169,21 +171,21 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
           options: {
             captchaToken,
             data: {
-              full_name: regName || 'Utilisateur HearMe',
-              device_name: regDeviceName || 'Mon Téléphone'
+              full_name: regName.trim() || 'HearMe',
+              device_name: regDeviceName.trim() || 'HearMe'
             }
           }
         });
 
         if (error) {
           if (error.message.includes('already registered')) {
-            setErrorMsg('Cette adresse email est déjà enregistrée. Veuillez vous connecter.');
+            setErrorMsg(t('wa.errAlready'));
             setActiveTab('login');
             setLoginEmail(regEmail);
             return;
           }
           if (error.code === 'weak_password') {
-            setErrorMsg('Mot de passe trop faible ou trop courant. Choisissez-en un plus long et plus varié.');
+            setErrorMsg(t('wa.errWeak'));
             return;
           }
           throw error;
@@ -194,7 +196,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
           onSuccess('account', deviceKey, regEmail.trim());
           return;
         } else {
-          setInfoMsg('Compte créé avec succès ! Si demandé, confirmez votre adresse email ou connectez-vous.');
+          setInfoMsg(t('wa.regDone'));
           setActiveTab('login');
           setLoginEmail(regEmail);
           return;
@@ -204,8 +206,9 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       // Fallback local session if Supabase is pending setup
       onSuccess('account', undefined, regEmail.trim());
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Erreur d\'inscription';
-      setErrorMsg(message);
+      // Messages bruts de Supabase (en anglais) : on affiche un texte dans la langue choisie.
+      const message = err instanceof Error ? err.message : '';
+      setErrorMsg(/rate limit|too many/i.test(message) ? t('wa.errTooMany') : t('wa.errRegister'));
     } finally {
       setLoading(false);
     }
@@ -215,7 +218,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!loginEmail.trim() || !loginPassword) {
-      setErrorMsg('Veuillez saisir votre email et mot de passe');
+      setErrorMsg(t('wa.errFields'));
       return;
     }
 
@@ -241,8 +244,12 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       }
       onSuccess('account', undefined, loginEmail.trim());
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Identifiants invalides';
-      setErrorMsg(message);
+      const message = err instanceof Error ? err.message : '';
+      setErrorMsg(
+        /not confirmed/i.test(message) ? t('wa.errNotConfirmed')
+        : /rate limit|too many/i.test(message) ? t('wa.errTooMany')
+        : /invalid/i.test(message) ? t('wa.errLogin')
+        : t('wa.errConnect'));
     } finally {
       setLoading(false);
     }
@@ -252,14 +259,14 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   // Le serveur ouvre le téléphone du compte vu le plus récemment.
   const handlePinLogin = async () => {
     if (!loginEmail.trim() || !pinCode.trim()) {
-      setErrorMsg('Saisissez votre e-mail et votre PIN.');
+      setErrorMsg(t('wa.errPinFields'));
       return;
     }
     setLoading(true);
     setErrorMsg(null);
     try {
       const supabase = getSupabase();
-      if (!supabase) { setErrorMsg('Service indisponible.'); return; }
+      if (!supabase) { setErrorMsg(t('wa.errService')); return; }
       const { data, error } = await supabase.rpc('panel_pin_login', {
         p_email: loginEmail.trim(),
         p_pin: pinCode.trim(),
@@ -267,14 +274,14 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       const res = data as { ok?: boolean; secret?: string; error?: string } | null;
       if (error || !res || !res.ok || !res.secret) {
         setErrorMsg(
-          res?.error === 'locked' ? 'Trop de tentatives. Réessayez dans 15 minutes.'
-          : res?.error === 'no_device' ? 'Aucun téléphone n’est relié à ce compte. Connectez-vous dans l’app HearMe.'
-          : 'E-mail ou PIN incorrect.');
+          res?.error === 'locked' ? t('wa.errPinLocked')
+          : res?.error === 'no_device' ? t('wa.errNoDevice')
+          : t('wa.errPin'));
         return;
       }
       onSuccess('secret', res.secret, loginEmail.trim());
     } catch {
-      setErrorMsg('Connexion impossible.');
+      setErrorMsg(t('wa.errConnect'));
     } finally {
       setLoading(false);
     }
@@ -325,7 +332,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
             intro={true}
           />
         </div>
-
+        <LanguageSwitcher />
       </header>
 
       {/* Main Content: Hero & Auth Grid */}
@@ -342,7 +349,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
               className={`h-px w-7 ${theme === 'dark' ? 'bg-white/20' : 'bg-slate-300'}`}
               aria-hidden="true"
             />
-            Système antivol &amp; protection continue
+            {t('wa.kicker')}
           </div>
 
           <div className="space-y-4">
@@ -351,10 +358,10 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                          text-4xl sm:text-5xl lg:text-[3.6rem]"
             >
               <span className={theme === 'dark' ? 'text-white' : 'text-slate-950'}>
-                Votre téléphone,{' '}
+                {t('wa.h1a')}{' '}
               </span>
               <span className={theme === 'dark' ? 'hm-gradient-text' : 'hm-gradient-text-light'}>
-                toujours à portée.
+                {t('wa.h1b')}
               </span>
             </h1>
             <p
@@ -362,8 +369,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 theme === 'dark' ? 'text-white/70' : 'text-slate-600'
               }`}
             >
-              Localisez-le, faites-le sonner, verrouillez-le — même s'il n'est plus entre vos mains.
-              HearMe veille, vous gardez la main.
+              {t('wa.lead')}
             </p>
           </div>
 
@@ -379,11 +385,11 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   <Volume2 className="w-4 h-4" />
                 </div>
                 <h2 className={`font-bold text-xs ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-                  Mot-clé Vocal « HearMe »
+                  {t('wa.f1t')}
                 </h2>
               </div>
               <p className={`text-[11px] leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                Faites sonner votre smartphone à 100% du volume même s'il est en mode silencieux absolu.
+                {t('wa.f1d')}
               </p>
             </div>
 
@@ -397,11 +403,11 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   <MapPin className="w-4 h-4" />
                 </div>
                 <h2 className={`font-bold text-xs ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-                  Géolocalisation Satellite
+                  {t('wa.f2t')}
                 </h2>
               </div>
               <p className={`text-[11px] leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                Tracé GPS en temps réel, estimation de batterie, état réseau et téléguidage d'urgence.
+                {t('wa.f2d')}
               </p>
             </div>
 
@@ -415,11 +421,11 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   <Camera className="w-4 h-4" />
                 </div>
                 <h2 className={`font-bold text-xs ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-                  Photo Silencieuse d'Intrus
+                  {t('wa.f3t')}
                 </h2>
               </div>
               <p className={`text-[11px] leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                Capture automatique et discrète de l'appareil photo après 3 tentatives de déverrouillage erronées.
+                {t('wa.f3d')}
               </p>
             </div>
 
@@ -433,11 +439,11 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   <ShieldCheck className="w-4 h-4" />
                 </div>
                 <h2 className={`font-bold text-xs ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-                  Vie privée protégée (RGPD)
+                  {t('wa.f4t')}
                 </h2>
               </div>
               <p className={`text-[11px] leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                Chiffré en transit (TLS), cloisonné par compte. Vos données ne sont ni vendues ni partagées.
+                {t('wa.f4d')}
               </p>
             </div>
           </div>
@@ -446,11 +452,11 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
           <div className="flex items-center gap-4 pt-1 text-xs text-slate-400">
             <div className="flex items-center gap-1.5">
               <Check className="w-4 h-4 text-emerald-400" />
-              <span>Compatible Android & Wear OS</span>
+              <span>{t('wa.b1')}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Check className="w-4 h-4 text-emerald-400" />
-              <span>Accès immédiat sans mot de passe</span>
+              <span>{t('wa.b2')}</span>
             </div>
           </div>
         </section>
@@ -475,7 +481,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 }`}
               >
                 <KeyRound className="w-3.5 h-3.5" />
-                <span>Clé Secrète</span>
+                <span>{t('wa.tabKey')}</span>
               </button>
 
               <button
@@ -490,7 +496,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Créer Compte</span>
+                <span>{t('wa.tabRegister')}</span>
               </button>
 
               <button
@@ -505,7 +511,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 }`}
               >
                 <Lock className="w-3.5 h-3.5" />
-                <span>Connexion</span>
+                <span>{t('wa.tabLogin')}</span>
               </button>
             </div>
 
@@ -515,20 +521,20 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 <div>
                   <div className="flex items-center gap-2">
                     <h2 className="text-sm font-black uppercase tracking-wider text-white">
-                      Accès d'Urgence Téléphone
+                      {t('wa.keyTitle')}
                     </h2>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                      Instantané
+                      {t('wa.keyBadge')}
                     </span>
                   </div>
                   <p className="text-xs text-slate-400 mt-1">
-                    Entrez la clé secrète configurée dans l'application mobile pour déverrouiller le suivi sans mot de passe.
+                    {t('wa.keyIntro')}
                   </p>
                 </div>
 
                 <div>
                   <label className="block text-xs text-slate-300 font-semibold mb-1.5">
-                    Clé Secrète de l'appareil
+                    {t('wa.keyLabel')}
                   </label>
                   <div className="relative">
                     <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
@@ -537,13 +543,15 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                       required
                       value={quickSecretKey}
                       onChange={(e) => setQuickSecretKey(e.target.value)}
-                      placeholder="ex. K7QM2XPA9RTD"
+                      placeholder="K7QM2XPA9RTD"
+                      dir="ltr"
+                      autoComplete="off"
                       className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-10 pr-4 py-3 text-xs font-mono font-bold text-white placeholder-slate-500 focus:outline-none focus:border-white/40 tracking-wider uppercase"
                     />
                   </div>
                   <p className="text-[11px] text-slate-500 mt-1.5 flex items-center gap-1">
                     <HelpCircle className="w-3 h-3" />
-                    <span>Clé affichée dans l'app Android : Paramètres → Clé Antivol</span>
+                    <span>{t('wa.keyHelp')}</span>
                   </p>
                 </div>
 
@@ -564,7 +572,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   ) : (
                     <ArrowRight className="w-4 h-4" />
                   )}
-                  <span>Déverrouiller le Panneau d'Urgence</span>
+                  <span>{t('wa.keySubmit')}</span>
                 </button>
 
                 <div className="pt-2 border-t border-white/[0.08] text-center">
@@ -573,8 +581,8 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                     onClick={() => setActiveTab('register')}
                     className="text-xs text-slate-400 hover:text-white transition inline-flex items-center gap-1"
                   >
-                    <span>Vous n'avez pas encore d'appareil configuré ?</span>
-                    <strong className="text-white underline">Créer un compte</strong>
+                    <span>{t('wa.noDevice')}</span>
+                    <strong className="text-white underline">{t('wa.createAccount')}</strong>
                   </button>
                 </div>
               </form>
@@ -585,34 +593,34 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
               <form onSubmit={handleRegisterSubmit} className="space-y-4">
                 <div>
                   <h2 className="text-sm font-black uppercase tracking-wider text-white">
-                    Créer votre compte de protection
+                    {t('wa.regTitle')}
                   </h2>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    Centralisez vos téléphones et sauvegardez vos photos d'intrusion.
+                    {t('wa.regIntro')}
                   </p>
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] text-slate-300 font-semibold mb-1">Votre Nom / Pseudo</label>
+                    <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.regName')}</label>
                     <input
                       type="text"
                       value={regName}
                       onChange={(e) => setRegName(e.target.value)}
-                      placeholder="Alexandre"
+                      placeholder={t('wa.regNamePh')}
                       className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] text-slate-300 font-semibold mb-1">Nom de l'appareil</label>
+                    <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.regDevice')}</label>
                     <div className="relative">
                       <Smartphone className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                       <input
                         type="text"
                         value={regDeviceName}
                         onChange={(e) => setRegDeviceName(e.target.value)}
-                        placeholder="Pixel 8 Pro / Galaxy S24"
+                        placeholder={t('wa.regDevicePh')}
                         className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
                       />
                     </div>
@@ -620,7 +628,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">Adresse E-mail</label>
+                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.email')}</label>
                   <div className="relative">
                     <Mail className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                     <input
@@ -628,14 +636,14 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                       required
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
-                      placeholder="alexandre@exemple.com"
+                      placeholder={t('wa.emailPh')}
                       className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">Mot de passe de sécurité</label>
+                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.password')}</label>
                   <div className="relative">
                     <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                     <input
@@ -643,13 +651,15 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                       required
                       value={regPassword}
                       onChange={(e) => setRegPassword(e.target.value)}
-                      placeholder="10 caractères min., lettres et chiffres"
+                      placeholder={t('wa.passwordPh')}
                       className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-10 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-2.5 text-slate-400 hover:text-white"
+                      aria-label={t('wa.showPassword')}
+                      aria-pressed={showPassword}
                     >
                       {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                     </button>
@@ -665,10 +675,10 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                         <div className={`flex-1 rounded-full ${passwordStrength >= 4 ? 'bg-purple-400' : 'bg-white/10'}`}></div>
                       </div>
                       <span className="text-[10px] text-slate-400">
-                        {passwordStrength <= 1 && 'Faible'}
-                        {passwordStrength === 2 && 'Moyen'}
-                        {passwordStrength === 3 && 'Fort'}
-                        {passwordStrength >= 4 && 'Très fort (recommandé)'}
+                        {passwordStrength <= 1 && t('wa.strength1')}
+                        {passwordStrength === 2 && t('wa.strength2')}
+                        {passwordStrength === 3 && t('wa.strength3')}
+                        {passwordStrength >= 4 && t('wa.strength4')}
                       </span>
                     </div>
                   )}
@@ -683,7 +693,10 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                     className="mt-0.5 rounded border-white/20 bg-white/10 text-white focus:ring-0"
                   />
                   <span>
-                    J'accepte la politique de confidentialité RGPD et autorise le chiffrement de mes données de localisation.
+                    {t('wa.consentA')}{' '}
+                    <button type="button" onClick={onOpenPrivacy} className="underline text-slate-200 hover:text-white">
+                      {t('wa.consentB')}
+                    </button>.
                   </span>
                 </label>
 
@@ -700,7 +713,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   className="w-full py-3.5 px-4 rounded-xl bg-white text-black font-black text-xs hover:bg-slate-200 transition shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-95"
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
-                  <span>Créer mon Compte HearMe</span>
+                  <span>{t('wa.regSubmit')}</span>
                 </button>
               </form>
             )}
@@ -710,10 +723,10 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
               <form onSubmit={handleLoginSubmit} className="space-y-4">
                 <div>
                   <h2 className="text-sm font-black uppercase tracking-wider text-white">
-                    Connexion Compte Membre
+                    {t('wa.loginTitle')}
                   </h2>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    Accédez à vos téléphones synchronisés et historique d'alertes.
+                    {t('wa.loginIntro')}
                   </p>
                 </div>
 
@@ -725,7 +738,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 )}
 
                 <div>
-                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">Adresse E-mail</label>
+                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.email')}</label>
                   <div className="relative">
                     <Mail className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                     <input
@@ -733,14 +746,14 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                       required
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
-                      placeholder="alexandre@exemple.com"
+                      placeholder={t('wa.emailPh')}
                       className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">Mot de passe</label>
+                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.password')}</label>
                   <div className="relative">
                     <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                     <input
@@ -767,17 +780,17 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   className="w-full py-3.5 px-4 rounded-xl bg-white text-black font-black text-xs hover:bg-slate-200 transition shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-95"
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
-                  <span>Se connecter</span>
+                  <span>{t('wa.loginSubmit')}</span>
                 </button>
 
                 <div className="relative flex items-center gap-3 py-1">
                   <div className="flex-1 h-px bg-white/10" />
-                  <span className="text-[10px] uppercase tracking-wider text-slate-500">ou par PIN de secours</span>
+                  <span className="text-[10px] uppercase tracking-wider text-slate-500">{t('wa.orPin')}</span>
                   <div className="flex-1 h-px bg-white/10" />
                 </div>
                 <div>
                   <label className="block text-[11px] text-slate-300 font-semibold mb-1">
-                    PIN de secours (avec l'e-mail de votre compte ci-dessus)
+                    {t('wa.pinLabel')}
                   </label>
                   <div className="relative">
                     <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
@@ -786,7 +799,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                       inputMode="numeric"
                       value={pinCode}
                       onChange={(e) => setPinCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
-                      placeholder="4 à 8 chiffres"
+                      placeholder={t('wa.pinPh')}
                       className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40 tracking-[0.3em]"
                     />
                   </div>
@@ -798,7 +811,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   className="w-full py-3 px-4 rounded-xl bg-white/10 border border-white/15 text-white font-bold text-xs hover:bg-white/15 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-95"
                 >
                   <Lock className="w-4 h-4" />
-                  <span>Se connecter par PIN</span>
+                  <span>{t('wa.pinSubmit')}</span>
                 </button>
 
                 <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between text-xs text-slate-400">
@@ -807,14 +820,14 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                     onClick={() => setActiveTab('secret')}
                     className="hover:text-white transition"
                   >
-                    Oublié ? Utiliser ma clé secrète
+                    {t('wa.forgot')}
                   </button>
                   <button
                     type="button"
                     onClick={() => setActiveTab('register')}
                     className="text-white underline font-bold"
                   >
-                    Créer un compte
+                    {t('wa.createAccount')}
                   </button>
                 </div>
               </form>
@@ -827,14 +840,14 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       <footer className="max-w-6xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 pt-4">
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-emerald-400" />
-          <span>HearMe Security Platform • Protocole Antivol Chiffré</span>
+          <span>{t('wa.footer')}</span>
         </div>
         <div className="flex items-center gap-4">
           <button
             onClick={onOpenPrivacy}
             className="hover:text-slate-300 transition underline cursor-pointer"
           >
-            Politique de Confidentialité
+            {t('common.privacyPolicy')}
           </button>
         </div>
       </footer>

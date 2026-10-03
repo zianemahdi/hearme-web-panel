@@ -1,5 +1,6 @@
 import React from 'react';
 import { Wifi, Signal, Radio, Globe } from 'lucide-react';
+import { useI18n } from '../i18n';
 
 interface NetworkMatrixCardProps {
   networkType: string;
@@ -13,6 +14,7 @@ export const NetworkMatrixCard: React.FC<NetworkMatrixCardProps> = ({
   theme = 'dark'
 }) => {
   const isDark = theme === 'dark';
+  const { t } = useI18n();
 
   const getNetInfo = () => {
     switch (networkType) {
@@ -25,9 +27,9 @@ export const NetworkMatrixCard: React.FC<NetworkMatrixCardProps> = ({
       case '3g':
         return { title: '3G', icon: <Radio className="w-4 h-4 text-blue-400" />, color: 'text-blue-400', badgeColor: 'bg-blue-500/15 text-blue-300 border-blue-500/25' };
       case 'offline':
-        return { title: 'Hors ligne', icon: <Radio className="w-4 h-4 text-slate-400" />, color: 'text-slate-400', badgeColor: 'bg-slate-500/15 text-slate-300 border-slate-500/25' };
+        return { title: t('common.offline'), icon: <Radio className="w-4 h-4 text-slate-400" />, color: 'text-slate-400', badgeColor: 'bg-slate-500/15 text-slate-300 border-slate-500/25' };
       default:
-        return { title: 'Réseau mobile', icon: <Radio className="w-4 h-4 text-slate-400" />, color: 'text-slate-400', badgeColor: 'bg-slate-500/15 text-slate-300 border-slate-500/25' };
+        return { title: t('net.mobile'), icon: <Radio className="w-4 h-4 text-slate-400" />, color: 'text-slate-400', badgeColor: 'bg-slate-500/15 text-slate-300 border-slate-500/25' };
     }
   };
   const net = getNetInfo();
@@ -48,17 +50,17 @@ export const NetworkMatrixCard: React.FC<NetworkMatrixCardProps> = ({
             </div>
             <div>
               <h2 className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
-                Réseau
+                {t('net.title')}
               </h2>
               <span className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                Connexion du téléphone
+                {t('net.subtitle')}
               </span>
             </div>
           </div>
 
           <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase border flex items-center gap-1.5 ${net.badgeColor}`}>
             {net.icon}
-            <span>{isOnline ? 'Connecté' : 'Hors-ligne'}</span>
+            <span>{isOnline ? t('net.connected') : t('common.offline')}</span>
           </span>
         </div>
 
@@ -66,7 +68,7 @@ export const NetworkMatrixCard: React.FC<NetworkMatrixCardProps> = ({
         <div className={`p-3.5 rounded-xl border flex items-center justify-between ${isDark ? 'bg-black/40 border-white/[0.07]' : 'bg-slate-100/80 border-slate-200'}`}>
           <div>
             <span className={`text-[10px] uppercase font-semibold block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Type de connexion
+              {t('net.type')}
             </span>
             <span className={`font-bold text-sm ${net.color}`}>{net.title}</span>
           </div>

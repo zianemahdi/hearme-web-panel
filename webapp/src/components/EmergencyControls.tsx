@@ -1,61 +1,69 @@
 import React, { useState } from 'react';
-import { Lock, Bell, BellOff, MapPin, Camera, CheckCircle2, Loader2, Volume2, ShieldAlert, Search } from 'lucide-react';
+import { Lock, Bell, BellOff, MapPin, Camera, CheckCircle2, Loader2, Volume2, ShieldAlert, Search, AlertCircle } from 'lucide-react';
 import { CommandType } from '../types';
+import { useI18n } from '../i18n';
+import type { I18nKey } from '../i18n/fr';
 
 interface EmergencyControlsProps {
   isAlarmActive: boolean;
   onSendCommand: (command: CommandType, params?: Record<string, unknown>) => Promise<boolean>;
   isSending: boolean;
   theme?: 'dark' | 'light';
+  /** Appelé quand une photo vient d'être demandée (la galerie se met à guetter). */
+  onPhotoRequested?: () => void;
 }
+
+const DONE: Partial<Record<CommandType, I18nKey>> = {
+  lock: 'ec.doneLock',
+  alarm: 'ec.doneAlarm',
+  stopalarm: 'ec.doneStopAlarm',
+  locate: 'ec.doneLocate',
+  photo: 'ec.donePhoto',
+};
 
 export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
   isAlarmActive,
   onSendCommand,
   isSending,
-  theme = 'dark'
+  theme = 'dark',
+  onPhotoRequested
 }) => {
   const isDark = theme === 'dark';
+  const { t } = useI18n();
   const [showLockModal, setShowLockModal] = useState(false);
-  const [lockMessage, setLockMessage] = useState('Téléphone perdu ou volé. Merci de contacter le propriétaire d\'urgence.');
-  const [lockPin, setLockPin] = useState('');
-  const [lastActionStatus, setLastActionStatus] = useState<string | null>(null);
+  const [status, setStatus] = useState<{ ok: boolean; text: string } | null>(null);
   const [searchActive, setSearchActive] = useState(false);
+
+  const flash = (ok: boolean, text: string) => {
+    setStatus({ ok, text });
+    setTimeout(() => setStatus(null), 4500);
+  };
 
   // Mode recherche / perdu : débloque photo + localisation sur le téléphone.
   const toggleSearch = async () => {
     const next = !searchActive;
     const ok = await onSendCommand(next ? 'activate_search' : 'stop_search');
-    if (ok) {
-      setSearchActive(next);
-      setLastActionStatus(next
-        ? 'Mode recherche activé — localisation et photo débloquées'
-        : 'Mode recherche arrêté — retour à la confidentialité');
-      setTimeout(() => setLastActionStatus(null), 4000);
-    }
+    if (!ok) { flash(false, t('ec.failed')); return; }
+    setSearchActive(next);
+    flash(true, t(next ? 'ec.searchStarted' : 'ec.searchStopped'));
   };
 
-  const handleAction = async (command: CommandType, params?: Record<string, unknown>) => {
+  const handleAction = async (command: CommandType) => {
     // Pas de son côté navigateur : on envoie juste la commande au téléphone.
-    const success = await onSendCommand(command, params);
-    if (success) {
-      const labels: Record<string, string> = {
-        lock: 'Ordre de verrouillage envoyé avec succès',
-        alarm: 'Sirène d\'alarme 105 dB déclenchée à distance !',
-        stopalarm: 'Ordre d\'arrêt de l\'alarme transmis',
-        locate: 'Demande de géolocalisation GPS haute précision émise',
-        photo: 'Ordre de capture photo frontale envoyé'
-      };
-      setLastActionStatus(labels[command] || 'Commande transmise');
-      setTimeout(() => setLastActionStatus(null), 4000);
-    }
+    const ok = await onSendCommand(command);
+    if (!ok) { flash(false, t('ec.failed')); return; }
+    if (command === 'photo') onPhotoRequested?.();
+    flash(true, t(DONE[command] ?? 'ec.doneDefault'));
   };
 
-  const submitLock = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const confirmLock = async () => {
     setShowLockModal(false);
-    await handleAction('lock', { message: lockMessage, pin: lockPin || '1234' });
+    await handleAction('lock');
   };
+
+  const neutral = isDark
+    ? 'border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] text-slate-200'
+    : 'border-slate-200 bg-slate-100/80 hover:bg-slate-200 text-slate-800';
 
   return (
     <div
@@ -64,29 +72,28 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
         isAlarmActive ? 'siren-active border-rose-500/80 shadow-[0_0_40px_rgba(244,63,94,0.4)]' : ''
       }`}
     >
-      {/* Background ambient glow */}
       <div className={`hm-bento-glow w-40 h-40 ${isAlarmActive ? 'bg-rose-500' : 'bg-purple-500'} top-0 right-0 -mr-10 -mt-10`} />
 
-      {/* Header */}
-      <div className="flex items-center justify-between">
+      {/* En-tête */}
+      <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <div className="p-2 rounded-xl bg-rose-500/15 border border-rose-500/25 text-rose-400">
             <ShieldAlert className={`w-4 h-4 ${isAlarmActive ? 'animate-bounce text-rose-400' : ''}`} />
           </div>
           <div>
             <h2 className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
-              Centre d'Actions d'Urgence
+              {t('ec.title')}
             </h2>
             <span className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Commandes prioritaires instantanées
+              {t('ec.subtitle')}
             </span>
           </div>
         </div>
 
         {isAlarmActive && (
-          <span className="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 text-[10px] font-extrabold border border-rose-500/40 animate-pulse flex items-center gap-1.5 shadow-[0_0_15px_rgba(244,63,94,0.4)]">
-            <Volume2 className="w-3.5 h-3.5 text-rose-400 animate-spin" />
-            <span>SIRÈNE 105 dB ACTIVE</span>
+          <span className="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 text-[10px] font-extrabold border border-rose-500/40 animate-pulse flex items-center gap-1.5">
+            <Volume2 className="w-3.5 h-3.5 text-rose-400" />
+            <span>{t('ec.alarmActive')}</span>
           </span>
         )}
       </div>
@@ -95,6 +102,7 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
       <button
         onClick={toggleSearch}
         disabled={isSending}
+        aria-pressed={searchActive}
         className={`w-full flex items-center gap-3 p-3 rounded-xl border transition active:scale-[0.99] disabled:opacity-50 ${
           searchActive
             ? 'border-violet-400/60 bg-violet-500/20 text-violet-100'
@@ -104,18 +112,17 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
         <div className="p-2 rounded-lg bg-violet-500/20 border border-violet-500/30 text-violet-300 shrink-0">
           <Search className="w-4 h-4" />
         </div>
-        <div className="text-left flex-1 min-w-0">
-          <div className="text-sm font-bold">{searchActive ? 'Recherche active — appuyez pour arrêter' : 'Activer la recherche'}</div>
-          <div className="text-[11px] opacity-70">Débloque la localisation et la photo à distance</div>
+        <div className="text-start flex-1 min-w-0">
+          <div className="text-sm font-bold">{searchActive ? t('ec.searchOn') : t('ec.searchOff')}</div>
+          <div className="text-[11px] opacity-70">{t('ec.searchHint')}</div>
         </div>
-        <div className={`w-9 h-5 rounded-full relative transition shrink-0 ${searchActive ? 'bg-violet-400' : 'bg-white/20'}`}>
+        <div className={`w-9 h-5 rounded-full relative transition shrink-0 ${searchActive ? 'bg-violet-400' : 'bg-white/20'}`} dir="ltr">
           <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${searchActive ? 'left-[18px]' : 'left-0.5'}`} />
         </div>
       </button>
 
-      {/* Main Action Grid */}
+      {/* Actions */}
       <div className="grid grid-cols-2 gap-2.5">
-        {/* Lock Button */}
         <button
           id="btn-action-lock"
           onClick={() => setShowLockModal(true)}
@@ -125,10 +132,9 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
           <div className="p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 group-hover:scale-110 transition-transform">
             <Lock className="w-5 h-5" />
           </div>
-          <span className="tracking-tight">Verrouiller</span>
+          <span className="tracking-tight">{t('ec.lock')}</span>
         </button>
 
-        {/* Alarm Button */}
         <button
           id="btn-action-alarm"
           onClick={() => handleAction(isAlarmActive ? 'stopalarm' : 'alarm')}
@@ -146,124 +152,91 @@ export const EmergencyControls: React.FC<EmergencyControlsProps> = ({
           }`}>
             {isAlarmActive ? <BellOff className="w-5 h-5" /> : <Bell className="w-5 h-5" />}
           </div>
-          <span className="tracking-tight">{isAlarmActive ? 'Stopper l\'alarme' : 'Déclencher sirène'}</span>
+          <span className="tracking-tight">{isAlarmActive ? t('ec.stopAlarm') : t('ec.alarm')}</span>
         </button>
 
-        {/* Force Location */}
         <button
           id="btn-action-locate"
           onClick={() => handleAction('locate')}
           disabled={isSending}
-          className={`flex items-center justify-center gap-2 p-2.5 rounded-xl border text-xs sm:text-sm font-medium transition active:scale-[0.98] disabled:opacity-50 ${
-            isDark
-              ? 'border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] text-slate-200'
-              : 'border-slate-200 bg-slate-100/80 hover:bg-slate-200 text-slate-800'
-          }`}
+          className={`flex items-center justify-center gap-2 p-2.5 rounded-xl border text-xs sm:text-sm font-medium transition active:scale-[0.98] disabled:opacity-50 ${neutral}`}
         >
           <MapPin className="w-4 h-4 text-purple-400 shrink-0" />
-          <span>Localiser GPS</span>
+          <span>{t('ec.locate')}</span>
         </button>
 
-        {/* Security Photo */}
         <button
           id="btn-action-photo"
           onClick={() => handleAction('photo')}
           disabled={isSending}
-          className={`flex items-center justify-center gap-2 p-2.5 rounded-xl border text-xs sm:text-sm font-medium transition active:scale-[0.98] disabled:opacity-50 ${
-            isDark
-              ? 'border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] text-slate-200'
-              : 'border-slate-200 bg-slate-100/80 hover:bg-slate-200 text-slate-800'
-          }`}
+          className={`flex items-center justify-center gap-2 p-2.5 rounded-xl border text-xs sm:text-sm font-medium transition active:scale-[0.98] disabled:opacity-50 ${neutral}`}
         >
           <Camera className="w-4 h-4 text-pink-400 shrink-0" />
-          <span>Prendre photo</span>
+          <span>{t('ec.photo')}</span>
         </button>
-
       </div>
 
-      {/* Feedback status message */}
-      {lastActionStatus && (
-        <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs shadow-lg animate-fade-in">
-          <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
-          <span className="font-semibold">{lastActionStatus}</span>
+      {/* Retour d'action */}
+      {status && (
+        <div
+          role="status"
+          className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-xs shadow-lg animate-fade-in ${
+            status.ok
+              ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300'
+              : 'bg-rose-500/15 border-rose-500/30 text-rose-300'
+          }`}
+        >
+          {status.ok
+            ? <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
+            : <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />}
+          <span className="font-semibold">{status.text}</span>
         </div>
       )}
 
       {isSending && (
         <div className="flex items-center justify-center gap-2 text-xs text-purple-300 py-1.5 bg-purple-500/10 rounded-xl border border-purple-500/20 font-medium">
           <Loader2 className="w-3.5 h-3.5 animate-spin text-purple-400" />
-          <span>Transmission cryptée de l'ordre au terminal...</span>
+          <span>{t('ec.sending')}</span>
         </div>
       )}
 
-      {/* Lock Confirmation Modal */}
+      {/* Confirmation du verrouillage : l'app verrouille l'écran, rien de plus. */}
       {showLockModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-          <div className={`w-full max-w-md rounded-2xl border p-6 shadow-2xl space-y-4 ${
-            isDark ? 'bg-[#11111f] border-white/15 text-slate-100' : 'bg-white border-slate-200 text-slate-900'
-          }`}>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="lock-modal-title"
+            className={`w-full max-w-md rounded-2xl border p-6 shadow-2xl space-y-4 ${
+              isDark ? 'bg-[#11111f] border-white/15 text-slate-100' : 'bg-white border-slate-200 text-slate-900'
+            }`}
+          >
             <div className="flex items-center gap-3 pb-2 border-b border-white/[0.08]">
               <div className="p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
                 <Lock className="w-5 h-5" />
               </div>
-              <div>
-                <h3 className="text-base font-bold">Verrouillage d'urgence</h3>
-                <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Bloquer l'appareil et afficher un message d'alerte</p>
-              </div>
+              <h3 id="lock-modal-title" className="text-base font-bold">{t('ec.lockTitle')}</h3>
             </div>
-
-            <form onSubmit={submitLock} className="space-y-3.5">
-              <div>
-                <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                  Message affiché à l'écran du ravisseur / passant
-                </label>
-                <textarea
-                  value={lockMessage}
-                  onChange={(e) => setLockMessage(e.target.value)}
-                  rows={3}
-                  required
-                  className={`w-full rounded-xl border px-3 py-2 text-xs focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 ${
-                    isDark ? 'bg-white/[0.04] border-white/[0.08] text-slate-100 placeholder-slate-500' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400'
-                  }`}
-                  placeholder="Ex : Ce téléphone est sous surveillance antivol HearMe..."
-                />
-              </div>
-
-              <div>
-                <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                  Code PIN temporaire de déverrouillage
-                </label>
-                <input
-                  type="text"
-                  value={lockPin}
-                  onChange={(e) => setLockPin(e.target.value)}
-                  maxLength={6}
-                  className={`w-full rounded-xl border px-3 py-2 text-xs font-mono focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 ${
-                    isDark ? 'bg-white/[0.04] border-white/[0.08] text-slate-100 placeholder-slate-500' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400'
-                  }`}
-                  placeholder="Optionnel (ex : 4892)"
-                />
-              </div>
-
-              <div className="pt-3 flex items-center justify-end gap-2 border-t border-white/[0.08]">
-                <button
-                  type="button"
-                  onClick={() => setShowLockModal(false)}
-                  className={`px-4 py-2 rounded-xl border text-xs transition ${
-                    isDark ? 'border-white/[0.08] text-slate-300 hover:bg-white/[0.06]' : 'border-slate-200 text-slate-700 hover:bg-slate-100'
-                  }`}
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-950/40 transition active:scale-95"
-                >
-                  <Lock className="w-3.5 h-3.5" />
-                  Verrouiller immédiatement
-                </button>
-              </div>
-            </form>
+            <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{t('ec.lockText')}</p>
+            <div className="pt-3 flex items-center justify-end gap-2 border-t border-white/[0.08]">
+              <button
+                type="button"
+                onClick={() => setShowLockModal(false)}
+                className={`px-4 py-2 rounded-xl border text-xs transition ${
+                  isDark ? 'border-white/[0.08] text-slate-300 hover:bg-white/[0.06]' : 'border-slate-200 text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                {t('common.cancel')}
+              </button>
+              <button
+                type="button"
+                onClick={confirmLock}
+                className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-950/40 transition active:scale-95"
+              >
+                <Lock className="w-3.5 h-3.5" />
+                {t('ec.lockConfirm')}
+              </button>
+            </div>
           </div>
         </div>
       )}

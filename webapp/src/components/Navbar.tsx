@@ -2,6 +2,7 @@ import React from 'react';
 import { Smartphone, LogOut, FileText } from 'lucide-react';
 import { Device, AuthMode } from '../types';
 import { HearMeLogo } from './HearMeLogo';
+import { useI18n, LanguageSwitcher, LanguageSelect } from '../i18n';
 
 interface NavbarProps {
   device: Device;
@@ -23,6 +24,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   customLogoUrl
 }) => {
   const isDark = theme === 'dark';
+  const { t } = useI18n();
 
   return (
     <header
@@ -56,7 +58,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              Live Control
+              {t('nav.live')}
             </span>
           </div>
 
@@ -74,7 +76,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              Confidentialité
+              {t('nav.privacy')}
             </button>
           </nav>
         </div>
@@ -105,12 +107,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-emerald-400 animate-ping' : 'bg-slate-400'}`} />
-            <span className="tracking-wide uppercase font-bold text-[9px]">{isOnline ? 'En ligne' : 'Hors ligne'}</span>
+            <span className="tracking-wide uppercase font-bold text-[9px]">{isOnline ? t('common.online') : t('common.offline')}</span>
           </span>
         </div>
 
         {/* Right: Quick Action Toolbar */}
         <div className="flex items-center gap-1.5 sm:gap-2">
+          <LanguageSwitcher className="hidden sm:inline-flex" />
+          <LanguageSelect className="sm:hidden" />
           {/* Privacy Policy */}
           <button
             id="btn-nav-privacy"
@@ -120,7 +124,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ? 'bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border-white/[0.08]'
                 : 'bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border-slate-200'
             }`}
-            title="Politique de confidentialité (RGPD & Play Store)"
+            title={t('common.privacyPolicy')}
+            aria-label={t('common.privacyPolicy')}
           >
             <FileText className="w-4 h-4" />
           </button>
@@ -130,7 +135,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             id="btn-nav-logout"
             onClick={onLogout}
             className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border border-rose-500/20 text-xs transition cursor-pointer"
-            title="Quitter la session d'urgence"
+            title={t('nav.logout')}
+            aria-label={t('nav.logout')}
           >
             <LogOut className="w-4 h-4" />
           </button>

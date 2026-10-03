@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { KeyRound, Eye, EyeOff, Copy, Check, RefreshCw, AlertTriangle, Send, HelpCircle, Lock } from 'lucide-react';
+import { useI18n } from '../i18n';
 
 interface SecretKeyCardProps {
   secretKey: string;
@@ -10,6 +11,7 @@ interface SecretKeyCardProps {
 
 export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegenerateKey, theme = 'dark' }) => {
   const isDark = theme === 'dark';
+  const { t } = useI18n();
   const [isRevealed, setIsRevealed] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
@@ -50,10 +52,10 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
           </div>
           <div>
             <h2 className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
-              Clé de Contrôle Sécurisée
+              {t('sk.title')}
             </h2>
             <span className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Jeton cryptographique de liaison
+              {t('sk.subtitle')}
             </span>
           </div>
         </div>
@@ -65,10 +67,10 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
               ? 'text-purple-300 bg-purple-500/10 border-purple-500/25 hover:bg-purple-500/20'
               : 'text-purple-700 bg-purple-50 border-purple-200 hover:bg-purple-100'
           }`}
-          title="Guide Telegram & API"
+          aria-expanded={showTelegramHelp}
         >
           <HelpCircle className="w-3.5 h-3.5" />
-          <span className="font-semibold text-[11px]">Bot Telegram</span>
+          <span className="font-semibold text-[11px]">{t('sk.telegram')}</span>
         </button>
       </div>
 
@@ -76,7 +78,7 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
       <div className={`rounded-xl border p-3.5 flex items-center justify-between gap-3 shadow-inner ${
         isDark ? 'bg-black/50 border-white/[0.08]' : 'bg-slate-100/90 border-slate-200'
       }`}>
-        <div className="font-mono text-base sm:text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 font-bold truncate select-all">
+        <div dir="ltr" className="font-mono text-base sm:text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 font-bold truncate select-all">
           {isRevealed ? secretKey : maskedKey}
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
@@ -86,7 +88,8 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
             className={`p-2 rounded-xl transition active:scale-95 ${
               isDark ? 'bg-white/[0.05] hover:bg-white/[0.1] text-slate-300 hover:text-white' : 'bg-white hover:bg-slate-200 text-slate-700'
             }`}
-            title={isRevealed ? 'Masquer' : 'Afficher la clé'}
+            title={isRevealed ? t('sk.hide') : t('sk.show')}
+            aria-label={isRevealed ? t('sk.hide') : t('sk.show')}
           >
             {isRevealed ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
@@ -94,7 +97,8 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
             id="btn-copy-secret-key"
             onClick={handleCopy}
             className="p-2 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-purple-300 transition active:scale-95 shadow-sm"
-            title="Copier la clé"
+            title={t('sk.copy')}
+            aria-label={t('sk.copy')}
           >
             {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
           </button>
@@ -114,7 +118,7 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
           }`}
         >
           <RefreshCw className={`w-3.5 h-3.5 text-amber-400 ${isRegenerating ? 'animate-spin' : ''}`} />
-          <span>Régénérer une nouvelle clé d'accès</span>
+          <span>{t('sk.regen')}</span>
         </button>
       </div>
 
@@ -124,14 +128,12 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
             ? (isDark ? 'border-emerald-500/30 bg-emerald-500/[0.08] text-emerald-300' : 'border-emerald-300 bg-emerald-50 text-emerald-800')
             : (isDark ? 'border-red-500/30 bg-red-500/[0.08] text-red-300' : 'border-red-300 bg-red-50 text-red-800')
         }`}>
-          {regenResult === 'sent'
-            ? "Demande envoyée. Le téléphone va créer sa nouvelle clé à sa prochaine synchronisation (quelques secondes s'il est en ligne) : retrouvez-la dans l'app, Réglages → Clé secrète, puis reconnectez-vous ici avec elle."
-            : "Demande refusée : la clé n'est plus valide ou le serveur est injoignable. Reconnectez-vous avec la clé affichée dans l'app."}
+          {regenResult === 'sent' ? t('sk.regenSent') : t('sk.regenFailed')}
         </p>
       )}
 
       <p className={`text-[11px] leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-        Cette clé commande votre téléphone à distance en toute sécurité (via ce panneau ou le bot Telegram). Conservez-la en lieu sûr.
+        {t('sk.hint')}
       </p>
 
       {/* Telegram bot commands info tooltip */}
@@ -141,26 +143,24 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
         }`}>
           <div className="flex items-center gap-2 text-purple-400 font-bold">
             <Send className="w-3.5 h-3.5 text-pink-400" />
-            <span>Commandes Telegram d'urgence</span>
+            <span>{t('sk.cmdTitle')}</span>
           </div>
           <p className={`text-[11px] leading-relaxed ${isDark ? 'text-slate-400' : 'text-purple-800'}`}>
-            Écrivez à votre bot HearMe. Un simple bouton suffit : le bot vous demande la clé, vous la
-            renvoyez. Un proche que vous avez ajouté n'a même pas besoin de la clé.
+            {t('sk.cmdIntro')}
           </p>
-          <div className={`space-y-1.5 font-mono text-[11px] p-2.5 rounded-xl border ${
+          <div dir="auto" className={`space-y-1.5 font-mono text-[11px] p-2.5 rounded-xl border ${
             isDark ? 'bg-black/60 border-white/[0.06] text-purple-200' : 'bg-white border-purple-200 text-purple-900'
           }`}>
-            <div><strong className="text-emerald-500">/ring</strong> — Faire sonner à plein volume <span className="opacity-70">(toujours)</span></div>
-            <div><strong className="text-pink-500">/locate</strong> — Position GPS <span className="opacity-70">(si volé/perdu)</span></div>
-            <div><strong className="text-pink-500">/photo</strong> — Photo du porteur <span className="opacity-70">(si volé/perdu)</span></div>
-            <div><strong className="text-pink-500">/report</strong> — État + batterie <span className="opacity-70">(+ photo/GPS si alerte)</span></div>
-            <div><strong className="text-pink-500">/lock</strong> — Verrouiller l'écran</div>
-            <div><strong className="text-pink-500">/access</strong> — Envoyer un accès d'urgence à vos proches</div>
+            <div><strong className="text-emerald-500">/ring</strong> — {t('sk.cmdRing')} <span className="opacity-70">{t('sk.always')}</span></div>
+            <div><strong className="text-pink-500">/locate</strong> — {t('sk.cmdLocate')} <span className="opacity-70">{t('sk.ifAlert')}</span></div>
+            <div><strong className="text-pink-500">/photo</strong> — {t('sk.cmdPhoto')} <span className="opacity-70">{t('sk.ifAlert')}</span></div>
+            <div><strong className="text-pink-500">/report</strong> — {t('sk.cmdReport')} <span className="opacity-70">{t('sk.reportExtra')}</span></div>
+            <div><strong className="text-pink-500">/lock</strong> — {t('sk.cmdLock')}</div>
+            <div><strong className="text-pink-500">/access</strong> — {t('sk.cmdAccess')}</div>
           </div>
           <p className={`text-[10.5px] leading-relaxed flex gap-1.5 ${isDark ? 'text-slate-500' : 'text-purple-700'}`}>
             <Lock className="w-3 h-3 mt-0.5 shrink-0 text-emerald-400" aria-hidden="true" />
-            <span>Photo et localisation ne fonctionnent que si le téléphone est déclaré volé, ou en mode
-            recherche — jamais en temps normal. Chaque photo prévient à l'écran du téléphone.</span>
+            <span>{t('sk.cmdNote')}</span>
           </p>
         </div>
       )}
@@ -176,13 +176,13 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold">Régénérer la clé secrète ?</h3>
-                <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Action immédiate et irréversible</p>
+                <h3 className="text-base font-bold">{t('sk.regenTitle')}</h3>
+                <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('sk.regenSub')}</p>
               </div>
             </div>
 
             <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-              Le téléphone créera sa nouvelle clé à sa prochaine synchronisation ; l'ancienne cessera alors de fonctionner, y compris sur ce panneau. La nouvelle clé s'affichera dans l'app HearMe.
+              {t('sk.regenText')}
             </p>
 
             <div className="pt-3 flex items-center justify-end gap-2 border-t border-white/[0.08]">
@@ -193,7 +193,7 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
                   isDark ? 'border-white/[0.08] text-slate-300 hover:bg-white/[0.06]' : 'border-slate-200 text-slate-700 hover:bg-slate-100'
                 }`}
               >
-                Annuler
+                {t('common.cancel')}
               </button>
               <button
                 type="button"
@@ -201,7 +201,7 @@ export const SecretKeyCard: React.FC<SecretKeyCardProps> = ({ secretKey, onRegen
                 className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg transition active:scale-95"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
-                Confirmer la régénération
+                {t('sk.regenConfirm')}
               </button>
             </div>
           </div>
