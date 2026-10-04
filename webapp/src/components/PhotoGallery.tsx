@@ -167,7 +167,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ secretKey, requestSi
       )}
 
       {photos.length > 0 && (
-        <ul className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2.5">
+        <ul className="grid grid-cols-2 min-[420px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2.5">
           {photos.map((p) => (
             <li key={p.id}>
               <button

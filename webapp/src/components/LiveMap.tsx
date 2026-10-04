@@ -100,6 +100,16 @@ export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, de
     };
   }, [isFullscreen]);
 
+  // Écran tactile : dans la page, un doigt fait défiler la PAGE (la carte occupait
+  // presque tout l'écran et retenait le doigt) ; deux doigts zooment. En plein écran,
+  // la carte se déplace librement.
+  const touchUi = typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches === true;
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map || !touchUi) return;
+    if (isFullscreen) map.dragging.enable(); else map.dragging.disable();
+  }, [isFullscreen, touchUi]);
+
   // Âge de la position, rafraîchi toutes les 5 s : « en direct » seulement si elle est
   // vraiment récente (l'app n'envoie que des relevés GPS frais, datés à la réception).
   const [now, setNow] = useState(() => Date.now());
@@ -121,6 +131,7 @@ export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, de
       center: [currentLocation?.latitude || 36.7769, currentLocation?.longitude || 3.0538],
       zoom: 16,
       zoomControl: false,
+      dragging: !touchUi, // voir plus haut : la page défile sous le doigt
     });
     L.control.zoom({ position: 'bottomright' }).addTo(map);
     mapInstanceRef.current = map;
