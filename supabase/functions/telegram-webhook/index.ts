@@ -3,7 +3,7 @@
 // -------------------------------------------------------------------------
 // Point d'entrée UNIQUE des messages envoyés au bot. Telegram l'appelle
 // (webhook) avec l'en-tête X-Telegram-Bot-Api-Secret-Token ; on le vérifie en
-// temps constant, puis tg_handle_update() (SQL, 11_telegram_relay.sql) décide
+// temps constant, puis tg_handle_update() (SQL, 11 puis 29_telegram_i18n.sql) décide
 // de tout : liaison /start, menu, vérification de clé, file du téléphone.
 // Ici on se contente d'exécuter ses réponses auprès de Telegram et d'effacer
 // les messages qui contenaient une clé secrète.
@@ -32,16 +32,54 @@ const admin = createClient(
   { auth: { persistSession: false } },
 );
 
-// Menu « / » affiché par Telegram (même liste que l'ancienne app).
-const COMMANDS = [
-  { command: "ring", description: "Faire sonner le téléphone (à tout moment)" },
-  { command: "locate", description: "Position GPS (mode alerte requis)" },
-  { command: "photo", description: "Photo du porteur (mode alerte requis)" },
-  { command: "report", description: "Rapport complet : photo, position et état" },
-  { command: "stopalarm", description: "Stopper la sonnerie" },
-  { command: "lock", description: "Verrouiller le téléphone" },
-  { command: "status", description: "Obtenir l'état de l'appareil" },
-];
+// Menu « / » affiché par Telegram, dans les 4 langues de l'app. Par défaut
+// (?setup=1) : la langue du Telegram de chacun, sinon le français. Dès qu'un chat
+// est relié à un téléphone, tg_handle_update renvoie « commands » et ce chat
+// reçoit le menu dans la langue de CE téléphone.
+type Lang = "fr" | "en" | "es" | "ar";
+const ORDER = ["ring", "locate", "photo", "report", "stopalarm", "lock", "status"] as const;
+const DESCRIPTIONS: Record<Lang, Record<(typeof ORDER)[number], string>> = {
+  fr: {
+    ring: "Faire sonner le téléphone (à tout moment)",
+    locate: "Position GPS (mode alerte requis)",
+    photo: "Photo du porteur (mode alerte requis)",
+    report: "Rapport complet : photo, position et état",
+    stopalarm: "Stopper la sonnerie",
+    lock: "Verrouiller le téléphone",
+    status: "Obtenir l'état de l'appareil",
+  },
+  en: {
+    ring: "Make the phone ring (any time)",
+    locate: "GPS location (alert mode required)",
+    photo: "Photo of whoever holds it (alert mode required)",
+    report: "Full report: photo, location and status",
+    stopalarm: "Stop the ringing",
+    lock: "Lock the phone",
+    status: "Get the device status",
+  },
+  es: {
+    ring: "Hacer sonar el teléfono (en cualquier momento)",
+    locate: "Ubicación GPS (requiere modo alerta)",
+    photo: "Foto de quien lo tiene (requiere modo alerta)",
+    report: "Informe completo: foto, ubicación y estado",
+    stopalarm: "Detener el sonido",
+    lock: "Bloquear el teléfono",
+    status: "Ver el estado del dispositivo",
+  },
+  ar: {
+    ring: "جعل الهاتف يرن (في أي وقت)",
+    locate: "موقع GPS (يتطلب وضع التنبيه)",
+    photo: "صورة من يحمل الهاتف (يتطلب وضع التنبيه)",
+    report: "تقرير كامل: صورة وموقع وحالة",
+    stopalarm: "إيقاف الرنين",
+    lock: "قفل الهاتف",
+    status: "معرفة حالة الجهاز",
+  },
+};
+const LANGS = Object.keys(DESCRIPTIONS) as Lang[];
+const isLang = (l: unknown): l is Lang => typeof l === "string" && (LANGS as string[]).includes(l);
+const commandsFor = (lang: Lang) =>
+  ORDER.map((command) => ({ command, description: DESCRIPTIONS[lang][command] }));
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -94,11 +132,16 @@ async function setup(): Promise<Response> {
     secret_token: await webhookSecret(),
     allowed_updates: ["message"],
   });
-  const cmds = await tg("setMyCommands", { commands: COMMANDS });
+  // Liste par défaut (français, comme l'app) + une par langue de Telegram.
+  let cmdsOk = (await tg("setMyCommands", { commands: commandsFor("fr") }))?.ok === true;
+  for (const lang of LANGS) {
+    const r = await tg("setMyCommands", { commands: commandsFor(lang), language_code: lang });
+    cmdsOk = cmdsOk && r?.ok === true;
+  }
   const info = await tg("getWebhookInfo", {});
   return json({
     webhook: hook?.ok === true,
-    commands: cmds?.ok === true,
+    commands: cmdsOk,
     url: info?.result?.url ?? null,
     pending_update_count: info?.result?.pending_update_count ?? null,
     last_error_message: info?.result?.last_error_message ?? null,
@@ -129,6 +172,9 @@ Deno.serve(async (req) => {
     p_chat_id: msg.chat.id,
     p_text: msg.text,
     p_first_name: msg.from?.first_name ?? null,
+    // Langue du Telegram de l'expéditeur : utilisée seulement tant qu'il n'est relié
+    // à aucun téléphone (sinon, c'est la langue du téléphone qui compte).
+    p_lang: typeof msg.from?.language_code === "string" ? msg.from.language_code : null,
   });
   if (error) {
     // 500 → Telegram réessaiera ; la transaction SQL a été annulée, rien n'est à moitié fait.
@@ -140,6 +186,14 @@ Deno.serve(async (req) => {
   for (const d of data?.delete ?? []) await tg("deleteMessage", d);
   for (const r of data?.replies ?? []) {
     await tg("sendMessage", { ...r, disable_web_page_preview: true });
+  }
+  // Menu « / » de ce chat dans la langue de son téléphone (best effort).
+  for (const c of data?.commands ?? []) {
+    if (!isLang(c?.lang) || typeof c?.chat_id !== "number") continue;
+    await tg("setMyCommands", {
+      commands: commandsFor(c.lang),
+      scope: { type: "chat", chat_id: c.chat_id },
+    });
   }
   return json({ ok: true });
 });
