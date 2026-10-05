@@ -1,0 +1,16 @@
+<!-- Modèle Supabase « Change Email Address » (Authentication → Emails → Templates).
+     Sujet conseillé : HearMe — code de vérification / verification code
+     {{ .Token }} = code (6 à 10 chiffres selon le réglage « Email OTP Length ») saisi dans l'app (Profil → Modifier → Changer d'e-mail).
+     Avec le « changement sécurisé », Supabase envoie ce modèle à l'ancienne ET à la nouvelle adresse. -->
+<div style="font-family:Arial,Helvetica,sans-serif;max-width:480px;margin:0 auto;padding:20px;color:#161228">
+  <div style="background:#0d0b17;color:#eeeaf8;padding:14px 18px;font-weight:700;letter-spacing:.18em">HEARME</div>
+  <div style="border:1px solid #e3def2;border-top:0;padding:20px">
+    <p style="margin:0 0 8px">Code · Código · رمز</p>
+    <p style="margin:0 0 18px;font-size:30px;font-weight:700;letter-spacing:6px">{{ .Token }}</p>
+    <p style="margin:0 0 6px">FR : entre ce code dans HearMe pour confirmer le changement d'e-mail ({{ .Email }} → {{ .NewEmail }}).</p>
+    <p style="margin:0 0 6px">EN: enter this code in HearMe to confirm the email change.</p>
+    <p style="margin:0 0 6px">ES: introduce este código en HearMe para confirmar el cambio de correo.</p>
+    <p style="margin:0 0 6px" dir="rtl">AR: أدخل هذا الرمز في HearMe لتأكيد تغيير البريد الإلكتروني.</p>
+    <p style="margin:16px 0 0;font-size:12px;color:#6b6585">Si ce n'est pas toi, ignore cet e-mail. · If this wasn't you, ignore this email.</p>
+  </div>
+</div>
