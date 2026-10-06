@@ -1,0 +1,90 @@
+name: Sauvegarde de la base (chiffrée)
+
+# Copie de la base Supabase chaque semaine (l'offre gratuite n'en fait aucune).
+#
+# ⚠️ Ce dépôt est PUBLIC : la copie n'est JAMAIS enregistrée dans le dépôt (l'exemple
+# officiel de Supabase la commite, ce qui publierait les données des utilisateurs).
+# Elle est chiffrée (GPG, AES-256) AVANT d'être rangée comme « artifact » du run :
+# sans BACKUP_PASSPHRASE, le fichier est illisible. GitHub l'efface après 28 jours.
+#
+# Secrets (Settings → Secrets and variables → Actions), saisis par le propriétaire :
+#   SUPABASE_DB_URL    chaîne « Session pooler » de Supabase (bouton Connect), mot de passe inclus
+#   BACKUP_PASSPHRASE  phrase de chiffrement, 20 caractères au moins, gardée hors de GitHub
+# Restauration : supabase/BACKUP.md
+on:
+  schedule:
+    - cron: '17 2 * * 1'      # chaque lundi à 02:17 UTC
+  workflow_dispatch:          # bouton « Run workflow » dans l'onglet Actions
+
+permissions:
+  contents: read
+
+concurrency:
+  group: db-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+    steps:
+      - name: Vérifier les secrets
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ] || [ -z "$BACKUP_PASSPHRASE" ]; then
+            echo "::error::Ajoute les secrets SUPABASE_DB_URL et BACKUP_PASSPHRASE (Settings → Secrets and variables → Actions)."
+            exit 1
+          fi
+          if [ "${#BACKUP_PASSPHRASE}" -lt 20 ]; then
+            echo "::error::BACKUP_PASSPHRASE est trop courte (20 caractères au moins)."
+            exit 1
+          fi
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Exporter les rôles, la structure et les données
+        run: |
+          umask 077
+          mkdir -p "$RUNNER_TEMP/dump"
+          cd "$RUNNER_TEMP/dump"
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f roles.sql --role-only
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f schema.sql
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f data.sql --data-only --use-copy \
+            -x "storage.buckets_vectors" -x "storage.vector_indexes"
+          # Contrôles sans rien afficher des données : seulement des compteurs.
+          for f in roles.sql schema.sql data.sql; do
+            [ -s "$f" ] || { echo "::error::$f est vide"; exit 1; }
+          done
+          echo "Tables dans la structure : $(grep -c '^CREATE TABLE' schema.sql)"
+          echo "Tables dans les données : $(grep -c '^COPY ' data.sql)"
+          grep -Eq '^COPY "?public"?\."?devices"? ' data.sql \
+            || { echo "::error::la table devices manque dans les données"; exit 1; }
+
+      - name: Chiffrer et vérifier
+        run: |
+          umask 077
+          name="hearme-db-$(date -u +%Y-%m-%d)"
+          mkdir -p "$RUNNER_TEMP/out"
+          tar -C "$RUNNER_TEMP/dump" -czf "$RUNNER_TEMP/$name.tar.gz" roles.sql schema.sql data.sql
+          printf '%s' "$BACKUP_PASSPHRASE" | gpg --batch --yes --no-symkey-cache --pinentry-mode loopback \
+            --passphrase-fd 0 --symmetric --cipher-algo AES256 \
+            -o "$RUNNER_TEMP/out/$name.tar.gz.gpg" "$RUNNER_TEMP/$name.tar.gz"
+          rm -rf "$RUNNER_TEMP/dump" "$RUNNER_TEMP/$name.tar.gz"
+          # Le fichier chiffré doit se rouvrir avec la phrase et contenir les 3 fichiers.
+          list=$(printf '%s' "$BACKUP_PASSPHRASE" | gpg --batch --quiet --no-symkey-cache --pinentry-mode loopback \
+            --passphrase-fd 0 -d "$RUNNER_TEMP/out/$name.tar.gz.gpg" | tar -tz | sort | tr '\n' ' ')
+          [ "$list" = "data.sql roles.sql schema.sql " ] || { echo "::error::copie chiffrée illisible ($list)"; exit 1; }
+          echo "Copie chiffrée : $name.tar.gz.gpg ($(du -h "$RUNNER_TEMP/out/$name.tar.gz.gpg" | cut -f1))"
+          echo "BACKUP_NAME=$name" >> "$GITHUB_ENV"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BACKUP_NAME }}
+          path: ${{ runner.temp }}/out/${{ env.BACKUP_NAME }}.tar.gz.gpg
+          retention-days: 28
+          if-no-files-found: error
+          compression-level: 0
