@@ -4,7 +4,7 @@ Interface web d'urgence pour l'app **HearMe** : localise ton téléphone en temp
 réel (carte satellite), verrouille / fais sonner l'appareil à distance, gère ta
 clé secrète — depuis n'importe quel navigateur.
 
-🔗 **En ligne : https://zianemahdi.github.io/hearme-web-panel/**
+🔗 **En ligne : https://gethearme.me/**
 
 > **Note d'architecture (2026‑08).** Le panneau est désormais une **app React
 > (Vite + TypeScript)** dans `webapp/`, déployée automatiquement par **GitHub
@@ -43,7 +43,7 @@ clé secrète — depuis n'importe quel navigateur.
 hearme-web-panel/
 ├── webapp/                       # ★ l'app React servie en prod
 │   ├── index.html                # entrée Vite (SPA)
-│   ├── vite.config.ts            # base: '/hearme-web-panel/'
+│   ├── vite.config.ts            # base: './' (gethearme.me + ancienne adresse)
 │   ├── package.json
 │   ├── public/
 │   │   ├── privacy.html          # politique (URL Play Store) — servie telle quelle
@@ -110,7 +110,7 @@ Actions »** (⚠️ pas « Deploy from a branch », sinon Pages sert l'ancien s
 statique de la racine). Après un changement de Source, **relancer un déploiement**
 (un simple push) pour publier.
 
-URL : `https://zianemahdi.github.io/hearme-web-panel/`
+URL : `https://gethearme.me/`
 Pages conservées : `…/privacy.html` (politique) et `…/confirm.html` (confirmation e‑mail).
 
 ---

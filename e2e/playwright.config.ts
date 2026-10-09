@@ -12,7 +12,7 @@ export default defineConfig({
   retries: 1,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: process.env.PANEL_URL || 'https://zianemahdi.github.io/hearme-web-panel/',
+    baseURL: process.env.PANEL_URL || 'https://gethearme.me/',
     headless: true,
     // Le panneau prend la langue du navigateur : les tests vérifient les textes français.
     locale: 'fr-FR',

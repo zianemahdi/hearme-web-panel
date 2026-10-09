@@ -26,7 +26,7 @@ const SMTP_USER = Deno.env.get("SMTP_USER") ?? "";
 const SMTP_PASS = Deno.env.get("SMTP_PASS") ?? "";
 const SMTP_HOST = Deno.env.get("SMTP_HOST") ?? "smtp.gmail.com";
 const SMTP_PORT = Number(Deno.env.get("SMTP_PORT") ?? "465");
-const PANEL_URL = "https://zianemahdi.github.io/hearme-web-panel/";
+const PANEL_URL = "https://gethearme.me/";
 
 const admin = createClient(
   Deno.env.get("SUPABASE_URL")!,
