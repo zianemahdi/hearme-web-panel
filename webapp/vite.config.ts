@@ -5,8 +5,9 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    // Servi sous https://<user>.github.io/hearme-web-panel/ (GitHub Pages projet).
-    base: '/hearme-web-panel/',
+    // Chemins relatifs : le même build marche sur https://gethearme.me/ et sur
+    // l'ancienne adresse https://zianemahdi.github.io/hearme-web-panel/ (pas de routeur).
+    base: './',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
