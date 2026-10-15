@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import {
-  KeyRound,
   Mail,
   Lock,
   ArrowRight,
@@ -11,7 +10,6 @@ import {
   Camera,
   MapPin,
   Volume2,
-  Smartphone,
   Check,
   HelpCircle
 } from 'lucide-react';
@@ -30,7 +28,7 @@ const HCAPTCHA_SITE_KEY = '38540b54-70fe-4a76-80f6-1a964196d69c';
 type SB = ReturnType<typeof getSupabase>;
 
 /** Clé secrète du 1er appareil rattaché au compte connecté (mode compte → RLS). */
-async function resolveAccountDeviceKey(supabase: SB): Promise<string | undefined> {
+export async function resolveAccountDeviceKey(supabase: SB): Promise<string | undefined> {
   try {
     const { data } = await supabase
       .from('devices')
@@ -58,15 +56,12 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
 }) => {
   const { t } = useI18n();
   // Pas d'inscription ici : le compte se crée dans l'app HearMe.
-  const [activeTab, setActiveTab] = useState<'secret' | 'login'>('secret');
   
   // Login Form State
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [pinCode, setPinCode] = useState('');
 
-  // Secret Key Access State
-  const [quickSecretKey, setQuickSecretKey] = useState('');
 
   // Status & Feedback
   const [loading, setLoading] = useState(false);
@@ -93,34 +88,24 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
     }
   };
 
-  // Handle Secret Key Direct Unlock
-  const handleSecretSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const key = quickSecretKey.trim();
-    if (!key) {
-      setErrorMsg(t('wa.errKeyEmpty'));
-      return;
-    }
-
+  // « Continuer avec Google » : même compte que dans l'app (où l'on s'est souvent
+  // inscrit avec Google, donc sans mot de passe). Google renvoie ici ; App termine
+  // la connexion au retour.
+  const handleGoogle = async () => {
     setLoading(true);
     setErrorMsg(null);
     try {
-      const supabase = getSupabase();
-      // Validation côté serveur : le RPC ne renvoie un appareil QUE si la clé
-      // correspond à un appareil réel créé par l'app HearMe. Une clé au hasard
-      // est refusée → on n'entre pas dans le tableau de bord.
-      const { data, error } = await supabase.rpc('panel_get_device', { p_secret: key });
+      const { error } = await getSupabase().auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + window.location.pathname,
+          queryParams: { prompt: 'select_account' },
+        },
+      });
       if (error) throw error;
-      if (Array.isArray(data) && data.length > 0) {
-        onSuccess('secret', key);
-      } else {
-        setErrorMsg(t('wa.errKeyInvalid'));
-      }
-    } catch (err: unknown) {
-      // Les erreurs Supabase ne sont pas toujours des « Error » : on lit le message directement.
-      const msg = String((err as { message?: unknown } | null)?.message ?? '');
-      setErrorMsg(/tentatives/i.test(msg) ? t('wa.errTooMany') : t('wa.errKeyService'));
-    } finally {
+      // La page part vers Google : le bouton reste en attente.
+    } catch {
+      setErrorMsg(t('wa.errGoogle'));
       setLoading(false);
     }
   };
@@ -372,115 +357,15 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
           </div>
         </section>
 
-        {/* Accès : clé du téléphone, ou compte créé dans l'app */}
+        {/* Accès : compte créé dans l'app (Google, e-mail ou PIN de secours) */}
         {/* Sur téléphone, l'accès passe avant la présentation : en urgence, pas besoin de défiler. */}
         <section className="lg:col-span-6 order-first lg:order-none">
           <div className="hm-card-pro rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
             {/* Ambient subtle light glow inside card */}
             <div className="absolute -top-16 -right-16 w-44 h-44 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
 
-            {/* Tab selection */}
-            <div className="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-black/20 border border-white/[0.08] mb-6">
-              <button
-                type="button"
-                onClick={() => { setActiveTab('secret'); setErrorMsg(null); setInfoMsg(null); }}
-                className={`py-2.5 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
-                  activeTab === 'secret'
-                    ? theme === 'dark'
-                      ? 'bg-white text-black shadow-md'
-                      : 'bg-slate-900 text-white shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <KeyRound className="w-3.5 h-3.5" />
-                <span>{t('wa.tabKey')}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => { setActiveTab('login'); setErrorMsg(null); setInfoMsg(null); }}
-                className={`py-2.5 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
-                  activeTab === 'login'
-                    ? theme === 'dark'
-                      ? 'bg-white text-black shadow-md'
-                      : 'bg-slate-900 text-white shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <Lock className="w-3.5 h-3.5" />
-                <span>{t('wa.tabLogin')}</span>
-              </button>
-            </div>
-
-            {/* TAB 1: QUICK SECRET KEY ACCESS */}
-            {activeTab === 'secret' && (
-              <form onSubmit={handleSecretSubmit} className="space-y-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-sm font-black uppercase tracking-wider text-white">
-                      {t('wa.keyTitle')}
-                    </h2>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                      {t('wa.keyBadge')}
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-400 mt-1">
-                    {t('wa.keyIntro')}
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-xs text-slate-300 font-semibold mb-1.5">
-                    {t('wa.keyLabel')}
-                  </label>
-                  <div className="relative">
-                    <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-                    <input
-                      type="text"
-                      required
-                      value={quickSecretKey}
-                      onChange={(e) => setQuickSecretKey(e.target.value)}
-                      placeholder="K7QM2XPA9RTD"
-                      dir="ltr"
-                      autoComplete="off"
-                      className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-10 pr-4 py-3 text-xs font-mono font-bold text-white placeholder-slate-500 focus:outline-none focus:border-white/40 tracking-wider uppercase"
-                    />
-                  </div>
-                  <p className="text-[11px] text-slate-500 mt-1.5 flex items-center gap-1">
-                    <HelpCircle className="w-3 h-3" />
-                    <span>{t('wa.keyHelp')}</span>
-                  </p>
-                </div>
-
-                {errorMsg && (
-                  <div role="alert" className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
-                    <span>{errorMsg}</span>
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full py-3.5 px-4 rounded-xl bg-white text-black font-black text-xs hover:bg-slate-200 transition shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-95"
-                >
-                  {loading ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <ArrowRight className="w-4 h-4" />
-                  )}
-                  <span>{t('wa.keySubmit')}</span>
-                </button>
-
-                <p className="pt-3 border-t border-white/[0.08] text-center text-xs text-slate-400 flex items-center justify-center gap-1.5">
-                  <Smartphone className="w-3.5 h-3.5 shrink-0" />
-                  <span>{t('wa.noAccount')}</span>
-                </p>
-              </form>
-            )}
-
             {/* Connexion au compte créé dans l'app */}
-            {activeTab === 'login' && (
+            {(
               <form onSubmit={handleLoginSubmit} className="space-y-4">
                 <div>
                   <h2 className="text-sm font-black uppercase tracking-wider text-white">
@@ -489,6 +374,27 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   <p className="text-xs text-slate-400 mt-0.5">
                     {t('wa.loginIntro')}
                   </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleGoogle}
+                  disabled={loading}
+                  className="w-full py-3.5 px-4 rounded-xl bg-white text-black font-black text-xs hover:bg-slate-200 transition shadow-xl flex items-center justify-center gap-2.5 disabled:opacity-50 cursor-pointer active:scale-95"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 48 48" aria-hidden="true">
+                    <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/>
+                    <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+                    <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/>
+                    <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/>
+                  </svg>
+                  <span>{t('wa.google')}</span>
+                </button>
+
+                <div className="relative flex items-center gap-3 py-1">
+                  <div className="flex-1 h-px bg-white/10" />
+                  <span className="text-[10px] uppercase tracking-wider text-slate-500">{t('wa.orEmail')}</span>
+                  <div className="flex-1 h-px bg-white/10" />
                 </div>
 
                 {infoMsg && (
@@ -538,7 +444,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 px-4 rounded-xl bg-white text-black font-black text-xs hover:bg-slate-200 transition shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-95"
+                  className="w-full py-3 px-4 rounded-xl bg-white/10 border border-white/15 text-white font-bold text-xs hover:bg-white/15 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-95"
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
                   <span>{t('wa.loginSubmit')}</span>
@@ -575,16 +481,9 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   <span>{t('wa.pinSubmit')}</span>
                 </button>
 
-                <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between gap-3 text-xs text-slate-400">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('secret')}
-                    className="hover:text-white transition"
-                  >
-                    {t('wa.forgot')}
-                  </button>
-                  <span className="text-end">{t('wa.accountInApp')}</span>
-                </div>
+                <p className="pt-2 border-t border-white/[0.08] text-center text-xs text-slate-400">
+                  {t('wa.accountInApp')}
+                </p>
               </form>
             )}
           </div>

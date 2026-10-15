@@ -36,7 +36,10 @@ export function getSupabase(): SupabaseClient {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
-        detectSessionInUrl: true
+        detectSessionInUrl: true,
+        // « Continuer avec Google » : le retour porte un code à usage unique (?code=…),
+        // échangé ici contre la session ; jamais de jeton dans l'adresse.
+        flowType: 'pkce'
       }
     });
   }

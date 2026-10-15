@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Device, LocationPoint, CommandType, AuthMode, AuthSession } from './types';
 import { INITIAL_DEMO_DEVICE, INITIAL_DEMO_LOCATIONS } from './utils/mockData';
 import { getSupabase, callRpc } from './utils/supabaseClient';
+import { resolveAccountDeviceKey } from './components/WelcomeAuthPortal';
 import { X } from 'lucide-react';
 
 // Components
 import { Navbar } from './components/Navbar';
 import { LiveMap } from './components/LiveMap';
 import { EmergencyControls } from './components/EmergencyControls';
-import { SecretKeyCard } from './components/SecretKeyCard';
 import { PrivacyModal } from './components/PrivacyModal';
 import { SiteFooter } from './components/SiteFooter';
 import { WelcomeAuthPortal } from './components/WelcomeAuthPortal';
@@ -237,12 +237,41 @@ export default function App() {
 
   const handleLogout = () => { setSession(null); };
 
+  // Retour de « Continuer avec Google » (?code=… ou ?error=…) : la connexion se
+  // termine ici. Tant qu'elle n'est pas faite, on ne ferme pas la session du navigateur
+  // (l'effet suivant l'effacerait aussitôt).
+  const googleReturn = useRef(/[?&](code|error)=/.test(window.location.search));
+  useEffect(() => {
+    if (!googleReturn.current) return;
+    (async () => {
+      const supabase = getSupabase();
+      const params = new URLSearchParams(window.location.search);
+      const failed = params.has('error');
+      // Attend l'échange du code (fait par le client à son démarrage), puis nettoie l'adresse.
+      const { data } = await supabase.auth.getSession();
+      ['code', 'error', 'error_code', 'error_description', 'state'].forEach(k => params.delete(k));
+      const qs = params.toString();
+      window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
+      const user = data.session?.user;
+      if (failed || !user) {
+        googleReturn.current = false;
+        supabase.auth.signOut({ scope: 'local' }).catch(() => { /* rien à fermer */ });
+        setAccessMsg(['app.googleFailed']);
+        return;
+      }
+      const key = await resolveAccountDeviceKey(supabase);
+      googleReturn.current = false;
+      handleAuthSuccess('account', key, user.email ?? undefined);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Pas de session ouverte (déconnexion, clé changée, accès d'urgence expiré, ou jeton
   // oublié par une version précédente) : on ferme aussi la connexion Supabase de CE
   // navigateur — jeton effacé et révoqué. Sur un ordinateur emprunté, aucun jeton ne
   // doit rester. « local » : l'app du téléphone, sur le même compte, reste connectée.
   useEffect(() => {
-    if (session) return;
+    if (session || googleReturn.current) return;
     getSupabase().auth.signOut({ scope: 'local' }).catch(() => { /* hors ligne : jeton effacé quand même */ });
   }, [session]);
 
@@ -401,14 +430,6 @@ export default function App() {
                 />
               </div>
 
-              {/* Clé secrète */}
-              <div className="col-span-1 md:col-span-2 lg:col-span-12 flex flex-col">
-                <SecretKeyCard
-                  secretKey={device.secret_key || 'HMDEMO7K2QXP'}
-                  onRegenerateKey={handleRegenerateKey}
-                  theme={theme}
-                />
-              </div>
             </div>
           </main>
 
