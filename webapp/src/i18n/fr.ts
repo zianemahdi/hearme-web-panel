@@ -65,7 +65,7 @@ export const fr = {
   'pm.summary': "Aucune publicité, aucune revente de données. Votre position n'est envoyée qu'en mode volé, perdu ou recherche. Le panneau est chiffré en transit (TLS) et cloisonné : il sert uniquement à retrouver votre propre téléphone.",
   'pm.s1': "Données utilisées par l'app",
   'pm.mic': 'Micro (mot-clé) :',
-  'pm.micText': "l'écoute passe par la reconnaissance vocale d'Android, qui peut traiter l'audio sur les serveurs de son fournisseur (en général Google). HearMe n'enregistre ni n'envoie l'audio.",
+  'pm.micText': "l'écoute se fait sur votre téléphone (reconnaissance vocale hors ligne) ; en secours seulement, la reconnaissance vocale d'Android peut traiter l'audio sur les serveurs de son fournisseur (en général Google). HearMe n'enregistre ni n'envoie l'audio.",
   'pm.gps': 'Position GPS :',
   'pm.gpsText': 'envoyée seulement en mode volé, perdu ou recherche, ou sur votre commande « Localiser ». Conservée 30 jours.',
   'pm.cam': 'Caméra frontale :',

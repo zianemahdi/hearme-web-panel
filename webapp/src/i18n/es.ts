@@ -65,7 +65,7 @@ export const es: Dict = {
   'pm.summary': 'Sin publicidad ni reventa de datos. Tu ubicación solo se envía en modo robado, perdido o búsqueda. El panel está cifrado en tránsito (TLS) y aislado por cuenta: solo sirve para encontrar tu propio teléfono.',
   'pm.s1': 'Datos que usa la app',
   'pm.mic': 'Micrófono (palabra clave):',
-  'pm.micText': 'la escucha usa el reconocimiento de voz de Android, que puede procesar el audio en los servidores de su proveedor (normalmente Google). HearMe no graba ni envía el audio.',
+  'pm.micText': 'la escucha se hace en tu teléfono (reconocimiento de voz sin conexión); solo como respaldo, el reconocimiento de voz de Android puede procesar el audio en los servidores de su proveedor (normalmente Google). HearMe no graba ni envía el audio.',
   'pm.gps': 'Ubicación GPS:',
   'pm.gpsText': 'se envía solo en modo robado, perdido o búsqueda, o cuando pides «Localizar». Se guarda 30 días.',
   'pm.cam': 'Cámara frontal:',

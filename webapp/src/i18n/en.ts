@@ -65,7 +65,7 @@ export const en: Dict = {
   'pm.summary': 'No ads, no data resale. Your location is only sent in stolen, lost or search mode. The panel is encrypted in transit (TLS) and isolated per account: it is only used to find your own phone.',
   'pm.s1': 'Data used by the app',
   'pm.mic': 'Microphone (keyword):',
-  'pm.micText': "listening goes through Android speech recognition, which may process audio on its provider's servers (usually Google). HearMe does not record or send the audio.",
+  'pm.micText': "listening happens on your phone (offline speech recognition); only as a fallback, Android speech recognition may process audio on its provider's servers (usually Google). HearMe does not record or send the audio.",
   'pm.gps': 'GPS location:',
   'pm.gpsText': 'sent only in stolen, lost or search mode, or when you send “Locate”. Kept for 30 days.',
   'pm.cam': 'Front camera:',
