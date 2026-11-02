@@ -144,17 +144,17 @@ async function remove(req: Request, body: any): Promise<Response> {
   return json({ ok: true });
 }
 
-// Purge nocturne (pg_cron) : fichiers puis lignes des photos de plus de 30 jours.
+// Purge nocturne (pg_cron) : fichiers puis lignes des photos trop anciennes —
+// 30 jours avec HearMe Plus, 1 jour en gratuit (photos_to_purge, 37_plus.sql).
 async function purge(req: Request): Promise<Response> {
   const token = (req.headers.get("x-purge-token") ?? "").trim();
   const { data: allowed } = await admin.rpc("photo_purge_token_ok", { p_token: token });
   if (allowed !== true) return json({ error: "forbidden" }, 403);
 
-  const before = new Date(Date.now() - RETENTION_DAYS * 86400_000).toISOString();
   let removed = 0;
   for (let round = 0; round < 20; round++) {
-    const { data: rows, error } = await admin.from("security_photos")
-      .select("id, storage_path").lt("created_at", before).limit(100);
+    const { data, error } = await admin.rpc("photos_to_purge", { p_days: RETENTION_DAYS, p_limit: 100 });
+    const rows = data as { id: string; storage_path: string }[] | null;
     if (error) return json({ error: "server_error" }, 500);
     if (!rows?.length) break;
     const rm = await admin.storage.from(BUCKET).remove(rows.map((r) => r.storage_path));
