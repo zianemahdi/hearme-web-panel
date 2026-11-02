@@ -75,7 +75,7 @@ $$;
 revoke execute on function plus_enforced(), plus_user_until(uuid), plus_device_active(uuid),
     plus_max_contacts(uuid) from public, anon, authenticated;
 
-/** État Plus pour l'app (clé secrète du téléphone). Dates en epoch ms, 0 = aucune. */
+/** État Plus pour l'app (clé secrète du téléphone). Dates en epoch ms, 0 = aucune ; source = founder/play/admin. */
 create or replace function plus_status(p_secret text)
 returns jsonb language plpgsql security definer set search_path = public as $$
 declare v_id uuid; v_user uuid; v_gift timestamptz;
@@ -87,6 +87,9 @@ begin
     return jsonb_build_object(
         'until_ms', coalesce(floor(extract(epoch from plus_user_until(v_user)) * 1000), 0)::bigint,
         'gift_until_ms', coalesce(floor(extract(epoch from v_gift) * 1000), 0)::bigint,
+        'source', case when plus_enforced()
+                       then (select source from plus_entitlements where user_id = v_user and until > now())
+                  end,
         'enforced', plus_enforced());
 end $$;
 
