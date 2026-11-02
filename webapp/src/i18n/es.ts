@@ -151,6 +151,11 @@ export const es: Dict = {
 
   'ph.title': 'Fotos de quien lo tiene',
   'ph.subtitle': 'Tomadas en modo robado, perdido o búsqueda · se guardan 30 días',
+  'ph.subtitleFree': "Tomadas en modo robado, perdido o búsqueda · se guardan 24 h (30 días con Plus)",
+  'plus.badge': "Plus",
+  'plus.badgeTitle': "HearMe Plus activo",
+  'plus.mapFree': "Plan gratuito: una ubicación cada 15 min durante la alerta, y una cada vez que pulsas «Localizar». El seguimiento en directo viene con HearMe Plus (app › Ajustes › HearMe Plus).",
+  'plus.mapGift': "Plus gratis durante el robo hasta {time}: seguimiento en directo activado.",
   'ph.empty': 'Aún no hay fotos. En modo robado o búsqueda, pulsa «Tomar una foto».',
   'ph.refresh': 'Actualizar',
   'ph.error': 'No se pudieron cargar las fotos. Inténtalo de nuevo.',

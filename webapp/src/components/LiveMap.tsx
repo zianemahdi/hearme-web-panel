@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { LocationPoint } from '../types';
-import { Layers, Crosshair, ExternalLink, Maximize2, Minimize2, Navigation, Activity } from 'lucide-react';
+import { Layers, Crosshair, ExternalLink, Maximize2, Minimize2, Navigation, Activity, Gem } from 'lucide-react';
 import { useI18n } from '../i18n';
 import type { I18nKey } from '../i18n/fr';
 
@@ -10,6 +10,9 @@ interface LiveMapProps {
   currentLocation: LocationPoint | null;
   deviceName: string;
   theme?: 'dark' | 'light';
+  /** Plan HearMe Plus : 'free' et 'gift' ajoutent une ligne d'explication sous la carte. */
+  plan?: 'plus' | 'gift' | 'free' | null;
+  giftUntil?: number;
 }
 
 type MapLayerType = 'dark' | 'satellite' | 'streets' | 'tactical';
@@ -46,7 +49,7 @@ function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 }
 
-export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, deviceName, theme = 'dark' }) => {
+export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, deviceName, theme = 'dark', plan = null, giftUntil = 0 }) => {
   const isDark = theme === 'dark';
   const { t, locale, formatAge } = useI18n();
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -401,6 +404,27 @@ export const LiveMap: React.FC<LiveMapProps> = ({ locations, currentLocation, de
           </span>
         )}
       </div>
+
+      {/* Plan gratuit : pourquoi la position n'avance que toutes les 15 min. */}
+      {(plan === 'free' || plan === 'gift') && (
+        <p
+          id="map-plan-note"
+          className={`mt-2 flex items-start gap-2 rounded-xl border px-3 py-2 text-[11.5px] leading-snug ${
+            plan === 'gift'
+              ? 'bg-purple-500/10 border-purple-500/30 text-purple-200'
+              : 'bg-white/[0.03] border-white/[0.08] text-slate-400'
+          }`}
+        >
+          <Gem className="w-3.5 h-3.5 mt-0.5 shrink-0 text-purple-400" aria-hidden="true" />
+          <span>
+            {plan === 'gift'
+              ? t('plus.mapGift', {
+                  time: new Date(giftUntil).toLocaleString(locale, { weekday: 'long', hour: '2-digit', minute: '2-digit' }),
+                })
+              : t('plus.mapFree')}
+          </span>
+        </p>
+      )}
     </div>
   );
 };

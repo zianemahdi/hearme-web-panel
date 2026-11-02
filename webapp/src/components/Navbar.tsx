@@ -1,5 +1,5 @@
 import React from 'react';
-import { Smartphone, LogOut, FileText } from 'lucide-react';
+import { Smartphone, LogOut, FileText, Gem } from 'lucide-react';
 import { Device, AuthMode } from '../types';
 import { HearMeLogo } from './HearMeLogo';
 import { useI18n, LanguageSwitcher, LanguageSelect } from '../i18n';
@@ -12,6 +12,8 @@ interface NavbarProps {
   onOpenPrivacy: () => void;
   onLogout: () => void;
   customLogoUrl?: string;
+  /** Abonné HearMe Plus (ou fondateur), une fois Plus lancé. */
+  plusBadge?: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -21,7 +23,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   theme,
   onOpenPrivacy,
   onLogout,
-  customLogoUrl
+  customLogoUrl,
+  plusBadge = false
 }) => {
   const isDark = theme === 'dark';
   const { t } = useI18n();
@@ -109,6 +112,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-emerald-400 animate-ping' : 'bg-slate-400'}`} />
             <span className="tracking-wide uppercase font-bold text-[9px]">{isOnline ? t('common.online') : t('common.offline')}</span>
           </span>
+          {plusBadge && (
+            <span
+              title={t('plus.badgeTitle')}
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wide border shrink-0 bg-purple-500/15 text-purple-300 border-purple-500/30"
+            >
+              <Gem className="w-3 h-3" aria-hidden="true" />
+              {t('plus.badge')}
+            </span>
+          )}
         </div>
 
         {/* Right: Quick Action Toolbar */}

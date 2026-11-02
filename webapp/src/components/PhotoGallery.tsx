@@ -20,6 +20,8 @@ interface PhotoGalleryProps {
   secretKey?: string;
   /** Change à chaque photo demandée depuis ce panneau : on guette son arrivée. */
   requestSignal?: number;
+  /** Plan gratuit HearMe Plus : photos gardées 24 h au lieu de 30 jours. */
+  freePlan?: boolean;
 }
 
 const EVENT_LABEL: Record<string, I18nKey> = {
@@ -32,7 +34,7 @@ const REFRESH_MS = 60_000;     // relecture normale (liens valables 10 min)
 const WATCH_MS = 4_000;        // après une demande : toutes les 4 s…
 const WATCH_FOR_MS = 75_000;   // … pendant 75 s au plus
 
-export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ secretKey, requestSignal = 0 }) => {
+export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ secretKey, requestSignal = 0, freePlan = false }) => {
   const { t, formatAge } = useI18n();
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(false);
@@ -134,7 +136,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ secretKey, requestSi
           </div>
           <div>
             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-200">{t('ph.title')}</h2>
-            <span className="text-[11px] text-slate-400">{t('ph.subtitle')}</span>
+            <span className="text-[11px] text-slate-400">{t(freePlan ? 'ph.subtitleFree' : 'ph.subtitle')}</span>
           </div>
         </div>
         <button

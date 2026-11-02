@@ -151,6 +151,11 @@ export const fr = {
 
   'ph.title': 'Photos du porteur',
   'ph.subtitle': 'Prises en mode volé, perdu ou recherche · gardées 30 jours',
+  'ph.subtitleFree': "Prises en mode volé, perdu ou recherche · gardées 24 h (30 jours avec Plus)",
+  'plus.badge': "Plus",
+  'plus.badgeTitle': "HearMe Plus actif",
+  'plus.mapFree': "Plan gratuit : une position toutes les 15 min pendant l'alerte, et une à chaque « Localiser ». Le suivi en direct est inclus dans HearMe Plus (app › Réglages › HearMe Plus).",
+  'plus.mapGift': "Plus offert pendant le vol jusqu'à {time} : suivi en direct activé.",
   'ph.empty': "Aucune photo pour l'instant. En mode volé ou recherche, appuyez sur « Prendre une photo ».",
   'ph.refresh': 'Actualiser',
   'ph.error': 'Impossible de charger les photos. Réessayez.',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Device, LocationPoint, CommandType, AuthMode, AuthSession } from './types';
+import { Device, LocationPoint, CommandType, AuthMode, AuthSession, PlusState } from './types';
 import { INITIAL_DEMO_DEVICE, INITIAL_DEMO_LOCATIONS } from './utils/mockData';
 import { getSupabase, callRpc } from './utils/supabaseClient';
 import { resolveAccountDeviceKey } from './components/WelcomeAuthPortal';
@@ -60,6 +60,8 @@ export default function App() {
   const [accessMsg, setAccessMsg] = useState<I18nKey[] | null>(null);
   // Incrémenté à chaque photo demandée : la galerie guette son arrivée.
   const [photoSignal, setPhotoSignal] = useState(0);
+  // HearMe Plus (null : inconnu, démo ou ancien serveur).
+  const [plus, setPlus] = useState<PlusState | null>(null);
 
   // Force le sombre sur <html>, et nettoie une éventuelle préférence claire
   // laissée par une ancienne version.
@@ -165,6 +167,31 @@ export default function App() {
     pollTimer = setInterval(fetchRealDeviceData, 8000);
     return () => { isMounted = false; stopped = true; clearInterval(pollTimer); };
   }, [session, device.id]);
+
+  // HearMe Plus : relu chaque minute (un cadeau de vol peut commencer ou finir).
+  useEffect(() => {
+    const key = session?.mode !== 'demo' ? session?.secretKey : undefined;
+    setPlus(null);
+    if (!key) return;
+    let alive = true;
+    const load = async () => {
+      const { data, error } = await callRpc<{ enforced?: boolean; until_ms?: number; gift_until_ms?: number }>(
+        'plus_status', { p_secret: key }
+      );
+      if (!alive || error || !data) return;
+      setPlus({ enforced: !!data.enforced, until: Number(data.until_ms ?? 0), giftUntil: Number(data.gift_until_ms ?? 0) });
+    };
+    load();
+    const timer = setInterval(load, 60000);
+    return () => { alive = false; clearInterval(timer); };
+  }, [session]);
+
+  // Plan du moment : 'plus' (abonné, fondateur ou avant le lancement), 'gift' (cadeau
+  // de vol seulement), 'free'. null tant qu'on ne sait pas : rien n'est affiché.
+  const now = Date.now();
+  const plan: 'plus' | 'gift' | 'free' | null = !plus ? null
+    : !plus.enforced || plus.until > now ? 'plus'
+    : plus.giftUntil > now ? 'gift' : 'free';
 
   // Envoi de commande
   const handleSendCommand = async (command: CommandType): Promise<boolean> => {
@@ -374,6 +401,7 @@ export default function App() {
             authMode={session.mode}
             isOnline={isOnline}
             theme={theme}
+            plusBadge={plan === 'plus' && !!plus?.enforced}
             onOpenPrivacy={() => setIsPrivacyOpen(true)}
             onLogout={handleLogout}
           />
@@ -390,6 +418,8 @@ export default function App() {
                   currentLocation={currentLocation}
                   deviceName={device.name}
                   theme={theme}
+                  plan={plan}
+                  giftUntil={plus?.giftUntil ?? 0}
                 />
               </div>
 
@@ -408,7 +438,7 @@ export default function App() {
               {/* Photos du porteur (espace privé, 30 jours) */}
               {session.mode !== 'demo' && session.secretKey && (
                 <div className="col-span-1 md:col-span-2 lg:col-span-12 flex flex-col">
-                  <PhotoGallery secretKey={session.secretKey} requestSignal={photoSignal} />
+                  <PhotoGallery secretKey={session.secretKey} requestSignal={photoSignal} freePlan={plan === 'free'} />
                 </div>
               )}
 

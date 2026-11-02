@@ -19,6 +19,14 @@ export interface Device {
   anti_theft_enabled?: boolean;
 }
 
+/** HearMe Plus vu du panneau (plus_status). Dates en epoch ms, 0 = aucune. */
+export interface PlusState {
+  /** Limites du plan gratuit actives (false avant le lancement : tout le monde a tout). */
+  enforced: boolean;
+  until: number;
+  giftUntil: number;
+}
+
 export interface LocationPoint {
   id: string;
   device_id: string;

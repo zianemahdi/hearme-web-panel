@@ -151,6 +151,11 @@ export const en: Dict = {
 
   'ph.title': 'Photos of the holder',
   'ph.subtitle': 'Taken in stolen, lost or search mode · kept 30 days',
+  'ph.subtitleFree': "Taken in stolen, lost or search mode · kept 24 h (30 days with Plus)",
+  'plus.badge': "Plus",
+  'plus.badgeTitle': "HearMe Plus active",
+  'plus.mapFree': "Free plan: one location every 15 min during an alert, and one each time you tap “Locate”. Live tracking comes with HearMe Plus (app › Settings › HearMe Plus).",
+  'plus.mapGift': "Plus is free during the theft until {time}: live tracking is on.",
   'ph.empty': 'No photos yet. In stolen or search mode, tap “Take a photo”.',
   'ph.refresh': 'Refresh',
   'ph.error': 'Could not load the photos. Try again.',
