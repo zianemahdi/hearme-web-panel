@@ -14,12 +14,13 @@ import { test, expect } from '@playwright/test';
 test('le portail d’accueil se charge', async ({ page }) => {
   await page.goto('./');
   await expect(page).toHaveTitle(/HearMe/i);
-  // Deux accès : la clé du téléphone, ou le compte créé dans l'app.
-  await expect(page.getByRole('button', { name: 'Clé secrète' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Connexion' })).toBeVisible();
+  // Trois accès au compte créé dans l'app : Google, e-mail + mot de passe, PIN de secours.
+  await expect(page.getByRole('button', { name: 'Continuer avec Google' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Se connecter', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Se connecter avec le PIN' })).toBeVisible();
   // Pas d'inscription sur le site : le compte se crée dans l'app HearMe.
-  await expect(page.getByRole('button', { name: /Créer un compte/i })).toHaveCount(0);
-  await expect(page.getByText(/se crée dans l'app HearMe/i)).toBeVisible();
+  await expect(page.getByRole('button', { name: /Créer un compte|S.inscrire/i })).toHaveCount(0);
+  await expect(page.getByText(/Le compte se crée dans l'app/i)).toBeVisible();
 });
 
 test('le panneau existe en 4 langues (arabe de droite à gauche)', async ({ page }) => {
@@ -47,9 +48,9 @@ test('magic link invalide → bannière + URL nettoyée', async ({ page }) => {
 
 test('connexion PIN incorrecte → message d’erreur', async ({ page }) => {
   await page.goto('./');
-  await page.getByRole('button', { name: 'Connexion' }).click();
+  // Plus d'onglets : le PIN de secours est directement sous la connexion e-mail.
   await page.locator('input[type="email"]').fill('e2e-ci@hearme.test');
-  await page.getByPlaceholder(/chiffres/i).fill('999999');
+  await page.getByPlaceholder(/PIN de secours/i).fill('999999');
   await page.getByRole('button', { name: /Se connecter avec le PIN/i }).click();
   // La fonction serveur panel_pin_login refuse proprement.
   await expect(page.getByText('E-mail ou PIN incorrect.')).toBeVisible();
