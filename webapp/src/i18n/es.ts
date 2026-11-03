@@ -201,6 +201,8 @@ export const es: Dict = {
   'wa.keySubmit': 'Abrir el panel',
   'wa.noAccount': '¿Aún no tienes cuenta? Se crea en la app HearMe, en tu teléfono.',
   'wa.accountInApp': 'La cuenta se crea en la app',
+  'wa.getApp': 'Descargar HearMe en Google Play',
+  'wa.playOn': 'Disponible en',
   'wa.errKeyEmpty': 'Escribe la clave secreta de tu teléfono.',
   'wa.errKeyInvalid': 'Clave no válida. Usa la clave que muestra la app HearMe → Ajustes.',
   'wa.errKeyService': 'Clave no válida o servicio no disponible. Inténtalo de nuevo.',

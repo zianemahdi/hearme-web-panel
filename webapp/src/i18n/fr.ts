@@ -201,6 +201,8 @@ export const fr = {
   'wa.keySubmit': 'Ouvrir le panneau',
   'wa.noAccount': "Pas encore de compte ? Il se crée dans l'app HearMe, sur votre téléphone.",
   'wa.accountInApp': "Le compte se crée dans l'app",
+  'wa.getApp': 'Télécharger HearMe sur Google Play',
+  'wa.playOn': 'Disponible sur',
   'wa.errKeyEmpty': 'Saisissez la clé secrète de votre téléphone.',
   'wa.errKeyInvalid': "Clé invalide. Utilisez la clé affichée dans l'app HearMe → Paramètres.",
   'wa.errKeyService': 'Clé invalide ou service indisponible. Réessayez.',

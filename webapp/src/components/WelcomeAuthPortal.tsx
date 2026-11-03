@@ -17,6 +17,7 @@ import { AuthMode } from '../types';
 import { getSupabase } from '../utils/supabaseClient';
 import { HearMeLogo } from './HearMeLogo';
 import { ShaderBackground } from './ShaderBackground';
+import { PlayBadge } from './PlayBadge';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { useI18n, LanguageSwitcher } from '../i18n';
 
@@ -267,6 +268,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
             >
               {t('wa.lead')}
             </p>
+            <PlayBadge />
           </div>
 
           {/* 4 Core Pillars of HearMe */}
@@ -484,6 +486,9 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                 <p className="pt-2 border-t border-white/[0.08] text-center text-xs text-slate-400">
                   {t('wa.accountInApp')}
                 </p>
+                <div className="flex justify-center">
+                  <PlayBadge />
+                </div>
               </form>
             )}
           </div>

@@ -201,6 +201,8 @@ export const ar: Dict = {
   'wa.keySubmit': 'فتح اللوحة',
   'wa.noAccount': 'ليس لديك حساب بعد؟ يُنشأ الحساب في تطبيق HearMe على هاتفك.',
   'wa.accountInApp': 'يُنشأ الحساب في التطبيق',
+  'wa.getApp': 'حمّل HearMe من Google Play',
+  'wa.playOn': 'احصل عليه من',
   'wa.errKeyEmpty': 'أدخل المفتاح السري لهاتفك.',
   'wa.errKeyInvalid': 'مفتاح غير صالح. استخدم المفتاح الظاهر في تطبيق HearMe ← الإعدادات.',
   'wa.errKeyService': 'مفتاح غير صالح أو الخدمة غير متاحة. أعد المحاولة.',

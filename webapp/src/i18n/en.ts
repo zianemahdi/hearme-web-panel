@@ -201,6 +201,8 @@ export const en: Dict = {
   'wa.keySubmit': 'Open the panel',
   'wa.noAccount': 'No account yet? Create it in the HearMe app on your phone.',
   'wa.accountInApp': 'Accounts are created in the app',
+  'wa.getApp': 'Get HearMe on Google Play',
+  'wa.playOn': 'Get it on',
   'wa.errKeyEmpty': "Enter your phone's secret key.",
   'wa.errKeyInvalid': 'Invalid key. Use the key shown in the HearMe app → Settings.',
   'wa.errKeyService': 'Invalid key or service unavailable. Try again.',
