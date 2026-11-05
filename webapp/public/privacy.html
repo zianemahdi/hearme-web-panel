@@ -83,7 +83,7 @@
   <!-- ============================== FRANÇAIS ============================== -->
   <article id="fr" lang="fr">
     <h1>Politique de confidentialité de HearMe</h1>
-    <p class="meta">Dernière mise à jour : 15 octobre 2026</p>
+    <p class="meta">Dernière mise à jour : 5 novembre 2026</p>
 
     <p>HearMe est une application Android de sécurité personnelle (identifiant <code>com.gethearme.app</code>) accompagnée d'un panneau web d'urgence. Elle sert à retrouver et à protéger <strong>ton propre téléphone</strong>. Elle est publiée sur Google Play par le compte développeur GetHearMe ; Mahdi Ziane en est le responsable du traitement des données. Contact : <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a>.</p>
 
@@ -91,7 +91,7 @@
       <strong>L'essentiel</strong>
       <ul>
         <li>Aucune publicité, aucune revente de données, aucun profilage.</li>
-        <li>Ta position n'est envoyée au serveur que lorsque ton téléphone est en mode volé, perdu ou recherche, quand tu demandes à le localiser, ou dans une alerte de l'antivol armé (vol, batterie faible, extinction).</li>
+        <li>Ta position n'est envoyée au serveur que lorsque ton téléphone est en mode volé, perdu ou recherche, quand tu demandes à le localiser, ou dans une alerte de l'antivol armé (vol, batterie faible, extinction). Si tu déclenches le SOS silencieux, elle est transmise à tes proches sur Telegram, sans être gardée par le serveur.</li>
         <li>L'écoute du mot-clé se fait sur ton téléphone ; HearMe n'enregistre ni n'envoie l'audio.</li>
         <li>Tes données sont hébergées dans l'Union européenne (Paris) et transmises chiffrées.</li>
         <li>Tu peux supprimer ton compte et toutes tes données à tout moment (<a href="#suppression">voir comment</a>).</li>
@@ -108,7 +108,9 @@
           <tr><td>Position précise (GPS)</td><td>Uniquement en mode volé, perdu ou recherche, ou sur ta commande « Localiser »</td><td>Retrouver ton téléphone</td><td>30 jours, supprimées automatiquement chaque nuit. Seule la dernière position connue de chaque téléphone est gardée plus longtemps, pour l'afficher dans le panneau, jusqu'à la suppression du téléphone ou du compte</td></tr>
           <tr><td>Photos de sécurité (caméra frontale)</td><td>Après un déverrouillage raté quand la protection est armée, ou sur ta demande en mode alerte</td><td>Identifier la personne qui a ton téléphone</td><td>Envoyées sur ton Telegram et celui de tes proches, et rangées dans ton espace privé du panneau web (visibles seulement avec ton compte ou la clé du téléphone). Supprimées automatiquement au bout de 30 jours, ou avant si tu les effaces.</td></tr>
           <tr><td>Telegram : identifiant et prénom Telegram de ton compte et de tes proches (2 au maximum), alertes envoyées (texte, photo, position), commandes reçues</td><td>Quand tu relies Telegram ou invites un proche</td><td>Te prévenir, prévenir tes proches et te laisser piloter ton téléphone</td><td>Liaisons : jusqu'à leur retrait. Commandes : effacées dès leur exécution.</td></tr>
+          <tr><td>SOS silencieux (facultatif, désactivé par défaut) : ton prénom, ta position et l'heure</td><td>Quand l'écoute entend ta phrase secrète, puis 2 nouvelles positions à 5 minutes d'intervalle (HearMe Plus), jusqu'à ce que tu indiques « Je vais bien »</td><td>Prévenir tes proches, sans bruit, que tu as besoin d'aide</td><td>Envoyé à tes proches sur Telegram. Le serveur ne garde pas le message ni la position.</td></tr>
           <tr><td>Alertes par e-mail : nom du téléphone, type d'alerte, position, batterie, heure</td><td>Quand l'antivol est armé et que les alertes par e-mail sont activées (Profil), ou quand tu demandes un e-mail d'essai</td><td>Te prévenir, uniquement à l'adresse e-mail confirmée de ton compte</td><td>Le serveur ne garde pas le contenu des e-mails, seulement un compteur d'envois (10 par heure au maximum), effacé avec le téléphone. L'e-mail reste ensuite dans ta boîte mail.</td></tr>
+          <tr><td>Rapport de la semaine par e-mail : chiffres seulement (heures d'écoute et d'antivol armé, téléphone retrouvé, alertes, codes faux, SOS)</td><td>Chaque lundi, si le rapport est activé (Profil, activé par défaut)</td><td>Te montrer ce que HearMe a fait pour toi pendant la semaine</td><td>Comptés sur ton téléphone. Le serveur ne garde pas le contenu de l'e-mail.</td></tr>
           <tr><td>PIN de secours</td><td>Si tu le définis</td><td>Te reconnecter au panneau web en cas d'urgence</td><td>Stocké sous forme hachée (illisible), jusqu'à la suppression du compte</td></tr>
           <tr><td>Commandes à distance (sonner, localiser, verrouiller, photo)</td><td>Quand tu les envoies depuis le panneau ou Telegram</td><td>Les exécuter et en garder la trace</td><td>Jusqu'à la suppression du compte</td></tr>
           <tr><td>Adresse IP</td><td>À chaque échange avec le serveur</td><td>Bloquer les tentatives répétées de deviner une clé ou un PIN</td><td>Compteurs effacés après quelques minutes à 24 heures</td></tr>
@@ -120,13 +122,13 @@
     <h2>2. Données qui restent sur ton téléphone</h2>
     <ul>
       <li>Tes échantillons de voix : chiffrés, jamais envoyés, exclus des sauvegardes.</li>
-      <li>Ton mot-clé, tes réglages et l'historique de sécurité des actions à distance.</li>
+      <li>Ton mot-clé, ta phrase secrète de SOS, tes réglages et l'historique de sécurité des actions à distance.</li>
       <li>La clé secrète et ta session, chiffrées par le coffre-fort d'Android.</li>
     </ul>
     <p>Elles sont effacées quand tu désinstalles l'application.</p>
 
     <h2>3. Le micro et l'écoute du mot-clé</h2>
-    <p>Quand tu actives l'écoute, HearMe reconnaît ton mot-clé <strong>directement sur ton téléphone</strong>, avec un modèle de reconnaissance vocale hors ligne (Vosk, logiciel libre) : le son ne quitte pas l'appareil. Ce modèle est téléchargé une seule fois après l'installation (environ 40 à 170 Mo selon la langue) ; aucune donnée personnelle n'est envoyée pour cela. Tant qu'il n'est pas installé, ou si Android refuse le micro à HearMe (par exemple quand l'écoute redémarre téléphone verrouillé), HearMe utilise en secours le service de reconnaissance vocale d'Android (en général celui de Google), qui peut traiter l'audio sur les serveurs de son fournisseur, selon sa propre politique de confidentialité. Dans tous les cas, HearMe ne garde que le texte reconnu, le temps d'y chercher ton mot-clé : il n'enregistre ni n'envoie l'audio. Une notification permanente indique que l'écoute est active, et tu peux l'arrêter à tout moment.</p>
+    <p>Quand tu actives l'écoute, HearMe reconnaît ton mot-clé <strong>directement sur ton téléphone</strong>, avec un modèle de reconnaissance vocale hors ligne (Vosk, logiciel libre) : le son ne quitte pas l'appareil. Ce modèle est téléchargé une seule fois après l'installation (environ 40 à 170 Mo selon la langue) ; aucune donnée personnelle n'est envoyée pour cela. Tant qu'il n'est pas installé, ou si Android refuse le micro à HearMe (par exemple quand l'écoute redémarre téléphone verrouillé), HearMe utilise en secours le service de reconnaissance vocale d'Android (en général celui de Google), qui peut traiter l'audio sur les serveurs de son fournisseur, selon sa propre politique de confidentialité. Dans tous les cas, HearMe ne garde que le texte reconnu, le temps d'y chercher ton mot-clé : il n'enregistre ni n'envoie l'audio. C'est la même chose pour la phrase secrète du SOS silencieux, si tu l'actives. Une notification permanente indique que l'écoute est active, et tu peux l'arrêter à tout moment.</p>
 
     <h2>4. Ce que nous ne faisons jamais</h2>
     <ul>
@@ -179,8 +181,8 @@
       <table>
         <thead><tr><th>Autorisation</th><th>Utilisation</th></tr></thead>
         <tbody>
-          <tr><td>Micro</td><td>Détecter ton mot-clé quand l'écoute est active</td></tr>
-          <tr><td>Position</td><td>Retrouver ton téléphone en mode alerte, afficher la carte</td></tr>
+          <tr><td>Micro</td><td>Détecter ton mot-clé (et ta phrase de SOS silencieux) quand l'écoute est active</td></tr>
+          <tr><td>Position</td><td>Retrouver ton téléphone en mode alerte, afficher la carte, envoyer ta position à tes proches avec le SOS silencieux</td></tr>
           <tr><td>Caméra</td><td>Photo de sécurité après un déverrouillage raté ou sur ta demande en mode alerte</td></tr>
           <tr><td>Notifications</td><td>Indiquer que l'écoute ou la protection est active, et t'alerter</td></tr>
           <tr><td>Administrateur de l'appareil</td><td>Détecter les déverrouillages ratés et verrouiller l'écran à distance ; désactivable dans les réglages Android</td></tr>
@@ -202,7 +204,7 @@
   <!-- ============================== ENGLISH ============================== -->
   <article id="en" lang="en">
     <h1>HearMe Privacy Policy</h1>
-    <p class="meta">Last updated: October 15, 2026</p>
+    <p class="meta">Last updated: November 5, 2026</p>
 
     <p>HearMe is a personal-safety Android app (package <code>com.gethearme.app</code>) with an emergency web panel. It helps you find and protect <strong>your own phone</strong>. It is published on Google Play by the developer account GetHearMe; Mahdi Ziane is the data controller. Contact: <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a>.</p>
 
@@ -210,7 +212,7 @@
       <strong>The essentials</strong>
       <ul>
         <li>No ads, no selling of data, no profiling.</li>
-        <li>Your location is sent to our server only when your phone is in stolen, lost or search mode, when you ask to locate it, or in an alert from armed anti-theft (theft, low battery, shutdown).</li>
+        <li>Your location is sent to our server only when your phone is in stolen, lost or search mode, when you ask to locate it, or in an alert from armed anti-theft (theft, low battery, shutdown). If you trigger the silent SOS, it is passed on to your relatives on Telegram, without being kept by the server.</li>
         <li>Keyword listening happens on your phone; HearMe does not record or send the audio.</li>
         <li>Your data is hosted in the European Union (Paris) and encrypted in transit.</li>
         <li>You can delete your account and all your data at any time (<a href="#deletion">see how</a>).</li>
@@ -227,7 +229,9 @@
           <tr><td>Precise location (GPS)</td><td>Only in stolen, lost or search mode, or when you send “Locate”</td><td>Find your phone</td><td>30 days, deleted automatically every night. Only each phone's last known location is kept longer, to show it in the panel, until the phone or the account is deleted</td></tr>
           <tr><td>Security photos (front camera)</td><td>After a failed unlock while protection is armed, or on your request in alert mode</td><td>Identify the person holding your phone</td><td>Sent to your and your relatives' Telegram, and stored in your private space on the web panel (visible only with your account or the phone's key). Deleted automatically after 30 days, or earlier if you erase them.</td></tr>
           <tr><td>Telegram: Telegram ID and first name of your account and your relatives (2 at most), alerts sent (text, photo, location), commands received</td><td>When you link Telegram or invite a relative</td><td>Alert you and your relatives, and let you control your phone</td><td>Links: until removed. Commands: erased once executed.</td></tr>
+          <tr><td>Silent SOS (optional, off by default): your first name, location and time</td><td>When listening hears your secret phrase, then 2 new locations 5 minutes apart (HearMe Plus), until you tap “I'm safe”</td><td>Let your relatives know, silently, that you need help</td><td>Sent to your relatives on Telegram. The server does not keep the message or the location.</td></tr>
           <tr><td>Email alerts: phone name, alert type, location, battery, time</td><td>When anti-theft is armed and email alerts are on (Profile), or when you ask for a test email</td><td>Alert you, only at your account's confirmed email address</td><td>The server does not keep email contents, only a send counter (10 per hour at most), deleted with the phone. The email then stays in your mailbox.</td></tr>
+          <tr><td>Weekly email report: numbers only (hours of listening and armed anti-theft, phone found, alerts, wrong codes, SOS)</td><td>Every Monday, if the report is on (Profile, on by default)</td><td>Show you what HearMe did for you during the week</td><td>Counted on your phone. The server does not keep the email contents.</td></tr>
           <tr><td>Backup PIN</td><td>If you set one</td><td>Sign you back in to the web panel in an emergency</td><td>Stored hashed (unreadable), until the account is deleted</td></tr>
           <tr><td>Remote commands (ring, locate, lock, photo)</td><td>When you send them from the panel or Telegram</td><td>Run them and keep a record</td><td>Until the account is deleted</td></tr>
           <tr><td>IP address</td><td>On every request to the server</td><td>Block repeated attempts to guess a key or a PIN</td><td>Counters erased after a few minutes up to 24 hours</td></tr>
@@ -239,13 +243,13 @@
     <h2>2. Data that stays on your phone</h2>
     <ul>
       <li>Your voice samples: encrypted, never sent, excluded from backups.</li>
-      <li>Your keyword, your settings and the security history of remote actions.</li>
+      <li>Your keyword, your secret SOS phrase, your settings and the security history of remote actions.</li>
       <li>The secret key and your session, encrypted by Android's keystore.</li>
     </ul>
     <p>They are erased when you uninstall the app.</p>
 
     <h2>3. Microphone and keyword listening</h2>
-    <p>When you turn listening on, HearMe recognizes your keyword <strong>directly on your phone</strong>, using an offline speech recognition model (Vosk, open-source software): the sound never leaves the device. This model is downloaded once after installation (about 40 to 170 MB depending on the language); no personal data is sent for this. Until it is installed, or if Android denies HearMe the microphone (for example when listening restarts while the phone is locked), HearMe falls back on Android's speech recognition service (usually Google's), which may process audio on its provider's servers, under its own privacy policy. In every case, HearMe only keeps the recognized text long enough to look for your keyword: it does not record or send the audio. A permanent notification shows that listening is on, and you can stop it at any time.</p>
+    <p>When you turn listening on, HearMe recognizes your keyword <strong>directly on your phone</strong>, using an offline speech recognition model (Vosk, open-source software): the sound never leaves the device. This model is downloaded once after installation (about 40 to 170 MB depending on the language); no personal data is sent for this. Until it is installed, or if Android denies HearMe the microphone (for example when listening restarts while the phone is locked), HearMe falls back on Android's speech recognition service (usually Google's), which may process audio on its provider's servers, under its own privacy policy. In every case, HearMe only keeps the recognized text long enough to look for your keyword: it does not record or send the audio. The same goes for the silent SOS secret phrase, if you turn it on. A permanent notification shows that listening is on, and you can stop it at any time.</p>
 
     <h2>4. What we never do</h2>
     <ul>
@@ -298,8 +302,8 @@
       <table>
         <thead><tr><th>Permission</th><th>Use</th></tr></thead>
         <tbody>
-          <tr><td>Microphone</td><td>Detect your keyword while listening is on</td></tr>
-          <tr><td>Location</td><td>Find your phone in alert mode, show the map</td></tr>
+          <tr><td>Microphone</td><td>Detect your keyword (and your silent SOS phrase) while listening is on</td></tr>
+          <tr><td>Location</td><td>Find your phone in alert mode, show the map, send your location to your relatives with the silent SOS</td></tr>
           <tr><td>Camera</td><td>Security photo after a failed unlock or on your request in alert mode</td></tr>
           <tr><td>Notifications</td><td>Show that listening or protection is on, and alert you</td></tr>
           <tr><td>Device admin</td><td>Detect failed unlocks and lock the screen remotely; can be turned off in Android settings</td></tr>
@@ -321,7 +325,7 @@
   <!-- ============================== ESPAÑOL ============================== -->
   <article id="es" lang="es">
     <h1>Política de privacidad de HearMe</h1>
-    <p class="meta">Última actualización: 15 de octubre de 2026</p>
+    <p class="meta">Última actualización: 5 de noviembre de 2026</p>
 
     <p>HearMe es una app Android de seguridad personal (identificador <code>com.gethearme.app</code>) con un panel web de emergencia. Sirve para encontrar y proteger <strong>tu propio teléfono</strong>. La publica en Google Play la cuenta de desarrollador GetHearMe; Mahdi Ziane es el responsable del tratamiento de los datos. Contacto: <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a>.</p>
 
@@ -329,7 +333,7 @@
       <strong>Lo esencial</strong>
       <ul>
         <li>Sin publicidad, sin venta de datos y sin elaboración de perfiles.</li>
-        <li>Tu ubicación solo se envía al servidor cuando tu teléfono está en modo robado, perdido o búsqueda, cuando pides localizarlo, o en una alerta del antirrobo activado (robo, batería baja, apagado).</li>
+        <li>Tu ubicación solo se envía al servidor cuando tu teléfono está en modo robado, perdido o búsqueda, cuando pides localizarlo, o en una alerta del antirrobo activado (robo, batería baja, apagado). Si activas el SOS silencioso, se transmite a tus contactos por Telegram, sin que el servidor la guarde.</li>
         <li>La escucha de la palabra clave se hace en tu teléfono; HearMe no graba ni envía el audio.</li>
         <li>Tus datos se alojan en la Unión Europea (París) y se transmiten cifrados.</li>
         <li>Puedes eliminar tu cuenta y todos tus datos en cualquier momento (<a href="#eliminacion">ver cómo</a>).</li>
@@ -346,7 +350,9 @@
           <tr><td>Ubicación precisa (GPS)</td><td>Solo en modo robado, perdido o búsqueda, o cuando pides «Localizar»</td><td>Encontrar tu teléfono</td><td>30 días, borradas automáticamente cada noche. Solo la última ubicación conocida de cada teléfono se guarda más tiempo, para mostrarla en el panel, hasta que se elimine el teléfono o la cuenta</td></tr>
           <tr><td>Fotos de seguridad (cámara frontal)</td><td>Tras un desbloqueo fallido con la protección activada, o cuando las pides en modo alerta</td><td>Identificar a la persona que tiene tu teléfono</td><td>Enviadas a tu Telegram y al de tus contactos, y guardadas en tu espacio privado del panel web (visibles solo con tu cuenta o la clave del teléfono). Se borran automáticamente a los 30 días, o antes si las eliminas.</td></tr>
           <tr><td>Telegram: identificador y nombre de Telegram de tu cuenta y de tus contactos (2 como máximo), alertas enviadas (texto, foto, ubicación), órdenes recibidas</td><td>Cuando vinculas Telegram o invitas a un contacto</td><td>Avisarte a ti y a tus contactos, y dejarte controlar tu teléfono</td><td>Vínculos: hasta que los quites. Órdenes: se borran al ejecutarse.</td></tr>
+          <tr><td>SOS silencioso (opcional, desactivado por defecto): tu nombre, tu ubicación y la hora</td><td>Cuando la escucha oye tu frase secreta, y después 2 nuevas ubicaciones cada 5 minutos (HearMe Plus), hasta que indicas «Estoy bien»</td><td>Avisar a tus contactos, sin ruido, de que necesitas ayuda</td><td>Enviado a tus contactos por Telegram. El servidor no guarda el mensaje ni la ubicación.</td></tr>
           <tr><td>Alertas por correo: nombre del teléfono, tipo de alerta, ubicación, batería, hora</td><td>Cuando el antirrobo está activado y las alertas por correo están activas (Perfil), o cuando pides un correo de prueba</td><td>Avisarte, solo en la dirección de correo confirmada de tu cuenta</td><td>El servidor no guarda el contenido de los correos, solo un contador de envíos (10 por hora como máximo), que se borra con el teléfono. El correo queda después en tu buzón.</td></tr>
+          <tr><td>Informe semanal por correo: solo cifras (horas de escucha y de antirrobo activado, teléfono encontrado, alertas, códigos erróneos, SOS)</td><td>Cada lunes, si el informe está activado (Perfil, activado por defecto)</td><td>Mostrarte lo que HearMe hizo por ti durante la semana</td><td>Contadas en tu teléfono. El servidor no guarda el contenido del correo.</td></tr>
           <tr><td>PIN de respaldo</td><td>Si lo defines</td><td>Volver a entrar en el panel web en caso de emergencia</td><td>Guardado en forma de hash (ilegible), hasta que se elimine la cuenta</td></tr>
           <tr><td>Órdenes a distancia (sonar, localizar, bloquear, foto)</td><td>Cuando las envías desde el panel o Telegram</td><td>Ejecutarlas y dejar constancia</td><td>Hasta que se elimine la cuenta</td></tr>
           <tr><td>Dirección IP</td><td>En cada intercambio con el servidor</td><td>Bloquear intentos repetidos de adivinar una clave o un PIN</td><td>Contadores borrados entre unos minutos y 24 horas después</td></tr>
@@ -358,13 +364,13 @@
     <h2>2. Datos que se quedan en tu teléfono</h2>
     <ul>
       <li>Tus muestras de voz: cifradas, nunca enviadas, excluidas de las copias de seguridad.</li>
-      <li>Tu palabra clave, tus ajustes y el historial de seguridad de las acciones a distancia.</li>
+      <li>Tu palabra clave, tu frase secreta de SOS, tus ajustes y el historial de seguridad de las acciones a distancia.</li>
       <li>La clave secreta y tu sesión, cifradas por el almacén seguro de Android.</li>
     </ul>
     <p>Se borran cuando desinstalas la app.</p>
 
     <h2>3. El micrófono y la escucha de la palabra clave</h2>
-    <p>Cuando activas la escucha, HearMe reconoce tu palabra clave <strong>directamente en tu teléfono</strong>, con un modelo de reconocimiento de voz sin conexión (Vosk, software libre): el sonido no sale del dispositivo. Este modelo se descarga una sola vez tras la instalación (unos 40 a 170 MB según el idioma); no se envía ningún dato personal para ello. Mientras no está instalado, o si Android niega el micrófono a HearMe (por ejemplo, cuando la escucha se reinicia con el teléfono bloqueado), HearMe usa como respaldo el servicio de reconocimiento de voz de Android (normalmente el de Google), que puede procesar el audio en los servidores de su proveedor, según su propia política de privacidad. En todos los casos, HearMe solo conserva el texto reconocido el tiempo necesario para buscar tu palabra clave: no graba ni envía el audio. Una notificación permanente indica que la escucha está activa, y puedes detenerla en cualquier momento.</p>
+    <p>Cuando activas la escucha, HearMe reconoce tu palabra clave <strong>directamente en tu teléfono</strong>, con un modelo de reconocimiento de voz sin conexión (Vosk, software libre): el sonido no sale del dispositivo. Este modelo se descarga una sola vez tras la instalación (unos 40 a 170 MB según el idioma); no se envía ningún dato personal para ello. Mientras no está instalado, o si Android niega el micrófono a HearMe (por ejemplo, cuando la escucha se reinicia con el teléfono bloqueado), HearMe usa como respaldo el servicio de reconocimiento de voz de Android (normalmente el de Google), que puede procesar el audio en los servidores de su proveedor, según su propia política de privacidad. En todos los casos, HearMe solo conserva el texto reconocido el tiempo necesario para buscar tu palabra clave: no graba ni envía el audio. Lo mismo ocurre con la frase secreta del SOS silencioso, si la activas. Una notificación permanente indica que la escucha está activa, y puedes detenerla en cualquier momento.</p>
 
     <h2>4. Lo que nunca hacemos</h2>
     <ul>
@@ -417,8 +423,8 @@
       <table>
         <thead><tr><th>Permiso</th><th>Uso</th></tr></thead>
         <tbody>
-          <tr><td>Micrófono</td><td>Detectar tu palabra clave cuando la escucha está activa</td></tr>
-          <tr><td>Ubicación</td><td>Encontrar tu teléfono en modo alerta y mostrar el mapa</td></tr>
+          <tr><td>Micrófono</td><td>Detectar tu palabra clave (y tu frase de SOS silencioso) cuando la escucha está activa</td></tr>
+          <tr><td>Ubicación</td><td>Encontrar tu teléfono en modo alerta, mostrar el mapa y enviar tu ubicación a tus contactos con el SOS silencioso</td></tr>
           <tr><td>Cámara</td><td>Foto de seguridad tras un desbloqueo fallido o cuando la pides en modo alerta</td></tr>
           <tr><td>Notificaciones</td><td>Indicar que la escucha o la protección está activa, y avisarte</td></tr>
           <tr><td>Administrador del dispositivo</td><td>Detectar los desbloqueos fallidos y bloquear la pantalla a distancia; se puede desactivar en los ajustes de Android</td></tr>
@@ -440,7 +446,7 @@
   <!-- ============================== العربية ============================== -->
   <article id="ar" lang="ar" dir="rtl">
     <h1>سياسة الخصوصية لتطبيق HearMe</h1>
-    <p class="meta">آخر تحديث: 15 أكتوبر 2026</p>
+    <p class="meta">آخر تحديث: 5 نوفمبر 2026</p>
 
     <p>HearMe تطبيق أندرويد للأمان الشخصي (المعرّف <code>com.gethearme.app</code>) مصحوب بلوحة طوارئ على الويب. يساعدك على العثور على <strong>هاتفك أنت</strong> وحمايته. ينشره على Google Play حساب المطوّر GetHearMe، ومهدي زيان هو المسؤول عن معالجة البيانات. للتواصل: <a href="mailto:hearme.app.contact@gmail.com">hearme.app.contact@gmail.com</a>.</p>
 
@@ -448,7 +454,7 @@
       <strong>الأساسيات</strong>
       <ul>
         <li>لا إعلانات، ولا بيع للبيانات، ولا تنميط.</li>
-        <li>لا يُرسل موقعك إلى الخادم إلا عندما يكون هاتفك في وضع السرقة أو الفقدان أو البحث، أو عندما تطلب تحديد موقعه، أو ضمن تنبيه من مكافحة السرقة المفعّلة (سرقة، بطارية منخفضة، إيقاف التشغيل).</li>
+        <li>لا يُرسل موقعك إلى الخادم إلا عندما يكون هاتفك في وضع السرقة أو الفقدان أو البحث، أو عندما تطلب تحديد موقعه، أو ضمن تنبيه من مكافحة السرقة المفعّلة (سرقة، بطارية منخفضة، إيقاف التشغيل). إذا أطلقت نداء الاستغاثة الصامت، يُرسَل موقعك إلى أقاربك عبر Telegram دون أن يحتفظ به الخادم.</li>
         <li>يتم الاستماع إلى الكلمة المفتاحية على هاتفك؛ لا يسجّل HearMe الصوت ولا يرسله.</li>
         <li>بياناتك مستضافة في الاتحاد الأوروبي (باريس) وتُنقل مشفّرة.</li>
         <li>يمكنك حذف حسابك وكل بياناتك في أي وقت (<a href="#hadhf">طريقة ذلك</a>).</li>
@@ -465,7 +471,9 @@
           <tr><td>الموقع الدقيق (GPS)</td><td>فقط في وضع السرقة أو الفقدان أو البحث، أو عند طلبك «تحديد الموقع»</td><td>العثور على هاتفك</td><td>30 يومًا، تُحذف تلقائيًا كل ليلة. لا يُحفظ لمدة أطول إلا آخر موقع معروف لكل هاتف، لعرضه في اللوحة، حتى حذف الهاتف أو الحساب</td></tr>
           <tr><td>صور الأمان (الكاميرا الأمامية)</td><td>بعد محاولة فتح قفل فاشلة والحماية مفعّلة، أو عند طلبك في وضع التنبيه</td><td>التعرّف على الشخص الذي يحمل هاتفك</td><td>تُرسل إلى Telegram الخاص بك وبأقاربك، وتُحفظ في مساحتك الخاصة في لوحة الويب (لا تظهر إلا بحسابك أو بمفتاح الهاتف). تُحذف تلقائيًا بعد 30 يومًا، أو قبل ذلك إذا حذفتها.</td></tr>
           <tr><td>Telegram: معرّف Telegram واسم حسابك وأقاربك (اثنان كحد أقصى)، التنبيهات المرسلة (نص، صورة، موقع)، الأوامر المستلمة</td><td>عند ربط Telegram أو دعوة قريب</td><td>تنبيهك وتنبيه أقاربك، وتمكينك من التحكم بهاتفك</td><td>الروابط: حتى إزالتها. الأوامر: تُمحى فور تنفيذها.</td></tr>
+          <tr><td>نداء الاستغاثة الصامت (اختياري، معطّل افتراضيًا): اسمك وموقعك والوقت</td><td>عندما يسمع الاستماع عبارتك السرية، ثم موقعان جديدان بفاصل 5 دقائق (HearMe Plus)، حتى تُشير إلى «أنا بخير»</td><td>إبلاغ أقاربك بصمت بأنك بحاجة إلى المساعدة</td><td>يُرسَل إلى أقاربك عبر Telegram. لا يحتفظ الخادم بالرسالة ولا بالموقع.</td></tr>
           <tr><td>التنبيهات عبر البريد الإلكتروني: اسم الهاتف، نوع التنبيه، الموقع، البطارية، الوقت</td><td>عندما تكون مكافحة السرقة مفعّلة وتنبيهات البريد الإلكتروني مفعّلة (الملف الشخصي)، أو عندما تطلب رسالة تجريبية</td><td>تنبيهك، على عنوان البريد الإلكتروني المؤكَّد لحسابك فقط</td><td>لا يحتفظ الخادم بمحتوى الرسائل، بل بعدّاد للإرسال فقط (10 في الساعة كحد أقصى) يُحذف مع الهاتف. تبقى الرسالة بعد ذلك في صندوق بريدك.</td></tr>
+          <tr><td>التقرير الأسبوعي عبر البريد الإلكتروني: أرقام فقط (ساعات الاستماع ومكافحة السرقة المفعّلة، العثور على الهاتف، التنبيهات، الرموز الخاطئة، نداءات الاستغاثة)</td><td>كل يوم إثنين، إذا كان التقرير مفعّلًا (الملف الشخصي، مفعّل افتراضيًا)</td><td>أن نُريك ما فعله HearMe من أجلك خلال الأسبوع</td><td>تُحسب على هاتفك. لا يحتفظ الخادم بمحتوى البريد الإلكتروني.</td></tr>
           <tr><td>رمز PIN الاحتياطي</td><td>إذا عيّنته</td><td>إعادة تسجيل دخولك إلى لوحة الويب في حالة الطوارئ</td><td>يُحفظ مُجزّأً (غير قابل للقراءة)، حتى حذف الحساب</td></tr>
           <tr><td>الأوامر عن بُعد (رنين، تحديد الموقع، قفل، صورة)</td><td>عند إرسالها من اللوحة أو Telegram</td><td>تنفيذها والاحتفاظ بسجل لها</td><td>حتى حذف الحساب</td></tr>
           <tr><td>عنوان IP</td><td>عند كل تبادل مع الخادم</td><td>منع المحاولات المتكررة لتخمين مفتاح أو رمز PIN</td><td>عدّادات تُمحى بعد بضع دقائق إلى 24 ساعة</td></tr>
@@ -477,13 +485,13 @@
     <h2>2. البيانات التي تبقى على هاتفك</h2>
     <ul>
       <li>عيّنات صوتك: مشفّرة، لا تُرسل أبدًا، ومستثناة من النسخ الاحتياطية.</li>
-      <li>كلمتك المفتاحية وإعداداتك وسجل الأمان للإجراءات عن بُعد.</li>
+      <li>كلمتك المفتاحية وعبارة الاستغاثة السرية وإعداداتك وسجل الأمان للإجراءات عن بُعد.</li>
       <li>المفتاح السري وجلستك، مشفّران بخزنة أندرويد الآمنة.</li>
     </ul>
     <p>تُمحى عند إلغاء تثبيت التطبيق.</p>
 
     <h2>3. الميكروفون والاستماع إلى الكلمة المفتاحية</h2>
-    <p>عند تفعيل الاستماع، يتعرّف HearMe على كلمتك المفتاحية <strong>مباشرةً على هاتفك</strong> باستخدام نموذج للتعرّف على الكلام يعمل دون اتصال (Vosk، برنامج حر): لا يغادر الصوت الجهاز. يُنزَّل هذا النموذج مرة واحدة بعد التثبيت (من 40 إلى 170 ميغابايت تقريبًا حسب اللغة)، ولا تُرسل لذلك أي بيانات شخصية. وإلى أن يُثبَّت، أو إذا منع أندرويد الميكروفون عن HearMe (مثلًا عند إعادة تشغيل الاستماع والهاتف مقفل)، يستخدم HearMe احتياطيًا خدمة التعرّف على الكلام في أندرويد (غالبًا خدمة Google)، التي قد تعالج الصوت على خوادم مزوّدها وفق سياسة الخصوصية الخاصة به. وفي جميع الحالات، لا يحتفظ HearMe إلا بالنص المتعرَّف عليه طوال مدة البحث عن كلمتك المفتاحية: فهو لا يسجّل الصوت ولا يرسله. يُظهر إشعار دائم أن الاستماع مفعّل، ويمكنك إيقافه في أي وقت.</p>
+    <p>عند تفعيل الاستماع، يتعرّف HearMe على كلمتك المفتاحية <strong>مباشرةً على هاتفك</strong> باستخدام نموذج للتعرّف على الكلام يعمل دون اتصال (Vosk، برنامج حر): لا يغادر الصوت الجهاز. يُنزَّل هذا النموذج مرة واحدة بعد التثبيت (من 40 إلى 170 ميغابايت تقريبًا حسب اللغة)، ولا تُرسل لذلك أي بيانات شخصية. وإلى أن يُثبَّت، أو إذا منع أندرويد الميكروفون عن HearMe (مثلًا عند إعادة تشغيل الاستماع والهاتف مقفل)، يستخدم HearMe احتياطيًا خدمة التعرّف على الكلام في أندرويد (غالبًا خدمة Google)، التي قد تعالج الصوت على خوادم مزوّدها وفق سياسة الخصوصية الخاصة به. وفي جميع الحالات، لا يحتفظ HearMe إلا بالنص المتعرَّف عليه طوال مدة البحث عن كلمتك المفتاحية: فهو لا يسجّل الصوت ولا يرسله. وينطبق الأمر نفسه على العبارة السرية لنداء الاستغاثة الصامت إذا فعّلته. يُظهر إشعار دائم أن الاستماع مفعّل، ويمكنك إيقافه في أي وقت.</p>
 
     <h2>4. ما لا نفعله أبدًا</h2>
     <ul>
@@ -536,8 +544,8 @@
       <table>
         <thead><tr><th>الإذن</th><th>الاستخدام</th></tr></thead>
         <tbody>
-          <tr><td>الميكروفون</td><td>اكتشاف كلمتك المفتاحية عندما يكون الاستماع نشطًا</td></tr>
-          <tr><td>الموقع</td><td>العثور على هاتفك في وضع التنبيه وعرض الخريطة</td></tr>
+          <tr><td>الميكروفون</td><td>اكتشاف كلمتك المفتاحية (وعبارة الاستغاثة الصامتة) عندما يكون الاستماع نشطًا</td></tr>
+          <tr><td>الموقع</td><td>العثور على هاتفك في وضع التنبيه وعرض الخريطة وإرسال موقعك إلى أقاربك مع نداء الاستغاثة الصامت</td></tr>
           <tr><td>الكاميرا</td><td>صورة أمان بعد محاولة فتح قفل فاشلة أو عند طلبك في وضع التنبيه</td></tr>
           <tr><td>الإشعارات</td><td>الإشارة إلى أن الاستماع أو الحماية نشط، وتنبيهك</td></tr>
           <tr><td>مسؤول الجهاز</td><td>اكتشاف محاولات فتح القفل الفاشلة وقفل الشاشة عن بُعد؛ يمكن إيقافه من إعدادات أندرويد</td></tr>
