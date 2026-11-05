@@ -219,6 +219,7 @@ export const en: Dict = {
   'wa.errGoogle': 'Google sign-in failed. Please try again.',
   'wa.orPin': 'or with the backup PIN',
   'wa.pinLabel': 'Backup PIN (with your account email above)',
+  'wa.pinTab': 'Backup PIN',
   'wa.pinPh': 'Your backup PIN',
   'wa.pinSubmit': 'Sign in with the PIN',
   'wa.forgot': 'Forgot it? Use my secret key',

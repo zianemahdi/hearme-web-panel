@@ -219,6 +219,7 @@ export const ar: Dict = {
   'wa.errGoogle': 'تعذّر تسجيل الدخول عبر Google. حاول مرة أخرى.',
   'wa.orPin': 'أو برمز PIN الاحتياطي',
   'wa.pinLabel': 'رمز PIN الاحتياطي (مع البريد الإلكتروني لحسابك أعلاه)',
+  'wa.pinTab': 'رمز PIN الاحتياطي',
   'wa.pinPh': 'رمز PIN الاحتياطي',
   'wa.pinSubmit': 'تسجيل الدخول برمز PIN',
   'wa.forgot': 'نسيته؟ استخدم مفتاحي السري',

@@ -20,6 +20,7 @@ import { ShaderBackground } from './ShaderBackground';
 import { PlayBadge } from './PlayBadge';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { useI18n, LanguageSwitcher } from '../i18n';
+import { SocialLinks } from './SocialLinks';
 
 // hCaptcha — clé de TEST par défaut (passe toujours, sans protection réelle).
 // ⚠️ REMPLACER par ta vraie Site Key hCaptcha ; mettre la Secret Key dans
@@ -62,6 +63,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [pinCode, setPinCode] = useState('');
+  const [loginMethod, setLoginMethod] = useState<'password' | 'pin'>('password');
 
 
   // Status & Feedback
@@ -368,7 +370,10 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
 
             {/* Connexion au compte créé dans l'app */}
             {(
-              <form onSubmit={handleLoginSubmit} className="space-y-4">
+              <form
+                onSubmit={(e) => { if (loginMethod === 'pin') { e.preventDefault(); handlePinLogin(); } else { handleLoginSubmit(e); } }}
+                className="space-y-4"
+              >
                 <div>
                   <h2 className="text-sm font-black uppercase tracking-wider text-white">
                     {t('wa.loginTitle')}
@@ -421,20 +426,58 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.password')}</label>
-                  <div className="relative">
-                    <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
-                    <input
-                      type="password"
-                      required
-                      value={loginPassword}
-                      onChange={(e) => setLoginPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
-                    />
-                  </div>
+                {/* Mot de passe ou PIN de secours : même e-mail, même place, un seul bouton */}
+                <div role="tablist" aria-label={t('wa.password') + ' / ' + t('wa.pinTab')} className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/[0.04] border border-white/[0.08]">
+                  {(['password', 'pin'] as const).map((m) => (
+                    <button
+                      key={m}
+                      type="button"
+                      role="tab"
+                      aria-selected={loginMethod === m}
+                      onClick={() => { setLoginMethod(m); setErrorMsg(''); }}
+                      className={`py-2 rounded-lg text-[11px] font-bold transition cursor-pointer ${
+                        loginMethod === m ? 'bg-white text-black shadow' : 'text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {m === 'password' ? t('wa.password') : t('wa.pinTab')}
+                    </button>
+                  ))}
                 </div>
+
+                {loginMethod === 'password' ? (
+                  <div>
+                    <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.password')}</label>
+                    <div className="relative">
+                      <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                      <input
+                        type="password"
+                        required
+                        autoComplete="current-password"
+                        value={loginPassword}
+                        onChange={(e) => setLoginPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-[11px] text-slate-300 font-semibold mb-1">{t('wa.pinTab')}</label>
+                    <div className="relative">
+                      <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                      <input
+                        type="password"
+                        required
+                        inputMode="numeric"
+                        autoComplete="off"
+                        value={pinCode}
+                        onChange={(e) => setPinCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
+                        placeholder={t('wa.pinPh')}
+                        className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40 tracking-[0.3em] placeholder:tracking-normal"
+                      />
+                    </div>
+                  </div>
+                )}
 
                 {errorMsg && (
                   <div role="alert" className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2">
@@ -449,38 +492,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
                   className="w-full py-3 px-4 rounded-xl bg-white/10 border border-white/15 text-white font-bold text-xs hover:bg-white/15 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-95"
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
-                  <span>{t('wa.loginSubmit')}</span>
-                </button>
-
-                <div className="relative flex items-center gap-3 py-1">
-                  <div className="flex-1 h-px bg-white/10" />
-                  <span className="text-[10px] uppercase tracking-wider text-slate-500">{t('wa.orPin')}</span>
-                  <div className="flex-1 h-px bg-white/10" />
-                </div>
-                <div>
-                  <label className="block text-[11px] text-slate-300 font-semibold mb-1">
-                    {t('wa.pinLabel')}
-                  </label>
-                  <div className="relative">
-                    <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
-                    <input
-                      type="password"
-                      inputMode="numeric"
-                      value={pinCode}
-                      onChange={(e) => setPinCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
-                      placeholder={t('wa.pinPh')}
-                      className="w-full rounded-xl bg-white/[0.05] border border-white/[0.1] pl-9 pr-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-white/40 tracking-[0.3em]"
-                    />
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={handlePinLogin}
-                  disabled={loading}
-                  className="w-full py-3 px-4 rounded-xl bg-white/10 border border-white/15 text-white font-bold text-xs hover:bg-white/15 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-95"
-                >
-                  <Lock className="w-4 h-4" />
-                  <span>{t('wa.pinSubmit')}</span>
+                  <span>{loginMethod === 'pin' ? t('wa.pinSubmit') : t('wa.loginSubmit')}</span>
                 </button>
 
                 <p className="pt-2 border-t border-white/[0.08] text-center text-xs text-slate-400">
@@ -501,6 +513,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
           <ShieldCheck className="w-4 h-4 text-emerald-400" />
           <span>{t('wa.footer')}</span>
         </div>
+        <SocialLinks />
         <div className="flex items-center gap-4">
           <button
             onClick={onOpenPrivacy}

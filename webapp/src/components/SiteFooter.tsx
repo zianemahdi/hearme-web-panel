@@ -2,6 +2,7 @@ import React from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { HearMeLogo } from './HearMeLogo';
 import { useI18n } from '../i18n';
+import { SocialLinks } from './SocialLinks';
 
 interface SiteFooterProps {
   onOpenPrivacy: () => void;
@@ -56,6 +57,8 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({ onOpenPrivacy, theme = '
             </button>
           </div>
 
+          {/* Official social accounts (@gethearme) */}
+          <SocialLinks />
         </div>
 
         {/* Bottom copyright line matching Wix site */}

@@ -219,6 +219,7 @@ export const fr = {
   'wa.errGoogle': 'Connexion Google impossible. Réessayez.',
   'wa.orPin': 'ou avec le PIN de secours',
   'wa.pinLabel': "PIN de secours (avec l'e-mail de votre compte ci-dessus)",
+  'wa.pinTab': 'PIN de secours',
   'wa.pinPh': 'Votre PIN de secours',
   'wa.pinSubmit': 'Se connecter avec le PIN',
   'wa.forgot': 'Oublié ? Utiliser ma clé secrète',

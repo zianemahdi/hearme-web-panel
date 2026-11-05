@@ -219,6 +219,7 @@ export const es: Dict = {
   'wa.errGoogle': 'No se pudo iniciar sesión con Google. Inténtalo de nuevo.',
   'wa.orPin': 'o con el PIN de respaldo',
   'wa.pinLabel': 'PIN de respaldo (con el correo de tu cuenta de arriba)',
+  'wa.pinTab': 'PIN de respaldo',
   'wa.pinPh': 'Tu PIN de respaldo',
   'wa.pinSubmit': 'Entrar con el PIN',
   'wa.forgot': '¿Lo olvidaste? Usar mi clave secreta',
