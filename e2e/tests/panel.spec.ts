@@ -17,6 +17,9 @@ test('le portail d’accueil se charge', async ({ page }) => {
   // Trois accès au compte créé dans l'app : Google, e-mail + mot de passe, PIN de secours.
   await expect(page.getByRole('button', { name: 'Continuer avec Google' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Se connecter', exact: true })).toBeVisible();
+  // Mot de passe et PIN de secours : deux onglets juste sous l'e-mail.
+  await expect(page.getByRole('tab', { name: 'Mot de passe' })).toHaveAttribute('aria-selected', 'true');
+  await page.getByRole('tab', { name: 'PIN de secours' }).click();
   await expect(page.getByRole('button', { name: 'Se connecter avec le PIN' })).toBeVisible();
   // Pas d'inscription sur le site : le compte se crée dans l'app HearMe.
   await expect(page.getByRole('button', { name: /Créer un compte|S.inscrire/i })).toHaveCount(0);
@@ -48,8 +51,9 @@ test('magic link invalide → bannière + URL nettoyée', async ({ page }) => {
 
 test('connexion PIN incorrecte → message d’erreur', async ({ page }) => {
   await page.goto('./');
-  // Plus d'onglets : le PIN de secours est directement sous la connexion e-mail.
+  // Le PIN de secours remplace le mot de passe via l'onglet sous l'e-mail.
   await page.locator('input[type="email"]').fill('e2e-ci@hearme.test');
+  await page.getByRole('tab', { name: 'PIN de secours' }).click();
   await page.getByPlaceholder(/PIN de secours/i).fill('999999');
   await page.getByRole('button', { name: /Se connecter avec le PIN/i }).click();
   // La fonction serveur panel_pin_login refuse proprement.
