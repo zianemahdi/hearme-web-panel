@@ -22,6 +22,8 @@ interface PhotoGalleryProps {
   requestSignal?: number;
   /** Plan gratuit HearMe Plus : photos gardées 24 h au lieu de 30 jours. */
   freePlan?: boolean;
+  /** Téléphone en alerte (recherche / volé) : les photos du vol arrivent seules, on relit souvent. */
+  alert?: boolean;
 }
 
 const EVENT_LABEL: Record<string, I18nKey> = {
@@ -31,10 +33,11 @@ const EVENT_LABEL: Record<string, I18nKey> = {
 };
 
 const REFRESH_MS = 60_000;     // relecture normale (liens valables 10 min)
+const ALERT_REFRESH_MS = 8_000; // en alerte : les photos automatiques (vol) s'affichent vite
 const WATCH_MS = 4_000;        // après une demande : toutes les 4 s…
 const WATCH_FOR_MS = 75_000;   // … pendant 75 s au plus
 
-export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ secretKey, requestSignal = 0, freePlan = false }) => {
+export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ secretKey, requestSignal = 0, freePlan = false, alert = false }) => {
   const { t, formatAge } = useI18n();
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(false);
@@ -79,12 +82,12 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ secretKey, requestSi
     }
   }, [call, secretKey]);
 
-  // Lecture régulière.
+  // Lecture régulière (plus fréquente en alerte).
   useEffect(() => {
     load();
-    const timer = setInterval(() => load(true), REFRESH_MS);
+    const timer = setInterval(() => load(true), alert ? ALERT_REFRESH_MS : REFRESH_MS);
     return () => clearInterval(timer);
-  }, [load]);
+  }, [load, alert]);
 
   // Après « Prendre une photo » : relecture rapprochée le temps qu'elle arrive.
   useEffect(() => {

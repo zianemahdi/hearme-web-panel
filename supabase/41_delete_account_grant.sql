@@ -1,0 +1,12 @@
+-- =========================================================================
+-- HearMe — 41 : réparer « Supprimer mon compte »
+-- -------------------------------------------------------------------------
+-- La fonction delete-account (clé service_role) lit d'abord les téléphones du
+-- compte pour effacer leurs photos : `select id from devices where user_id = …`.
+-- Le rôle service_role n'avait plus le droit SELECT sur `devices` (seulement
+-- REFERENCES/TRIGGER/TRUNCATE) → HTTP 403 puis 500, compte jamais supprimé
+-- (constaté le 2026-11-09 à 22:52 UTC). Google Play exige que cette suppression marche.
+-- On rend uniquement la lecture : le reste passe par delete_account_data()
+-- (SECURITY DEFINER), déjà autorisé.
+-- =========================================================================
+grant select on table public.devices to service_role;

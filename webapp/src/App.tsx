@@ -438,7 +438,7 @@ export default function App() {
               {/* Photos du porteur (espace privé, 30 jours) */}
               {session.mode !== 'demo' && session.secretKey && (
                 <div className="col-span-1 md:col-span-2 lg:col-span-12 flex flex-col">
-                  <PhotoGallery secretKey={session.secretKey} requestSignal={photoSignal} freePlan={plan === 'free'} />
+                  <PhotoGallery secretKey={session.secretKey} requestSignal={photoSignal} freePlan={plan === 'free'} alert={!!(device.is_lost || device.is_stolen)} />
                 </div>
               )}
 
