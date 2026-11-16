@@ -17,6 +17,7 @@ import { PlayBadge } from './PlayBadge';
 import { AppShowcase } from './AppShowcase';
 import { ShaderBackground } from './ShaderBackground';
 import { FEATURE_PAGES } from './featurePages';
+import { HowVideo } from './HowVideo';
 
 /**
  * Présentation sous l'écran de connexion : comment ça marche, ce que fait l'app,
@@ -83,8 +84,11 @@ export const LandingSections: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }
             <Kicker dark={dark}>{t('ls.howKicker')}</Kicker>
             <h2 id="ls-how" className={title}>{t('ls.howTitle')}</h2>
             <p className={`text-sm sm:text-base leading-relaxed ${body}`}>{t('ls.howLead')}</p>
+            <div className="pt-4 flex justify-center lg:justify-start">
+              <HowVideo alt={t('ls.shotAlt1')} />
+            </div>
           </div>
-          <ol className="lg:col-span-8 grid sm:grid-cols-3 gap-px rounded-3xl overflow-hidden border border-white/[0.08] bg-white/[0.08]">
+          <ol className="lg:col-span-8 lg:self-start grid sm:grid-cols-3 gap-px rounded-3xl overflow-hidden border border-white/[0.08] bg-white/[0.08]">
             {STEPS.map((s, i) => (
               <li key={s.t} className={`p-6 sm:p-7 space-y-3 ${dark ? 'bg-[#0b0b14]/90' : 'bg-white'}`}>
                 <span className="block font-['JetBrains_Mono',monospace] text-xs tracking-[0.2em] text-purple-400">
