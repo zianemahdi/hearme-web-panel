@@ -298,6 +298,42 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://gethearme.me/fr/retrouver-telephone-eteint.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-eteint.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-switched-off.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-apagado.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-switched-off.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-eteint.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/en/find-phone-switched-off.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-eteint.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-switched-off.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-apagado.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-switched-off.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-eteint.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/es/encontrar-movil-apagado.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-eteint.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-switched-off.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-apagado.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-switched-off.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-eteint.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/ar/find-phone-switched-off.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-eteint.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-switched-off.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-apagado.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-switched-off.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-eteint.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://gethearme.me/fr/a-propos.html</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/a-propos.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/about.html"/>
