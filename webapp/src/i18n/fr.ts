@@ -2,7 +2,7 @@
 // dictionnaires doivent avoir exactement les mêmes clés (vérifié par TypeScript).
 export const fr = {
   'meta.title': 'HearMe — Antivol et alarme pour téléphone Android',
-  'meta.description': 'HearMe retrouve votre téléphone : il sonne quand vous dites votre mot-clé, même en silencieux. Alarme antivol, photo du voleur, position en direct et SOS silencieux. Gratuit sur Android.',
+  'meta.description': "HearMe protège votre téléphone Android : alarme si on vous le prend, photo du voleur, position en direct, commandes à distance depuis le site et SOS silencieux. Et un mot-clé vocal pour le faire sonner, même en silencieux. Gratuit.",
   'logo.tagline': 'Antivol & localisation en direct',
   'logo.panel': "Panneau d'urgence",
 
@@ -238,13 +238,13 @@ export const fr = {
   'ls.howLead': 'Pas de matériel, pas d\'abonnement obligatoire : l\'application gratuite suffit.',
   'ls.s1t': 'Installez HearMe',
   'ls.s1d': 'Téléchargez l\'app gratuite sur Google Play et créez votre compte avec Google ou votre e-mail.',
-  'ls.s2t': 'Choisissez votre mot-clé',
-  'ls.s2d': 'Un mot ou une phrase à vous, comme « où est mon téléphone ». Activez l\'antivol si vous le souhaitez.',
+  'ls.s2t': "Activez la protection",
+  'ls.s2d': "Un interrupteur suffit pour l'antivol. Ajoutez si vous voulez un mot-clé à vous, comme « où est mon téléphone ».",
   'ls.s3t': 'Retrouvez-le',
-  'ls.s3d': 'Dites le mot-clé : il sonne. Volé ou perdu ? Connectez-vous ici pour le localiser, le faire sonner et le verrouiller.',
+  'ls.s3d': "Volé ou perdu ? Connectez-vous ici pour le localiser, le faire sonner, le verrouiller et voir la photo du voleur. Égaré à la maison ? Dites votre mot-clé : il sonne.",
   'ls.featKicker': 'Fonctions',
   'ls.featTitle': 'Tout ce qu\'il faut pour ne plus perdre son téléphone.',
-  'ls.featLead': 'HearMe réunit un détecteur de mot-clé, une alarme antivol et un panneau d\'urgence en ligne.',
+  'ls.featLead': "Antivol, localisation, commandes à distance, SOS et mot-clé vocal : une seule application gratuite pour protéger tout votre téléphone.",
   'ls.f1t': 'Mot-clé vocal',
   'ls.f1d': 'Le téléphone sonne fort quand vous dites votre mot-clé, même en mode silencieux. La reconnaissance se fait sur le téléphone.',
   'ls.f2t': 'SOS silencieux',

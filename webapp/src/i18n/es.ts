@@ -2,7 +2,7 @@ import type { Dict } from './fr';
 
 export const es: Dict = {
   'meta.title': 'HearMe — Alarma antirrobo y localizador para Android',
-  'meta.description': 'HearMe encuentra tu móvil: suena cuando dices tu palabra clave, incluso en silencio. Alarma antirrobo, foto del ladrón, ubicación en directo y SOS silencioso. Gratis en Android.',
+  'meta.description': "HearMe protege tu móvil Android: alarma si alguien te lo quita, foto del ladrón, ubicación en directo, órdenes a distancia desde la web y SOS silencioso. Y una palabra clave para hacerlo sonar, incluso en silencio. Gratis.",
   'logo.tagline': 'Antirrobo y ubicación en vivo',
   'logo.panel': 'Panel de emergencia',
 
@@ -238,13 +238,13 @@ export const es: Dict = {
   'ls.howLead': 'Sin aparatos ni suscripción obligatoria: basta con la app gratuita.',
   'ls.s1t': 'Instala HearMe',
   'ls.s1d': 'Descarga la app gratuita en Google Play y crea tu cuenta con Google o tu correo.',
-  'ls.s2t': 'Elige tu palabra clave',
-  'ls.s2d': 'Una palabra o frase tuya, como «dónde está mi teléfono». Activa el antirrobo si quieres.',
+  'ls.s2t': "Activa la protección",
+  'ls.s2d': "Basta un interruptor para el antirrobo. Añade si quieres una palabra clave tuya, como «dónde está mi teléfono».",
   'ls.s3t': 'Encuéntralo',
-  'ls.s3d': 'Di la palabra clave: suena. ¿Robado o perdido? Inicia sesión aquí para localizarlo, hacerlo sonar y bloquearlo.',
+  'ls.s3d': "¿Robado o perdido? Inicia sesión aquí para localizarlo, hacerlo sonar, bloquearlo y ver la foto del ladrón. ¿Extraviado en casa? Di tu palabra clave: suena.",
   'ls.featKicker': 'Funciones',
   'ls.featTitle': 'Todo lo necesario para no perder más tu teléfono.',
-  'ls.featLead': 'HearMe reúne un detector de palabra clave, una alarma antirrobo y un panel de emergencia en línea.',
+  'ls.featLead': "Antirrobo, ubicación, órdenes a distancia, SOS y palabra clave: una sola app gratuita para proteger todo tu móvil.",
   'ls.f1t': 'Palabra clave por voz',
   'ls.f1d': 'El teléfono suena fuerte cuando dices tu palabra clave, incluso en silencio. El reconocimiento se hace en el teléfono.',
   'ls.f2t': 'SOS silencioso',

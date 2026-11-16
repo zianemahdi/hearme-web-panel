@@ -2,7 +2,7 @@ import type { Dict } from './fr';
 
 export const en: Dict = {
   'meta.title': 'HearMe — Anti-theft alarm & phone finder for Android',
-  'meta.description': 'HearMe finds your phone: it rings when you say your keyword, even on silent. Anti-theft alarm, thief photo, live location and silent SOS. Free on Android.',
+  'meta.description': "HearMe protects your Android phone: an alarm if someone takes it, a photo of the thief, live location, remote commands from the website and a silent SOS. Plus a voice keyword to make it ring, even on silent. Free.",
   'logo.tagline': 'Anti-theft & live location',
   'logo.panel': 'Emergency panel',
 
@@ -238,13 +238,13 @@ export const en: Dict = {
   'ls.howLead': 'No hardware, no mandatory subscription: the free app is all you need.',
   'ls.s1t': 'Install HearMe',
   'ls.s1d': 'Get the free app on Google Play and create your account with Google or your e-mail.',
-  'ls.s2t': 'Pick your keyword',
-  'ls.s2d': 'A word or phrase of your own, like “where is my phone”. Turn on anti-theft if you wish.',
+  'ls.s2t': "Turn on protection",
+  'ls.s2d': "One switch turns on anti-theft. Add a keyword of your own if you like, such as “where is my phone”.",
   'ls.s3t': 'Find it',
-  'ls.s3d': 'Say the keyword: it rings. Stolen or lost? Sign in here to locate it, make it ring and lock it.',
+  'ls.s3d': "Stolen or lost? Sign in here to locate it, make it ring, lock it and see the thief's photo. Misplaced at home? Say your keyword: it rings.",
   'ls.featKicker': 'Features',
   'ls.featTitle': 'Everything you need to stop losing your phone.',
-  'ls.featLead': 'HearMe brings together a keyword detector, an anti-theft alarm and an online emergency panel.',
+  'ls.featLead': "Anti-theft, location, remote commands, SOS and a voice keyword: one free app to protect your whole phone.",
   'ls.f1t': 'Voice keyword',
   'ls.f1d': 'Your phone rings loudly when you say your keyword, even on silent. Recognition happens on the phone.',
   'ls.f2t': 'Silent SOS',
