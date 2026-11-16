@@ -363,3 +363,8 @@ html.dark .text-slate-500 {
   .hm-logo-intro-wrap,
   .hm-logo-intro .hm-piece { opacity: 1; transform: none; }
 }
+
+/* Onde sonore du surtitre (SoundWave) */
+@keyframes hm-wave { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
+.hm-wave-bar { transform-origin: center; animation: hm-wave 1.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .hm-wave-bar { animation: none; transform: scaleY(0.7); } }

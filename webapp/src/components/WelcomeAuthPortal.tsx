@@ -23,6 +23,7 @@ import { useI18n, LanguageSwitcher } from '../i18n';
 import { SocialLinks } from './SocialLinks';
 import { LandingSections } from './LandingSections';
 import { ABOUT_PAGE } from './featurePages';
+import { SoundWave } from './SoundWave';
 import { ChevronDown } from 'lucide-react';
 
 // hCaptcha — clé de TEST par défaut (passe toujours, sans protection réelle).
@@ -249,10 +250,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
               theme === 'dark' ? 'text-white/45' : 'text-slate-500'
             }`}
           >
-            <span
-              className={`h-px w-7 ${theme === 'dark' ? 'bg-white/20' : 'bg-slate-300'}`}
-              aria-hidden="true"
-            />
+            <SoundWave />
             {t('wa.kicker')}
           </div>
 
