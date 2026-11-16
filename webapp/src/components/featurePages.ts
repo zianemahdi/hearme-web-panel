@@ -39,3 +39,11 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './ar/protect-phone-cafe-public-transport.html', label: 'دليل: المقهى والمواصلات' },
   ],
 };
+
+/** Page « À propos et contact » (statique, public/{lang}/…). */
+export const ABOUT_PAGE: Record<Lang, { href: string; label: string }> = {
+  fr: { href: './fr/a-propos.html', label: 'À propos et contact' },
+  en: { href: './en/about.html', label: 'About and contact' },
+  es: { href: './es/sobre-nosotros.html', label: 'Sobre nosotros y contacto' },
+  ar: { href: './ar/about.html', label: 'من نحن والتواصل' },
+};
