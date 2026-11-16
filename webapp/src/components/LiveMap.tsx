@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { LocationPoint } from '../types';
 import { Layers, Crosshair, ExternalLink, Maximize2, Minimize2, Navigation, Activity, Gem } from 'lucide-react';
 import { useI18n } from '../i18n';

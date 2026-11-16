@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
 import { Device, LocationPoint, CommandType, AuthMode, AuthSession, PlusState } from './types';
 import { INITIAL_DEMO_DEVICE, INITIAL_DEMO_LOCATIONS } from './utils/mockData';
 import { getSupabase, callRpc } from './utils/supabaseClient';
@@ -6,20 +6,21 @@ import { resolveAccountDeviceKey } from './components/WelcomeAuthPortal';
 import { X } from 'lucide-react';
 
 // Components
-import { Navbar } from './components/Navbar';
-import { LiveMap } from './components/LiveMap';
-import { EmergencyControls } from './components/EmergencyControls';
 import { PrivacyModal } from './components/PrivacyModal';
-import { SiteFooter } from './components/SiteFooter';
 import { WelcomeAuthPortal } from './components/WelcomeAuthPortal';
-import { PhotoGallery } from './components/PhotoGallery';
 import { useI18n } from './i18n';
 import type { I18nKey } from './i18n/fr';
 
-// Bento Grid Modules (fonctionnels uniquement)
-import { QuickProtectionBar } from './components/QuickProtectionBar';
-import { BatteryEnergyCard } from './components/BatteryEnergyCard';
-import { NetworkMatrixCard } from './components/NetworkMatrixCard';
+// Tableau de bord : chargé seulement une fois connecté. La page d'accueil (visiteurs,
+// Google) n'a pas à télécharger la carte Leaflet ni les modules du panneau.
+const Navbar = lazy(() => import('./components/Navbar').then((m) => ({ default: m.Navbar })));
+const LiveMap = lazy(() => import('./components/LiveMap').then((m) => ({ default: m.LiveMap })));
+const EmergencyControls = lazy(() => import('./components/EmergencyControls').then((m) => ({ default: m.EmergencyControls })));
+const SiteFooter = lazy(() => import('./components/SiteFooter').then((m) => ({ default: m.SiteFooter })));
+const PhotoGallery = lazy(() => import('./components/PhotoGallery').then((m) => ({ default: m.PhotoGallery })));
+const QuickProtectionBar = lazy(() => import('./components/QuickProtectionBar').then((m) => ({ default: m.QuickProtectionBar })));
+const BatteryEnergyCard = lazy(() => import('./components/BatteryEnergyCard').then((m) => ({ default: m.BatteryEnergyCard })));
+const NetworkMatrixCard = lazy(() => import('./components/NetworkMatrixCard').then((m) => ({ default: m.NetworkMatrixCard })));
 
 // Une session ouverte par lien d'urgence expire au bout de 6 h : le lien dure
 // 15 min et ne sert qu'une fois, mais sans cela le navigateur du proche gardait
@@ -395,6 +396,7 @@ export default function App() {
           onOpenPrivacy={() => setIsPrivacyOpen(true)}
         />
       ) : (
+        <Suspense fallback={<div className="min-h-screen" aria-busy="true" />}>
         <div className="relative z-10 flex flex-col min-h-screen">
           <Navbar
             device={device}
@@ -465,6 +467,7 @@ export default function App() {
 
           <SiteFooter onOpenPrivacy={() => setIsPrivacyOpen(true)} theme={theme} />
         </div>
+        </Suspense>
       )}
 
       <PrivacyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
