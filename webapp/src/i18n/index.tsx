@@ -93,6 +93,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     root.lang = lang;
     root.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.title = DICTS[lang]['meta.title'];
+    document.querySelector('meta[name="description"]')?.setAttribute('content', DICTS[lang]['meta.description']);
     // Adresse canonique de la version ouverte par ?lang= (sinon celle de la page).
     const canon = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     const fromUrl = urlLang();
