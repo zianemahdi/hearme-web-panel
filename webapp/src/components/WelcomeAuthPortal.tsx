@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import {
   Mail,
   Lock,
@@ -18,13 +18,17 @@ import { getSupabase } from '../utils/supabaseClient';
 import { HearMeLogo } from './HearMeLogo';
 import { ShaderBackground } from './ShaderBackground';
 import { PlayBadge } from './PlayBadge';
-import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { useI18n, LanguageSwitcher } from '../i18n';
 import { SocialLinks } from './SocialLinks';
-import { LandingSections } from './LandingSections';
 import { ABOUT_PAGE, GUIDES_PAGE } from './featurePages';
 import { SoundWave } from './SoundWave';
 import { ChevronDown } from 'lucide-react';
+
+// Chargés à la demande, pour que la page s'affiche plus vite sur téléphone :
+// la présentation (sous le premier écran) et le CAPTCHA (seulement utile au
+// moment de se connecter).
+const LandingSections = lazy(() => import('./LandingSections').then((m) => ({ default: m.LandingSections })));
+const HCaptcha = lazy(() => import('@hcaptcha/react-hcaptcha'));
 
 // hCaptcha — clé de TEST par défaut (passe toujours, sans protection réelle).
 // ⚠️ REMPLACER par ta vraie Site Key hCaptcha ; mettre la Secret Key dans
@@ -78,9 +82,27 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
   // hCaptcha invisible : on exécute juste avant chaque appel d'auth pour obtenir
   // un jeton, transmis à Supabase. Sans jeton, Supabase refuse (quand le CAPTCHA
   // est activé côté serveur).
-  const captchaRef = useRef<HCaptcha>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const captchaRef = useRef<any>(null);
+  // Le CAPTCHA se charge dès qu'on touche au formulaire, ou une fois la page au repos.
+  const [captchaOn, setCaptchaOn] = useState(false);
+  useEffect(() => {
+    const on = () => setCaptchaOn(true);
+    const t = window.setTimeout(on, 6000);
+    window.addEventListener('focusin', on, { once: true });
+    window.addEventListener('pointerdown', on, { once: true });
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener('focusin', on);
+      window.removeEventListener('pointerdown', on);
+    };
+  }, []);
   const getCaptchaToken = async (): Promise<string | undefined> => {
     try {
+      if (!captchaRef.current) {
+        setCaptchaOn(true);
+        for (let i = 0; i < 80 && !captchaRef.current; i++) await new Promise((r) => setTimeout(r, 100));
+      }
       // 15 s au plus : si le CAPTCHA ne répond pas (réseau, bloqueur de pub), on
       // continue sans jeton et le serveur répond — le bouton ne tourne pas sans fin.
       const res = await Promise.race([
@@ -201,7 +223,11 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
         lumineux. La lisibilité de la carte de connexion reste prioritaire.
       */}
     <div className="relative z-10 px-4 sm:px-6 py-6 sm:py-10">
-      <HCaptcha ref={captchaRef} sitekey={HCAPTCHA_SITE_KEY} size="invisible" />
+      {captchaOn && (
+        <Suspense fallback={null}>
+          <HCaptcha ref={captchaRef} sitekey={HCAPTCHA_SITE_KEY} size="invisible" />
+        </Suspense>
+      )}
       {/* Premier écran : connexion + accroche, tenus dans la hauteur de l'écran ;
           la présentation (LandingSections) vient en dessous. */}
       <div className="relative min-h-[calc(100svh-3rem)] sm:min-h-[calc(100svh-5rem)] flex flex-col">
@@ -518,7 +544,9 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       </a>
       </div>
 
-      <LandingSections theme={theme} />
+      <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
+        <LandingSections theme={theme} />
+      </Suspense>
 
       {/* Subtle Footer Information */}
       <footer className="max-w-6xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 pt-4">
