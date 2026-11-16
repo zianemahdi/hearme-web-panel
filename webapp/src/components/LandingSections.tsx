@@ -14,6 +14,8 @@ import {
 import { useI18n } from '../i18n';
 import type { I18nKey } from '../i18n/fr';
 import { PlayBadge } from './PlayBadge';
+import { AppShowcase } from './AppShowcase';
+import { ShaderBackground } from './ShaderBackground';
 
 /**
  * Présentation sous l'écran de connexion : comment ça marche, ce que fait l'app,
@@ -65,18 +67,21 @@ export const LandingSections: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }
   const title = `font-semibold tracking-[-0.035em] leading-[1.05] text-balance text-3xl sm:text-4xl ${
     dark ? 'text-white' : 'text-slate-950'
   }`;
-  const body = dark ? 'text-white/60' : 'text-slate-600';
+  const body = dark ? 'text-white/85' : 'text-slate-700';
   const line = dark ? 'border-white/[0.08]' : 'border-slate-200';
 
   return (
     <div className="max-w-6xl w-full mx-auto">
+      <div id="ls-showcase" className="scroll-mt-8">
+        <AppShowcase theme={theme} />
+      </div>
       {/* Comment ça marche */}
       <section id="comment" aria-labelledby="ls-how" className={`scroll-mt-8 py-16 sm:py-24 border-t ${line}`}>
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-12">
           <div className="lg:col-span-4 space-y-4">
             <Kicker dark={dark}>{t('ls.howKicker')}</Kicker>
             <h2 id="ls-how" className={title}>{t('ls.howTitle')}</h2>
-            <p className={`text-sm sm:text-base font-light leading-relaxed ${body}`}>{t('ls.howLead')}</p>
+            <p className={`text-sm sm:text-base leading-relaxed ${body}`}>{t('ls.howLead')}</p>
           </div>
           <ol className="lg:col-span-8 grid sm:grid-cols-3 gap-px rounded-3xl overflow-hidden border border-white/[0.08] bg-white/[0.08]">
             {STEPS.map((s, i) => (
@@ -97,7 +102,7 @@ export const LandingSections: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }
         <div className="max-w-2xl space-y-4 mb-10 sm:mb-12">
           <Kicker dark={dark}>{t('ls.featKicker')}</Kicker>
           <h2 id="ls-feat" className={title}>{t('ls.featTitle')}</h2>
-          <p className={`text-sm sm:text-base font-light leading-relaxed ${body}`}>{t('ls.featLead')}</p>
+          <p className={`text-sm sm:text-base leading-relaxed ${body}`}>{t('ls.featLead')}</p>
         </div>
         <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {FEATURES.map(({ icon: Icon, t: ft, d }) => (
@@ -148,8 +153,16 @@ export const LandingSections: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }
       <section
         aria-labelledby="ls-cta"
         className="relative overflow-hidden rounded-[2rem] border border-white/10 px-6 py-12 sm:px-12 sm:py-16 mb-12 text-center"
-        style={{ background: 'linear-gradient(135deg, rgba(124,92,255,0.22), rgba(194,77,240,0.14) 60%, rgba(10,10,18,0.6))' }}
+        style={{ background: '#07070d' }}
       >
+        {dark && (
+          <ShaderBackground contained className="absolute inset-0 w-full h-full" tint={[0.6, 0.42, 1.0]} brightness={0.45} speed={0.5} lineWidth={0.0018} />
+        )}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ background: 'radial-gradient(55% 75% at 50% 50%, rgba(7,7,13,0.78), rgba(7,7,13,0.35) 70%, transparent), linear-gradient(135deg, rgba(124,92,255,0.30), rgba(194,77,240,0.18) 60%, rgba(10,10,18,0.55))' }}
+          aria-hidden="true"
+        />
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
           {[1, 2, 3].map((r) => (
             <span
@@ -163,7 +176,7 @@ export const LandingSections: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }
           <h2 id="ls-cta" className="font-semibold tracking-[-0.035em] leading-[1.05] text-balance text-3xl sm:text-4xl text-white">
             {t('ls.ctaTitle')}
           </h2>
-          <p className="text-sm sm:text-base font-light leading-relaxed text-white/70">{t('ls.ctaLead')}</p>
+          <p className="text-sm sm:text-base leading-relaxed text-white/90">{t('ls.ctaLead')}</p>
           <div className="flex justify-center pt-1">
             <PlayBadge />
           </div>

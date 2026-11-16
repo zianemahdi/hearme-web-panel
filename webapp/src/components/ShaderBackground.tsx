@@ -23,6 +23,9 @@ export type ShaderBackgroundProps = {
   /** Intensité globale. */
   brightness?: number;
   className?: string;
+  /** true : le canevas remplit son bloc parent (position absolute) au lieu de
+   *  tout l'écran, et ne dessine que lorsqu'il est visible. */
+  contained?: boolean;
 };
 
 const VERT = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
@@ -60,6 +63,7 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
   tint = null,
   brightness = 1,
   className = 'fixed inset-0 w-full h-full',
+  contained = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // Les réglages passent par une ref : le shader tourne en continu sans
@@ -137,8 +141,8 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
     const syncSize = () => {
       // Plafonné à 2 : au-delà, le coût grimpe sans gain visible.
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const w = Math.floor(window.innerWidth * dpr);
-      const h = Math.floor(window.innerHeight * dpr);
+      const w = Math.floor((contained ? canvas.clientWidth : window.innerWidth) * dpr);
+      const h = Math.floor((contained ? canvas.clientHeight : window.innerHeight) * dpr);
       if (w === canvas.width && h === canvas.height) return;
       if (w === 0 || h === 0) return;
       canvas.width = w;
@@ -148,10 +152,18 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
     };
     syncSize();
 
+    // Hors de l'écran (bloc défilé), on ne dessine pas : économise la batterie.
+    let visible = true;
+    const io = contained && 'IntersectionObserver' in window
+      ? new IntersectionObserver(([e]) => { visible = e.isIntersecting; })
+      : null;
+    io?.observe(canvas);
+
     let raf = 0;
     let time = 1.0;
     const draw = () => {
       raf = requestAnimationFrame(draw);
+      if (!visible) return;
       syncSize();
       const c = cfg.current;
       time += 0.05 * (reduced ? 0 : c.speed);
@@ -167,6 +179,7 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
 
     return () => {
       cancelAnimationFrame(raf);
+      io?.disconnect();
       gl.deleteBuffer(buf);
       gl.deleteProgram(prog);
       // Libère le contexte : sans ça, naviguer beaucoup finit par épuiser le
@@ -183,7 +196,7 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
       // Styles critiques en inline : le dimensionnement du fond ne doit dépendre
       // d'aucune classe utilitaire qui pourrait manquer ou être purgée.
       style={{
-        position: 'fixed',
+        position: contained ? 'absolute' : 'fixed',
         inset: 0,
         width: '100%',
         height: '100%',

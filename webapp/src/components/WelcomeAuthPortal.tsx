@@ -198,32 +198,31 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
         luminosité basse → un halo ambiant discret et rassurant, pas un show
         lumineux. La lisibilité de la carte de connexion reste prioritaire.
       */}
-      {theme === 'dark' && (
-        <ShaderBackground
-          tint={[0.49, 0.36, 1.0]}
-          brightness={0.42}
-          speed={0.5}
-          lineWidth={0.0018}
-        />
-      )}
-      {/* Voile sombre au-dessus du fond animé : garantit la lisibilité du texte
-         clair par-dessus les bandes lumineuses du shader (sinon texte clair sur
-         halo clair = illisible). Le contenu (z-10) reste au-dessus du voile. */}
-      {theme === 'dark' && (
-        <div
-          className="fixed inset-0 z-[1] pointer-events-none"
-          style={{
-            background:
-              'radial-gradient(130% 100% at 50% 0%, rgba(5,5,8,0.35), rgba(5,5,8,0.74) 55%, rgba(5,5,8,0.92) 100%)',
-          }}
-        />
-      )}
-
     <div className="relative z-10 px-4 sm:px-6 py-6 sm:py-10">
       <HCaptcha ref={captchaRef} sitekey={HCAPTCHA_SITE_KEY} size="invisible" />
       {/* Premier écran : connexion + accroche, tenus dans la hauteur de l'écran ;
           la présentation (LandingSections) vient en dessous. */}
-      <div className="min-h-[calc(100svh-3rem)] sm:min-h-[calc(100svh-5rem)] flex flex-col">
+      <div className="relative min-h-[calc(100svh-3rem)] sm:min-h-[calc(100svh-5rem)] flex flex-col">
+      {/* Fond animé « light ripple » (thème sombre) limité au premier écran ;
+          le reste de la page reste noir uni, plus lisible. Il déborde jusqu'aux
+          bords de la fenêtre et se fond dans le noir en bas. */}
+      {theme === 'dark' && (
+        <div
+          className="pointer-events-none absolute -z-10 -inset-x-4 sm:-inset-x-6 -top-6 sm:-top-10 bottom-0 overflow-hidden"
+          style={{
+            maskImage: 'linear-gradient(to bottom, #000 72%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to bottom, #000 72%, transparent)',
+          }}
+          aria-hidden="true"
+        >
+          <ShaderBackground contained className="absolute inset-0 w-full h-full" tint={[0.49, 0.36, 1.0]} brightness={0.42} speed={0.5} lineWidth={0.0018} />
+          {/* Voile sombre : le texte clair reste lisible au-dessus des lignes. */}
+          <div
+            className="absolute inset-0"
+            style={{ background: 'radial-gradient(130% 100% at 50% 0%, rgba(5,5,8,0.35), rgba(5,5,8,0.74) 55%, rgba(5,5,8,0.92) 100%)' }}
+          />
+        </div>
+      )}
       {/* Top Bar with Logo & Theme Toggle */}
       <header className="max-w-6xl w-full mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
@@ -269,13 +268,12 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
               </span>
             </h1>
             <p
-              className={`text-sm sm:text-base font-light leading-relaxed max-w-xl ${
-                theme === 'dark' ? 'text-white/70' : 'text-slate-600'
+              className={`text-sm sm:text-base leading-relaxed max-w-xl ${
+                theme === 'dark' ? 'text-white/85' : 'text-slate-700'
               }`}
             >
               {t('wa.lead')}
             </p>
-            <PlayBadge />
           </div>
 
           {/* 4 Core Pillars of HearMe */}
@@ -513,7 +511,7 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
       </main>
 
       <a
-        href="#comment"
+        href="#ls-showcase"
         className="hidden lg:flex mx-auto mb-2 items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/40 hover:text-white/80 transition"
       >
         {t('ls.discover')}
