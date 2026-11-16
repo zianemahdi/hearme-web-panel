@@ -110,6 +110,14 @@ table.cmp td.hm{background:rgba(124,92,255,.07)}
  table.cmp tr{border-bottom:1px solid var(--rule);padding:6px 0}table.cmp tr:last-child{border-bottom:0}
  table.cmp th,table.cmp td{border:0;padding:6px 14px}table.cmp tbody th{width:auto}
  table.cmp td:before{content:attr(data-l);display:block;font-size:12px;color:#c4b5fd;font-weight:600}}
+.ytw{position:relative;width:100%;aspect-ratio:16/9;border:1px solid var(--rule);border-radius:18px;overflow:hidden;background:#000}
+.yt{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;margin:0;cursor:pointer;background:#000}
+.yt img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;transition:opacity .2s;transform:scale(1.08);transform-origin:50% 100%}
+.yt:hover img,.yt:focus-visible img{opacity:1}
+.yt .pl{position:absolute;inset:0;margin:auto;width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;box-shadow:0 10px 40px rgba(124,92,255,.6)}
+.yt .pl:after{content:"";margin-left:6px;border-left:22px solid #fff;border-top:14px solid transparent;border-bottom:14px solid transparent}
+.ytw iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ytcap{color:var(--ink2);font-size:14px;margin-top:10px}
 .cta p{color:var(--ink2);max-width:34rem;margin:0 auto 20px}
 </style>
 </head>
@@ -134,6 +142,7 @@ table.cmp td.hm{background:rgba(124,92,255,.07)}
       <section aria-labelledby="h2s"><h2 id="h2s">إذا لم يردّ أحد</h2><ol class="big" style="counter-reset:s 4"><li><h3>اعرض رسالة على الشاشة</h3><p>مع «وضع علامة كمفقود» يُقفل الهاتف ويعرض رسالتك ورقمًا للاتصال.</p></li><li><h3>تابع موقعه دون مطاردته</h3><p>دوّن المحطات أو المستودع الذي تتوقف فيه المركبة وأبلغ بها الشركة. لا تطارد مركبة بنفسك.</p></li><li><h3>عُد إلى قسم المفقودات</h3><p>غالبًا ما تُسلَّم الأغراض في نهاية الدوام. اتصل في اليوم التالي والأيام التي تليه.</p></li><li><h3>دون أخبار بعد 24 إلى 48 ساعة</h3><p>أوقف شريحة SIM وغيّر كلمات المرور واتبع دليلنا «سُرق هاتفك؟ ماذا تفعل».</p></li></ol>
         <div class="note"><h3>مع HearMe الأمر أسرع</h3><p>من gethearme.me اضغط «تفعيل البحث»: ترى الموقع، وتظهر رسالتك على شاشة القفل ليتمكن من يجده من إعادته إليك. زر «رنين» يجعله يرنّ بقوة حتى في الوضع الصامت ليسمعه السائق. وتصل التنبيهات أيضًا عبر Telegram، إليك وإلى شخصين من أقاربك.</p></div></section>
       <section aria-labelledby="h3s"><h2 id="h3s">حتى لا تفقده في الطريق مجددًا</h2><ul class="points"><li>اعتد على تفقّد المقعد والباب قبل النزول.</li><li>اكتب في HearMe رسالة «هاتف مفقود» مع رقم للتواصل معك.</li><li>تأكد أن Find Hub (العثور على جهازي) مفعّل.</li><li>دوّن رقم IMEI (⁦*#06#⁩) واحتفظ به خارج الهاتف.</li></ul></section>
+      <section aria-labelledby="hvid"><h2 id="hvid">بالفيديو: HearMe في 30 ثانية</h2><div class="ytw"><button type="button" class="yt" data-id="Fb3zB18Mg_c" aria-label="تشغيل الفيديو"><img src="https://i.ytimg.com/vi/Fb3zB18Mg_c/maxresdefault.jpg" alt="" loading="lazy" width="1280" height="720" /><span class="pl" aria-hidden="true"></span></button></div><p class="ytcap">فيديو YouTube: هاتفك ضاع أو سُرق؟ قل «أين هاتفي». يُحمَّل عند النقر.</p></section><script>document.querySelectorAll(".yt").forEach(function(b){b.addEventListener("click",function(){var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.id+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label");f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;b.replaceWith(f);});});</script>
       <section aria-labelledby="hfaq"><h2 id="hfaq">أسئلة شائعة</h2><details><summary>هل يمكن للسائق إعادة هاتفي؟</summary><p>نعم، كثيرًا. تواصل معه عبر تطبيق الحجز أو عبر شركة سيارات الأجرة أو النقل، مع ذكر الوقت والمسار.</p></details><details><summary>كيف أعرف إن كان ما زال في المركبة؟</summary><p>انظر إلى موقعه في Find Hub أو على gethearme.me: إذا تحرّك كمركبة، فهو على الأرجح ما زال على متنها.</p></details><details><summary>وإذا نفدت البطارية؟</summary><p>غالبًا سترى آخر موقع معروف. أعطه لقسم المفقودات واقرأ دليلنا «هاتف مطفأ أو بطارية فارغة».</p></details></section>
     </article>
     <div class="cta"><h2>رسالة على الشاشة ليُعاد إليك هاتفك</h2><p>HearMe مجاني. الموقع والرنين ورسالة على الشاشة من gethearme.me في ثوانٍ.</p><a class="btn" href="https://play.google.com/store/apps/details?id=com.gethearme.app" rel="noopener">حمّل HearMe مجانًا</a></div>

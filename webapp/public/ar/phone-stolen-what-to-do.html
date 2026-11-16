@@ -110,6 +110,14 @@ table.cmp td.hm{background:rgba(124,92,255,.07)}
  table.cmp tr{border-bottom:1px solid var(--rule);padding:6px 0}table.cmp tr:last-child{border-bottom:0}
  table.cmp th,table.cmp td{border:0;padding:6px 14px}table.cmp tbody th{width:auto}
  table.cmp td:before{content:attr(data-l);display:block;font-size:12px;color:#c4b5fd;font-weight:600}}
+.ytw{position:relative;width:100%;aspect-ratio:16/9;border:1px solid var(--rule);border-radius:18px;overflow:hidden;background:#000}
+.yt{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;margin:0;cursor:pointer;background:#000}
+.yt img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;transition:opacity .2s;transform:scale(1.08);transform-origin:50% 100%}
+.yt:hover img,.yt:focus-visible img{opacity:1}
+.yt .pl{position:absolute;inset:0;margin:auto;width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;box-shadow:0 10px 40px rgba(124,92,255,.6)}
+.yt .pl:after{content:"";margin-left:6px;border-left:22px solid #fff;border-top:14px solid transparent;border-bottom:14px solid transparent}
+.ytw iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ytcap{color:var(--ink2);font-size:14px;margin-top:10px}
 .cta p{color:var(--ink2);max-width:34rem;margin:0 auto 20px}
 </style>
 </head>
@@ -134,6 +142,7 @@ table.cmp td.hm{background:rgba(124,92,255,.07)}
       <section aria-labelledby="h2s"><h2 id="h2s">خلال الساعة التالية</h2><ol class="big" style="counter-reset:s 4"><li><h3>غيّر كلمات المرور المهمة</h3><p>ابدأ بحساب Google، ثم بريدك الإلكتروني وشبكاتك الاجتماعية وتطبيقات الدفع. سجّل خروج الهاتف المسروق من هذه الحسابات إن أمكن.</p></li><li><h3>أبلغ مصرفك</h3><p>إذا كانت على الهاتف تطبيقات مصرفية أو بطاقة محفوظة، اتصل بمصرفك لمراقبة المدفوعات أو إيقافها.</p></li><li><h3>قدّم بلاغًا للشرطة</h3><p>اصطحب رقم IMEI الخاص بالهاتف. يمكن للمشغّل بعدها حظر الهاتف نفسه بهذا الرقم، حتى مع شريحة أخرى.</p></li><li><h3>أبلغ شركة التأمين</h3><p>إذا كان الهاتف مؤمَّنًا، فغالبًا ما يُطلب البلاغ. احتفظ بنسخة منه.</p></li></ol>
         <div class="note"><h3>أين تجد رقم IMEI؟</h3><p>على علبة الهاتف أو على الفاتورة أو في حساب Google (myaccount.google.com، قسم الأمان، أجهزتك). للمرة القادمة: اطلب ⁦*#06#⁩ على هاتفك واحفظ الرقم في مكان آمن.</p></div></section>
       <section aria-labelledby="h3s"><h2 id="h3s">للمرة القادمة: استعد في 5 دقائق</h2><ul class="points"><li>سجّل رقم IMEI (⁦*#06#⁩) واحتفظ بالعلبة أو الفاتورة.</li><li>استخدم رمز قفل أو بصمة، ولا تترك الشاشة دون حماية أبدًا.</li><li>تأكد من تفعيل «العثور على جهازي» في إعدادات Google.</li><li>ثبّت HearMe: منبّه إذا أخذ أحد الهاتف، صورة للشخص عند كل رمز خاطئ، الموقع المباشر على gethearme.me وتنبيهات لأقاربك عبر Telegram.</li></ul></section>
+      <section aria-labelledby="hvid"><h2 id="hvid">بالفيديو: HearMe في 30 ثانية</h2><div class="ytw"><button type="button" class="yt" data-id="Fb3zB18Mg_c" aria-label="تشغيل الفيديو"><img src="https://i.ytimg.com/vi/Fb3zB18Mg_c/maxresdefault.jpg" alt="" loading="lazy" width="1280" height="720" /><span class="pl" aria-hidden="true"></span></button></div><p class="ytcap">فيديو YouTube: هاتفك ضاع أو سُرق؟ قل «أين هاتفي». يُحمَّل عند النقر.</p></section><script>document.querySelectorAll(".yt").forEach(function(b){b.addEventListener("click",function(){var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.id+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label");f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;b.replaceWith(f);});});</script>
       <section aria-labelledby="hfaq"><h2 id="hfaq">أسئلة شائعة</h2><details><summary>هل يمكن العثور على هاتف مُطفأ؟</summary><p>ليس مباشرة: الهاتف المطفأ لا يرسل موقعه. عادةً ترى آخر موقع معروف قبل إطفائه. ويُنبّهك HearMe أيضًا عندما تكاد البطارية تنفد أو عند إطفاء الهاتف.</p></details><details><summary>هل يجب مسح الهاتف عن بُعد؟</summary><p>فقط كحل أخير، إذا كنت تظن أنك لن تستعيده: بعد المسح لن تستطيع تحديد موقعه.</p></details><details><summary>هل يستطيع السارق استخدام هاتفي بشريحة أخرى؟</summary><p>بعد البلاغ، يمكن للمشغّل حظر الهاتف برقم IMEI. لهذا من المهم معرفة هذا الرقم.</p></details></section>
     </article>
     <div class="cta"><h2>استعد قبل فوات الأوان</h2><p>HearMe مجاني. إذا ثبّتّه الآن، يساعدك على العثور على هاتفك يوم تحتاج إليه.</p><a class="btn" href="https://play.google.com/store/apps/details?id=com.gethearme.app" rel="noopener">حمّل HearMe مجانًا</a></div>

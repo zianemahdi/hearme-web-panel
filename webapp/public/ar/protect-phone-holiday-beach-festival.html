@@ -110,6 +110,14 @@ table.cmp td.hm{background:rgba(124,92,255,.07)}
  table.cmp tr{border-bottom:1px solid var(--rule);padding:6px 0}table.cmp tr:last-child{border-bottom:0}
  table.cmp th,table.cmp td{border:0;padding:6px 14px}table.cmp tbody th{width:auto}
  table.cmp td:before{content:attr(data-l);display:block;font-size:12px;color:#c4b5fd;font-weight:600}}
+.ytw{position:relative;width:100%;aspect-ratio:16/9;border:1px solid var(--rule);border-radius:18px;overflow:hidden;background:#000}
+.yt{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;margin:0;cursor:pointer;background:#000}
+.yt img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;transition:opacity .2s;transform:scale(1.08);transform-origin:50% 100%}
+.yt:hover img,.yt:focus-visible img{opacity:1}
+.yt .pl{position:absolute;inset:0;margin:auto;width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;box-shadow:0 10px 40px rgba(124,92,255,.6)}
+.yt .pl:after{content:"";margin-left:6px;border-left:22px solid #fff;border-top:14px solid transparent;border-bottom:14px solid transparent}
+.ytw iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ytcap{color:var(--ink2);font-size:14px;margin-top:10px}
 .cta p{color:var(--ink2);max-width:34rem;margin:0 auto 20px}
 </style>
 </head>
@@ -134,6 +142,7 @@ table.cmp td.hm{background:rgba(124,92,255,.07)}
       <section aria-labelledby="h2s"><h2 id="h2s">في المهرجانات والحفلات والزحام</h2><ol class="big" style="counter-reset:s 4"><li><h3>جيب داخلي أو أمامك</h3><p>في الزحام تجنّب الجيب الخلفي والحقيبة المفتوحة على الظهر. الجيب المغلق أو الحقيبة الأمامية أكثر أمانًا.</p></li><li><h3>اتفقوا على مكان للقاء</h3><p>إذا أضعت أصدقاءك وازدحمت الشبكة، فالمكان المتفق عليه مسبقًا يغنيك عن الاعتماد على الهاتف.</p></li><li><h3>حافظ على البطارية</h3><p>بطارية خارجية ووضع توفير الطاقة يبقيان الهاتف قابلًا للاتصال وتحديد الموقع لوقت أطول.</p></li><li><h3>استغاثة خفية عند الخطر</h3><p>مع الاستغاثة الصامتة في HearMe، قول عبارتك السرية يرسل موقعك إلى أقاربك عبر Telegram دون أن يلاحظ أحد.</p></li></ol>
         <div class="note"><h3>وإذا أُخذ منك رغم ذلك؟</h3><p>عند تفعيل مضاد السرقة في HearMe، يصلك أنت وحتى شخصين من أقاربك تنبيه عبر Telegram مع الموقع وصورة للشخص مع كل رمز خاطئ. ويمكنك جعله يرنّ وقفله من gethearme.me، حتى من حاسوب الفندق.</p></div></section>
       <section aria-labelledby="h3s"><h2 id="h3s">قبل السفر، في 5 دقائق</h2><ul class="points"><li>دوّن رقم IMEI (⁦*#06#⁩) ورقم مشغّل الهاتف لإيقاف الشريحة من الخارج.</li><li>تأكد أن Find Hub (العثور على جهازي) مفعّل وأنك تعرف كلمة مرور Google.</li><li>ضع رمز قفل واحفظ نسخة من صورك.</li><li>ثبّت HearMe واربط Telegram وأضف شخصًا يبقى متاحًا.</li></ul></section>
+      <section aria-labelledby="hvid"><h2 id="hvid">بالفيديو: HearMe في 30 ثانية</h2><div class="ytw"><button type="button" class="yt" data-id="Fb3zB18Mg_c" aria-label="تشغيل الفيديو"><img src="https://i.ytimg.com/vi/Fb3zB18Mg_c/maxresdefault.jpg" alt="" loading="lazy" width="1280" height="720" /><span class="pl" aria-hidden="true"></span></button></div><p class="ytcap">فيديو YouTube: هاتفك ضاع أو سُرق؟ قل «أين هاتفي». يُحمَّل عند النقر.</p></section><script>document.querySelectorAll(".yt").forEach(function(b){b.addEventListener("click",function(){var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.id+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label");f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;b.replaceWith(f);});});</script>
       <section aria-labelledby="hfaq"><h2 id="hfaq">أسئلة شائعة</h2><details><summary>ماذا أفعل إذا سُرق هاتفي في الخارج؟</summary><p>حدّد موقعه واقفله، واطلب من مشغّلك إيقاف الشريحة، وغيّر كلمات المرور، وأبلغ الشرطة المحلية مع رقم IMEI. اتبع دليلنا «سُرق هاتفك؟ ماذا تفعل».</p></details><details><summary>هل يرنّ الإنذار إذا أخذته أنا؟</summary><p>نعم إذا كان مضاد السرقة مفعّلًا. ألغِ تفعيله أولًا، أو افتح قفل الهاتف لإيقاف الإنذار.</p></details><details><summary>هل يعمل HearMe في الخارج؟</summary><p>نعم. الكلمة السرية تعمل حتى دون إنترنت. ولتلقّي التنبيهات والموقع يحتاج الهاتف إلى اتصال (بيانات الجوال أو Wi-Fi).</p></details></section>
     </article>
     <div class="cta"><h2>سافر براحة بال</h2><p>HearMe مجاني. إنذار إذا أخذه أحد، وتنبيه أقاربك، واستغاثة خفية، أينما ذهبت.</p><a class="btn" href="https://play.google.com/store/apps/details?id=com.gethearme.app" rel="noopener">حمّل HearMe مجانًا</a></div>

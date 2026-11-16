@@ -110,6 +110,14 @@ table.cmp td.hm{background:rgba(124,92,255,.07)}
  table.cmp tr{border-bottom:1px solid var(--rule);padding:6px 0}table.cmp tr:last-child{border-bottom:0}
  table.cmp th,table.cmp td{border:0;padding:6px 14px}table.cmp tbody th{width:auto}
  table.cmp td:before{content:attr(data-l);display:block;font-size:12px;color:#c4b5fd;font-weight:600}}
+.ytw{position:relative;width:100%;aspect-ratio:16/9;border:1px solid var(--rule);border-radius:18px;overflow:hidden;background:#000}
+.yt{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;margin:0;cursor:pointer;background:#000}
+.yt img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;transition:opacity .2s;transform:scale(1.08);transform-origin:50% 100%}
+.yt:hover img,.yt:focus-visible img{opacity:1}
+.yt .pl{position:absolute;inset:0;margin:auto;width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;box-shadow:0 10px 40px rgba(124,92,255,.6)}
+.yt .pl:after{content:"";margin-left:6px;border-left:22px solid #fff;border-top:14px solid transparent;border-bottom:14px solid transparent}
+.ytw iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ytcap{color:var(--ink2);font-size:14px;margin-top:10px}
 .cta p{color:var(--ink2);max-width:34rem;margin:0 auto 20px}
 </style>
 </head>
@@ -134,6 +142,7 @@ table.cmp td.hm{background:rgba(124,92,255,.07)}
       <section aria-labelledby="h2s"><h2 id="h2s">Para qué sirve</h2><ol class="big" style="counter-reset:s 4"><li><h3>Bloquear el móvil robado</h3><p>Tu operador puede bloquear el móvil con el IMEI: ya no podrá usarse con una tarjeta SIM.</p></li><li><h3>Poner una denuncia</h3><p>La policía te pedirá el IMEI. Permite identificar el móvil si aparece.</p></li><li><h3>El seguro</h3><p>Los seguros y garantías suelen pedir el IMEI en caso de robo o pérdida.</p></li><li><h3>Comprar de segunda mano</h3><p>Antes de comprar, compara el IMEI que muestra *#06# con el de la caja y la factura.</p></li></ol>
         <div class="note"><h3>Guárdalo fuera del móvil</h3><p>Apunta el IMEI en papel o en un lugar seguro que no sea el propio móvil. No lo publiques en redes sociales. Y para la denuncia, HearMe te da además la ubicación y la foto tomada con cada código erróneo.</p></div></section>
       <section aria-labelledby="h3s"><h2 id="h3s">Hazlo ahora, en 1 minuto</h2><ul class="points"><li>Marca *#06# y apunta el número (o los dos números si tu móvil tiene dos SIM).</li><li>Haz una foto de la caja del móvil y guarda la factura.</li><li>Envíatelo por correo o guárdalo con tus papeles.</li><li>Instala HearMe para la alarma, la ubicación y la foto en caso de robo.</li></ul></section>
+      <section aria-labelledby="hvid"><h2 id="hvid">En vídeo: HearMe en 30 segundos</h2><div class="ytw"><button type="button" class="yt" data-id="lFGR_JOBGQM" aria-label="Reproducir el vídeo"><img src="https://i.ytimg.com/vi/lFGR_JOBGQM/maxresdefault.jpg" alt="" loading="lazy" width="1280" height="720" /><span class="pl" aria-hidden="true"></span></button></div><p class="ytcap">Vídeo de YouTube: ¿móvil perdido o robado? Di «mi teléfono». Se carga al hacer clic.</p></section><script>document.querySelectorAll(".yt").forEach(function(b){b.addEventListener("click",function(){var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.id+"?autoplay=1&rel=0";f.title=b.getAttribute("aria-label");f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;b.replaceWith(f);});});</script>
       <section aria-labelledby="hfaq"><h2 id="hfaq">Preguntas frecuentes</h2><details><summary>¿Por qué mi móvil tiene dos IMEI?</summary><p>Los móviles con doble SIM tienen un IMEI por ranura de tarjeta SIM. Apunta los dos.</p></details><details><summary>¿Se puede localizar un móvil con su IMEI?</summary><p>Tú mismo no. Desconfía de las webs y apps que lo prometen. El IMEI sirve sobre todo para bloquear e identificar el móvil; para localizarlo, usa Find Hub o HearMe.</p></details><details><summary>¿El IMEI cambia si cambio de tarjeta SIM?</summary><p>No. El IMEI pertenece al móvil, no a la tarjeta SIM ni al número de teléfono.</p></details></section>
     </article>
     <div class="cta"><h2>Más que un número: una forma de encontrarlo</h2><p>HearMe es gratis. Alarma si alguien lo coge, y ubicación y foto de la persona para tu denuncia.</p><a class="btn" href="https://play.google.com/store/apps/details?id=com.gethearme.app" rel="noopener">Descargar HearMe gratis</a></div>
