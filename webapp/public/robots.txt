@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /__mock/
+
+Sitemap: https://gethearme.me/sitemap.xml

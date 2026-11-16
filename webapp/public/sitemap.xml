@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://gethearme.me/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/?lang=ar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/"/>
+    <priority>1.0</priority>
+  </url>
+  <url><loc>https://gethearme.me/aide.html</loc><priority>0.7</priority></url>
+  <url><loc>https://gethearme.me/privacy.html</loc><priority>0.3</priority></url>
+</urlset>

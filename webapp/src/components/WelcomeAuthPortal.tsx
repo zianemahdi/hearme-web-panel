@@ -21,6 +21,8 @@ import { PlayBadge } from './PlayBadge';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { useI18n, LanguageSwitcher } from '../i18n';
 import { SocialLinks } from './SocialLinks';
+import { LandingSections } from './LandingSections';
+import { ChevronDown } from 'lucide-react';
 
 // hCaptcha — clé de TEST par défaut (passe toujours, sans protection réelle).
 // ⚠️ REMPLACER par ta vraie Site Key hCaptcha ; mettre la Secret Key dans
@@ -217,8 +219,11 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
         />
       )}
 
-    <div className="relative min-h-screen z-10 flex flex-col justify-between px-4 sm:px-6 py-6 sm:py-10">
+    <div className="relative z-10 px-4 sm:px-6 py-6 sm:py-10">
       <HCaptcha ref={captchaRef} sitekey={HCAPTCHA_SITE_KEY} size="invisible" />
+      {/* Premier écran : connexion + accroche, tenus dans la hauteur de l'écran ;
+          la présentation (LandingSections) vient en dessous. */}
+      <div className="min-h-[calc(100svh-3rem)] sm:min-h-[calc(100svh-5rem)] flex flex-col">
       {/* Top Bar with Logo & Theme Toggle */}
       <header className="max-w-6xl w-full mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
@@ -506,6 +511,17 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
           </div>
         </section>
       </main>
+
+      <a
+        href="#comment"
+        className="hidden lg:flex mx-auto mb-2 items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/40 hover:text-white/80 transition"
+      >
+        {t('ls.discover')}
+        <ChevronDown className="w-4 h-4 animate-bounce motion-reduce:animate-none" aria-hidden="true" />
+      </a>
+      </div>
+
+      <LandingSections theme={theme} />
 
       {/* Subtle Footer Information */}
       <footer className="max-w-6xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 pt-4">

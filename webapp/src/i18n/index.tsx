@@ -23,7 +23,19 @@ function isLang(v: unknown): v is Lang {
   return v === 'fr' || v === 'en' || v === 'es' || v === 'ar';
 }
 
+/** Langue imposée par l'adresse (?lang=en) : une adresse par langue pour Google (hreflang). */
+function urlLang(): Lang | null {
+  try {
+    const v = new URLSearchParams(window.location.search).get('lang');
+    return isLang(v) ? v : null;
+  } catch {
+    return null;
+  }
+}
+
 function detectLang(): Lang {
+  const fromUrl = urlLang();
+  if (fromUrl) return fromUrl;
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (isLang(saved)) return saved;
@@ -81,6 +93,10 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     root.lang = lang;
     root.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.title = DICTS[lang]['meta.title'];
+    // Adresse canonique de la version ouverte par ?lang= (sinon celle de la page).
+    const canon = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    const fromUrl = urlLang();
+    if (canon && fromUrl) canon.href = `https://gethearme.me/?lang=${fromUrl}`;
   }, [lang]);
 
   const value = useMemo(() => ({ lang, locale, setLang, t, formatAge }), [lang, locale, setLang, t, formatAge]);

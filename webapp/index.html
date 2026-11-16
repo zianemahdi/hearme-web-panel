@@ -33,15 +33,116 @@
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HearMe — Panneau d'urgence & Antivol</title>
-    <meta name="description" content="Panneau web d'urgence HearMe : localisez et sécurisez votre téléphone en temps réel." />
+    <title>HearMe — Antivol et alarme pour téléphone Android</title>
+    <meta name="description" content="HearMe retrouve votre téléphone : il sonne quand vous dites votre mot-clé, même en silencieux. Alarme antivol, photo du voleur, position en direct et SOS silencieux. Gratuit sur Android." />
+    <meta name="theme-color" content="#0a0a12" />
+    <link rel="canonical" href="https://gethearme.me/" />
+    <link rel="alternate" hreflang="fr" href="https://gethearme.me/?lang=fr" />
+    <link rel="alternate" hreflang="en" href="https://gethearme.me/?lang=en" />
+    <link rel="alternate" hreflang="es" href="https://gethearme.me/?lang=es" />
+    <link rel="alternate" hreflang="ar" href="https://gethearme.me/?lang=ar" />
+    <link rel="alternate" hreflang="x-default" href="https://gethearme.me/" />
+
+    <!-- Icônes : onglet du navigateur, écran d'accueil (iPhone / Android) -->
+    <link rel="icon" href="./favicon.ico" sizes="48x48" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./site.webmanifest" />
+
+    <!-- Aperçu quand le lien est partagé (WhatsApp, Facebook, X, Telegram…) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="HearMe" />
+    <meta property="og:url" content="https://gethearme.me/" />
+    <meta property="og:title" content="HearMe — Antivol et alarme pour téléphone Android" />
+    <meta property="og:description" content="Votre téléphone sonne quand vous dites votre mot-clé. Alarme antivol, photo du voleur, position en direct. Gratuit." />
+    <meta property="og:image" content="https://gethearme.me/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale:alternate" content="en_GB" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:locale:alternate" content="ar_AR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://gethearme.me/og-image.png" />
+
+    <!-- Données structurées pour Google (application, marque, questions fréquentes).
+         type="application/ld+json" : simple donnée, jamais exécutée (la CSP ne la bloque pas). -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "MobileApplication",
+          "name": "HearMe : antivol, alarme, SOS",
+          "operatingSystem": "Android 7.0+",
+          "applicationCategory": "UtilitiesApplication",
+          "description": "Application antivol pour Android : le téléphone sonne quand vous dites votre mot-clé, même en silencieux. Alarme antivol, photo du voleur, position en direct, SOS silencieux et panneau d'urgence en ligne.",
+          "url": "https://gethearme.me/",
+          "downloadUrl": "https://play.google.com/store/apps/details?id=com.gethearme.app",
+          "installUrl": "https://play.google.com/store/apps/details?id=com.gethearme.app",
+          "image": "https://gethearme.me/icon-512.png",
+          "inLanguage": ["fr", "en", "es", "ar"],
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+          "publisher": { "@id": "https://gethearme.me/#org" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://gethearme.me/#org",
+          "name": "HearMe",
+          "url": "https://gethearme.me/",
+          "logo": "https://gethearme.me/icon-512.png",
+          "email": "hearme.app.contact@gmail.com",
+          "sameAs": [
+            "https://play.google.com/store/apps/details?id=com.gethearme.app",
+            "https://www.youtube.com/@gethearme",
+            "https://www.tiktok.com/@gethearme",
+            "https://www.instagram.com/gethearme/"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "name": "HearMe",
+          "url": "https://gethearme.me/",
+          "inLanguage": "fr"
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            { "@type": "Question", "name": "HearMe est-il gratuit ?", "acceptedAnswer": { "@type": "Answer", "text": "Oui. L'application et ce panneau sont gratuits. Une offre Plus facultative arrivera plus tard pour des fonctions avancées." } },
+            { "@type": "Question", "name": "Comment retrouver mon téléphone volé ou perdu ?", "acceptedAnswer": { "@type": "Answer", "text": "Connectez-vous sur gethearme.me avec le même compte que dans l'app : vous voyez sa position, vous pouvez le faire sonner, le verrouiller et voir les photos prises." } },
+            { "@type": "Question", "name": "Le mot-clé fonctionne-t-il sans Internet ?", "acceptedAnswer": { "@type": "Answer", "text": "Oui, le mot-clé est reconnu directement sur le téléphone. Internet sert seulement à envoyer la position et les photos." } },
+            { "@type": "Question", "name": "HearMe écoute-t-il mes conversations ?", "acceptedAnswer": { "@type": "Answer", "text": "Non. Le téléphone cherche seulement votre mot-clé. Vos conversations ne sont ni enregistrées ni envoyées." } },
+            { "@type": "Question", "name": "Sur quels téléphones fonctionne HearMe ?", "acceptedAnswer": { "@type": "Answer", "text": "Sur les téléphones Android 7 et plus récents. HearMe n'existe pas encore sur iPhone." } },
+            { "@type": "Question", "name": "Dans quelles langues ?", "acceptedAnswer": { "@type": "Answer", "text": "En français, anglais, espagnol et arabe, dans l'application comme sur ce site." } }
+          ]
+        }
+      ]
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   </head>
   <body class="bg-[#0a0a12] text-slate-100 min-h-screen antialiased selection:bg-purple-600 selection:text-white font-['Poppins',sans-serif]">
-    <div id="root"></div>
+    <!-- Contenu lisible avant le chargement de l'application (moteurs de recherche,
+         aperçus de liens) ; React le remplace dès qu'il démarre. -->
+    <div id="root">
+      <main style="max-width:44rem;margin:0 auto;padding:3rem 1.25rem;line-height:1.6;color:#cbd5e1">
+        <h1 style="color:#fff">HearMe — antivol et alarme pour téléphone Android</h1>
+        <p>Votre téléphone sonne quand vous dites votre mot-clé, même en mode silencieux. Volé ou perdu ? Connectez-vous sur gethearme.me pour le localiser, le faire sonner, le verrouiller et voir la photo de la personne qui l'a pris.</p>
+        <h2 style="color:#fff">Fonctions</h2>
+        <ul>
+          <li>Mot-clé vocal reconnu sur le téléphone, même sans Internet</li>
+          <li>SOS silencieux : une phrase secrète envoie votre position à vos proches sur Telegram</li>
+          <li>Alarme antivol si quelqu'un prend ou bouge le téléphone</li>
+          <li>Photo du voleur à chaque déverrouillage raté</li>
+          <li>Position en direct avec batterie et réseau</li>
+          <li>Message sur l'écran verrouillé si le téléphone est perdu</li>
+        </ul>
+        <p><a style="color:#c4b5fd" href="https://play.google.com/store/apps/details?id=com.gethearme.app">Télécharger HearMe gratuitement sur Google Play</a> · <a style="color:#c4b5fd" href="./aide.html">Aide et tutoriels</a> · <a style="color:#c4b5fd" href="./privacy.html">Confidentialité</a></p>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
