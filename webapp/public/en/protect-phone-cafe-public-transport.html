@@ -96,6 +96,20 @@ ol.big p{margin:0;color:var(--ink2)}
 .note{margin-top:18px;padding:18px 20px;border-radius:18px;border:1px solid rgba(184,166,255,.35);background:rgba(124,92,255,.08)}
 .note h3{margin:0 0 6px;font-size:16px}
 .note p{margin:0;color:var(--ink2)}
+table.cmp{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--rule);border-radius:18px;overflow:hidden;font-size:15px}
+table.cmp th,table.cmp td{padding:12px 14px;text-align:start;vertical-align:top;border-bottom:1px solid var(--rule)}
+table.cmp tr:last-child th,table.cmp tr:last-child td{border-bottom:0}
+table.cmp thead th{background:rgba(255,255,255,.04);font-size:14px}
+table.cmp thead th.hm{color:#c4b5fd}
+table.cmp tbody th{font-weight:600;width:34%}
+table.cmp td.hm{background:rgba(124,92,255,.07)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.v{display:inline-block;min-width:1.4em;font-weight:800;margin-inline-end:6px}
+.v.y{color:#4ade80}.v.n{color:#f87171}.v.p{color:#fbbf24}
+@media(max-width:600px){table.cmp thead{display:none}table.cmp,table.cmp tbody,table.cmp tr,table.cmp th,table.cmp td{display:block;width:auto}
+ table.cmp tr{border-bottom:1px solid var(--rule);padding:6px 0}table.cmp tr:last-child{border-bottom:0}
+ table.cmp th,table.cmp td{border:0;padding:6px 14px}table.cmp tbody th{width:auto}
+ table.cmp td:before{content:attr(data-l);display:block;font-size:12px;color:#c4b5fd;font-weight:600}}
 .cta p{color:var(--ink2);max-width:34rem;margin:0 auto 20px}
 </style>
 </head>
@@ -115,6 +129,7 @@ ol.big p{margin:0;color:var(--ink2)}
           <p class="lead">Most phone thefts take a few seconds, in busy places: café terraces, stations, the metro, buses. A few simple habits are enough not to be an easy target.</p>
         </div>
       </div>
+      
       <section aria-labelledby="h1s"><h2 id="h1s">In cafés, restaurants and libraries</h2><ol class="big"><li><h3>Don&#x27;t leave it at the edge of the table</h3><p>A phone on the street side or the walkway side can be taken by someone passing by, often hidden under a menu or a newspaper. Keep it close to you, on the wall side.</p></li><li><h3>Watch out for distractions</h3><p>Someone asking you the time, showing you a piece of paper or spilling something can be there to turn your eyes away while someone else takes the phone.</p></li><li><h3>Never leave it alone</h3><p>Even for a minute to order or go to the toilet: take it with you, or arm an anti-theft alarm before you step away.</p></li><li><h3>Not in a back pocket or an open bag</h3><p>Use a front or inside pocket, or a closed bag worn in front of you.</p></li></ol></section>
       <section aria-labelledby="h2s"><h2 id="h2s">On the metro, bus and train</h2><ol class="big" style="counter-reset:s 4"><li><h3>Put it away near the doors</h3><p>The most common snatch happens just before the doors close: the thief grabs the phone and steps out. Near the doors, keep it put away.</p></li><li><h3>Hold it firmly in a crowd</h3><p>In a packed carriage or bus, a firm grip on the phone makes it much harder to take.</p></li><li><h3>Earphones in, eyes on the screen</h3><p>With music in your ears and your eyes on the screen, you notice less of what&#x27;s going on around you. Look up at each stop.</p></li><li><h3>Don&#x27;t fall asleep holding your phone</h3><p>On long journeys, put it in a closed pocket before you rest.</p></li></ol>
         <div class="note"><h3>And if it&#x27;s taken anyway?</h3><p>With HearMe&#x27;s anti-theft armed, if someone takes or moves your phone, a loud alarm goes off straight away. To stop it, the phone must be unlocked: the thief can&#x27;t switch it off. You get an alert on Telegram with the location, and a photo of the person at each wrong code.</p></div></section>
@@ -122,7 +137,7 @@ ol.big p{margin:0;color:var(--ink2)}
       <section aria-labelledby="hfaq"><h2 id="hfaq">Frequently asked questions</h2><details><summary>Where is phone theft most common?</summary><p>In busy places: café terraces, stations, the metro, buses, festivals and concert exits. The risky moments are when you&#x27;re distracted or in a hurry.</p></details><details><summary>Does the alarm go off if I pick up my own phone?</summary><p>Yes, if the anti-theft is armed. Disarm it before picking it up, or unlock the phone to stop the alarm.</p></details><details><summary>What should I do if my phone is stolen?</summary><p>Don&#x27;t chase the thief, then follow our guide “Phone stolen: what to do”: locate it, lock it, block the SIM card, report it to the police.</p></details></section>
     </article>
     <div class="cta"><h2>Arm the anti-theft before you put your phone down</h2><p>HearMe is free. If someone takes your phone, the alarm goes off and you&#x27;re warned straight away.</p><a class="btn" href="https://play.google.com/store/apps/details?id=com.gethearme.app" rel="noopener">Get HearMe for free</a></div>
-    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">Other features</h2><nav class="more"><a href="./find-phone-on-silent.html">Voice keyword</a><a href="./phone-anti-theft-alarm.html">Anti-theft alarm</a><a href="./find-lost-stolen-phone.html">Find your phone</a><a href="./silent-sos.html">Silent SOS</a><a href="./phone-stolen-what-to-do.html">Guide: stolen phone</a><a href="./find-phone-on-silent-mode.html">Guide: phone on silent</a></nav></section>
+    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">Other features</h2><nav class="more"><a href="./find-phone-on-silent.html">Voice keyword</a><a href="./phone-anti-theft-alarm.html">Anti-theft alarm</a><a href="./find-lost-stolen-phone.html">Find your phone</a><a href="./silent-sos.html">Silent SOS</a><a href="./phone-stolen-what-to-do.html">Guide: stolen phone</a><a href="./find-phone-on-silent-mode.html">Guide: phone on silent</a><a href="./hearme-vs-google-find-hub.html">Comparison: HearMe or Google</a></nav></section>
   </main>
   <footer>
     <a href="../?lang=en">← Home</a>

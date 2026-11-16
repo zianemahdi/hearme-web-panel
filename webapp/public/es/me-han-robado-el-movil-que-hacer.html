@@ -96,6 +96,20 @@ ol.big p{margin:0;color:var(--ink2)}
 .note{margin-top:18px;padding:18px 20px;border-radius:18px;border:1px solid rgba(184,166,255,.35);background:rgba(124,92,255,.08)}
 .note h3{margin:0 0 6px;font-size:16px}
 .note p{margin:0;color:var(--ink2)}
+table.cmp{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--rule);border-radius:18px;overflow:hidden;font-size:15px}
+table.cmp th,table.cmp td{padding:12px 14px;text-align:start;vertical-align:top;border-bottom:1px solid var(--rule)}
+table.cmp tr:last-child th,table.cmp tr:last-child td{border-bottom:0}
+table.cmp thead th{background:rgba(255,255,255,.04);font-size:14px}
+table.cmp thead th.hm{color:#c4b5fd}
+table.cmp tbody th{font-weight:600;width:34%}
+table.cmp td.hm{background:rgba(124,92,255,.07)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.v{display:inline-block;min-width:1.4em;font-weight:800;margin-inline-end:6px}
+.v.y{color:#4ade80}.v.n{color:#f87171}.v.p{color:#fbbf24}
+@media(max-width:600px){table.cmp thead{display:none}table.cmp,table.cmp tbody,table.cmp tr,table.cmp th,table.cmp td{display:block;width:auto}
+ table.cmp tr{border-bottom:1px solid var(--rule);padding:6px 0}table.cmp tr:last-child{border-bottom:0}
+ table.cmp th,table.cmp td{border:0;padding:6px 14px}table.cmp tbody th{width:auto}
+ table.cmp td:before{content:attr(data-l);display:block;font-size:12px;color:#c4b5fd;font-weight:600}}
 .cta p{color:var(--ink2);max-width:34rem;margin:0 auto 20px}
 </style>
 </head>
@@ -115,6 +129,7 @@ ol.big p{margin:0;color:var(--ink2)}
           <p class="lead">Que te roben el móvil es estresante y se pierde tiempo fácilmente. Esto es lo que hay que hacer, en orden, para tener una oportunidad de recuperarlo y, sobre todo, proteger tus cuentas, tu dinero y tus fotos.</p>
         </div>
       </div>
+      
       <section aria-labelledby="h1s"><h2 id="h1s">En los primeros 10 minutos</h2><ol class="big"><li><h3>No persigas al ladrón</h3><p>Tu seguridad va antes que el móvil. Aléjate, ponte en un lugar seguro y usa el móvil de un familiar o un ordenador.</p></li><li><h3>Localiza el móvil</h3><p>Con una cuenta de Google, abre google.com/android/find. Si tienes HearMe, entra en gethearme.me: ubicación en directo, hacerlo sonar, bloquearlo y foto de la persona. No vayas a buscarlo solo: da la ubicación a la policía.</p></li><li><h3>Bloquéalo a distancia</h3><p>Desde Encontrar mi dispositivo o gethearme.me, bloquea la pantalla y muestra un mensaje con un número donde localizarte.</p></li><li><h3>Bloquea tu tarjeta SIM</h3><p>Llama a tu operador (desde otro teléfono o su web) para suspender la línea. El ladrón ya no podrá llamar ni recibir tus códigos por SMS.</p></li></ol></section>
       <section aria-labelledby="h2s"><h2 id="h2s">En la hora siguiente</h2><ol class="big" style="counter-reset:s 4"><li><h3>Cambia tus contraseñas importantes</h3><p>Primero tu cuenta de Google, después tu correo, tus redes sociales y tus apps de pago. Cierra la sesión del móvil robado en esas cuentas si lo permiten.</p></li><li><h3>Avisa a tu banco</h3><p>Si había apps bancarias o una tarjeta guardada en el móvil, llama a tu banco para vigilar o bloquear los pagos.</p></li><li><h3>Denuncia el robo</h3><p>Ve a la policía con el número IMEI del móvil. Después, tu operador puede bloquear el propio teléfono con ese número, incluso con otra SIM.</p></li><li><h3>Avisa a tu seguro</h3><p>Si el móvil está asegurado, casi siempre te pedirán la denuncia. Guarda una copia.</p></li></ol>
         <div class="note"><h3>¿Dónde encontrar el número IMEI?</h3><p>En la caja del móvil, en la factura o en tu cuenta de Google (myaccount.google.com, Seguridad, Tus dispositivos). Para la próxima vez: marca *#06# en tu móvil y apunta el número en un lugar seguro.</p></div></section>
@@ -122,7 +137,7 @@ ol.big p{margin:0;color:var(--ink2)}
       <section aria-labelledby="hfaq"><h2 id="hfaq">Preguntas frecuentes</h2><details><summary>¿Se puede encontrar un móvil apagado?</summary><p>No en directo: un móvil apagado ya no envía su ubicación. Normalmente ves la última ubicación conocida antes de apagarse. HearMe también te avisa cuando la batería está casi vacía o el móvil se apaga.</p></details><details><summary>¿Hay que borrar el móvil a distancia?</summary><p>Solo como último recurso, si crees que no lo recuperarás: una vez borrado, ya no podrás localizarlo.</p></details><details><summary>¿Puede el ladrón usar mi móvil con otra SIM?</summary><p>Tras tu denuncia, el operador puede bloquear el teléfono con su IMEI. Por eso es importante conocer ese número.</p></details></section>
     </article>
     <div class="cta"><h2>Prepárate antes de que sea tarde</h2><p>HearMe es gratis. Instalado ahora, te ayuda a encontrar tu móvil el día que lo necesites.</p><a class="btn" href="https://play.google.com/store/apps/details?id=com.gethearme.app" rel="noopener">Descargar HearMe gratis</a></div>
-    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">Otras funciones</h2><nav class="more"><a href="./hacer-sonar-movil-en-silencio.html">Palabra clave</a><a href="./alarma-antirrobo-movil.html">Alarma antirrobo</a><a href="./encontrar-movil-perdido-robado.html">Encontrar tu móvil</a><a href="./sos-silencioso.html">SOS silencioso</a><a href="./encontrar-movil-en-silencio.html">Guía: móvil en silencio</a><a href="./proteger-movil-cafeteria-transporte.html">Guía: cafetería y transporte</a></nav></section>
+    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">Otras funciones</h2><nav class="more"><a href="./hacer-sonar-movil-en-silencio.html">Palabra clave</a><a href="./alarma-antirrobo-movil.html">Alarma antirrobo</a><a href="./encontrar-movil-perdido-robado.html">Encontrar tu móvil</a><a href="./sos-silencioso.html">SOS silencioso</a><a href="./encontrar-movil-en-silencio.html">Guía: móvil en silencio</a><a href="./proteger-movil-cafeteria-transporte.html">Guía: cafetería y transporte</a><a href="./hearme-o-encontrar-mi-dispositivo-google.html">Comparativa: HearMe o Google</a></nav></section>
   </main>
   <footer>
     <a href="../?lang=es">← Inicio</a>

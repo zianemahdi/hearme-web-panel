@@ -10,6 +10,7 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './fr/telephone-vole-que-faire.html', label: 'Guide : téléphone volé' },
     { href: './fr/retrouver-telephone-en-silencieux.html', label: 'Guide : téléphone en silencieux' },
     { href: './fr/proteger-telephone-cafe-transports.html', label: 'Guide : café et transports' },
+    { href: './fr/hearme-ou-localiser-mon-appareil-google.html', label: 'HearMe ou Google ?' },
   ],
   en: [
     { href: './en/find-phone-on-silent.html', label: 'Voice keyword' },
@@ -19,6 +20,7 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './en/phone-stolen-what-to-do.html', label: 'Guide: stolen phone' },
     { href: './en/find-phone-on-silent-mode.html', label: 'Guide: phone on silent' },
     { href: './en/protect-phone-cafe-public-transport.html', label: 'Guide: cafés and transport' },
+    { href: './en/hearme-vs-google-find-hub.html', label: 'HearMe vs Google' },
   ],
   es: [
     { href: './es/hacer-sonar-movil-en-silencio.html', label: 'Palabra clave' },
@@ -28,6 +30,7 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './es/me-han-robado-el-movil-que-hacer.html', label: 'Guía: móvil robado' },
     { href: './es/encontrar-movil-en-silencio.html', label: 'Guía: móvil en silencio' },
     { href: './es/proteger-movil-cafeteria-transporte.html', label: 'Guía: cafetería y transporte' },
+    { href: './es/hearme-o-encontrar-mi-dispositivo-google.html', label: '¿HearMe o Google?' },
   ],
   ar: [
     { href: './ar/find-phone-on-silent.html', label: 'الكلمة المفتاحية' },
@@ -37,6 +40,7 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './ar/phone-stolen-what-to-do.html', label: 'دليل: هاتف مسروق' },
     { href: './ar/find-phone-on-silent-mode.html', label: 'دليل: الهاتف على الوضع الصامت' },
     { href: './ar/protect-phone-cafe-public-transport.html', label: 'دليل: المقهى والمواصلات' },
+    { href: './ar/hearme-vs-google-find-hub.html', label: 'HearMe أم Google؟' },
   ],
 };
 

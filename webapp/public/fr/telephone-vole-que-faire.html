@@ -96,6 +96,20 @@ ol.big p{margin:0;color:var(--ink2)}
 .note{margin-top:18px;padding:18px 20px;border-radius:18px;border:1px solid rgba(184,166,255,.35);background:rgba(124,92,255,.08)}
 .note h3{margin:0 0 6px;font-size:16px}
 .note p{margin:0;color:var(--ink2)}
+table.cmp{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--rule);border-radius:18px;overflow:hidden;font-size:15px}
+table.cmp th,table.cmp td{padding:12px 14px;text-align:start;vertical-align:top;border-bottom:1px solid var(--rule)}
+table.cmp tr:last-child th,table.cmp tr:last-child td{border-bottom:0}
+table.cmp thead th{background:rgba(255,255,255,.04);font-size:14px}
+table.cmp thead th.hm{color:#c4b5fd}
+table.cmp tbody th{font-weight:600;width:34%}
+table.cmp td.hm{background:rgba(124,92,255,.07)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.v{display:inline-block;min-width:1.4em;font-weight:800;margin-inline-end:6px}
+.v.y{color:#4ade80}.v.n{color:#f87171}.v.p{color:#fbbf24}
+@media(max-width:600px){table.cmp thead{display:none}table.cmp,table.cmp tbody,table.cmp tr,table.cmp th,table.cmp td{display:block;width:auto}
+ table.cmp tr{border-bottom:1px solid var(--rule);padding:6px 0}table.cmp tr:last-child{border-bottom:0}
+ table.cmp th,table.cmp td{border:0;padding:6px 14px}table.cmp tbody th{width:auto}
+ table.cmp td:before{content:attr(data-l);display:block;font-size:12px;color:#c4b5fd;font-weight:600}}
 .cta p{color:var(--ink2);max-width:34rem;margin:0 auto 20px}
 </style>
 </head>
@@ -115,6 +129,7 @@ ol.big p{margin:0;color:var(--ink2)}
           <p class="lead">Un vol de téléphone, c&#x27;est stressant, et on perd vite du temps. Voici quoi faire, dans l&#x27;ordre, pour garder une chance de le retrouver et surtout protéger vos comptes, votre argent et vos photos.</p>
         </div>
       </div>
+      
       <section aria-labelledby="h1s"><h2 id="h1s">Dans les 10 premières minutes</h2><ol class="big"><li><h3>Ne poursuivez pas le voleur</h3><p>Votre sécurité passe avant le téléphone. Éloignez-vous, mettez-vous dans un endroit sûr et utilisez le téléphone d&#x27;un proche ou un ordinateur.</p></li><li><h3>Localisez le téléphone</h3><p>Avec un compte Google, ouvrez google.com/android/find. Si HearMe est installé, connectez-vous sur gethearme.me : position en direct, sonnerie, verrouillage et photo de la personne. N&#x27;allez pas le récupérer seul : donnez la position à la police.</p></li><li><h3>Verrouillez-le à distance</h3><p>Depuis Localiser mon appareil ou gethearme.me, verrouillez l&#x27;écran et affichez un message avec un numéro où vous joindre.</p></li><li><h3>Bloquez votre carte SIM</h3><p>Appelez votre opérateur (depuis un autre téléphone ou son site) pour suspendre la ligne. Le voleur ne pourra plus appeler ni recevoir vos codes par SMS.</p></li></ol></section>
       <section aria-labelledby="h2s"><h2 id="h2s">Dans l&#x27;heure qui suit</h2><ol class="big" style="counter-reset:s 4"><li><h3>Changez vos mots de passe importants</h3><p>D&#x27;abord votre compte Google, puis votre e-mail, vos réseaux sociaux et vos applications de paiement. Déconnectez le téléphone volé de ces comptes s&#x27;ils le proposent.</p></li><li><h3>Prévenez votre banque</h3><p>Si des applications bancaires ou une carte enregistrée étaient sur le téléphone, appelez votre banque pour faire surveiller ou bloquer les paiements.</p></li><li><h3>Portez plainte</h3><p>Allez au commissariat ou à la gendarmerie avec le numéro IMEI du téléphone. L&#x27;opérateur peut ensuite bloquer le téléphone lui-même grâce à ce numéro, même avec une autre carte SIM.</p></li><li><h3>Prévenez votre assurance</h3><p>Si le téléphone est assuré, le dépôt de plainte est presque toujours demandé. Gardez une copie.</p></li></ol>
         <div class="note"><h3>Où trouver le numéro IMEI ?</h3><p>Sur la boîte du téléphone, sur la facture, ou dans votre compte Google (myaccount.google.com, rubrique Sécurité, Vos appareils). Pour la prochaine fois : composez *#06# sur votre téléphone et notez le numéro dans un endroit sûr.</p></div></section>
@@ -122,7 +137,7 @@ ol.big p{margin:0;color:var(--ink2)}
       <section aria-labelledby="hfaq"><h2 id="hfaq">Questions fréquentes</h2><details><summary>Peut-on retrouver un téléphone éteint ?</summary><p>Pas en direct : un téléphone éteint n&#x27;envoie plus sa position. Vous voyez en général la dernière position connue avant l&#x27;extinction. HearMe vous prévient aussi quand la batterie est presque vide ou quand le téléphone s&#x27;éteint.</p></details><details><summary>Faut-il effacer le téléphone à distance ?</summary><p>Seulement en dernier recours, si vous pensez ne jamais le récupérer : une fois effacé, vous ne pourrez plus le localiser.</p></details><details><summary>Le voleur peut-il utiliser mon téléphone avec une autre carte SIM ?</summary><p>Après votre plainte, l&#x27;opérateur peut bloquer le téléphone grâce à son IMEI. C&#x27;est pour cela qu&#x27;il est important de connaître ce numéro.</p></details></section>
     </article>
     <div class="cta"><h2>Préparez-vous avant qu&#x27;il soit trop tard</h2><p>HearMe est gratuit. Installé maintenant, il vous aide à retrouver votre téléphone le jour où vous en avez besoin.</p><a class="btn" href="https://play.google.com/store/apps/details?id=com.gethearme.app" rel="noopener">Télécharger HearMe gratuitement</a></div>
-    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">Les autres fonctions</h2><nav class="more"><a href="./faire-sonner-telephone-silencieux.html">Mot-clé vocal</a><a href="./alarme-antivol-telephone.html">Alarme antivol</a><a href="./retrouver-telephone-perdu-vole.html">Retrouver son téléphone</a><a href="./sos-silencieux.html">SOS silencieux</a><a href="./retrouver-telephone-en-silencieux.html">Guide : téléphone en silencieux</a><a href="./proteger-telephone-cafe-transports.html">Guide : café et transports</a></nav></section>
+    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">Les autres fonctions</h2><nav class="more"><a href="./faire-sonner-telephone-silencieux.html">Mot-clé vocal</a><a href="./alarme-antivol-telephone.html">Alarme antivol</a><a href="./retrouver-telephone-perdu-vole.html">Retrouver son téléphone</a><a href="./sos-silencieux.html">SOS silencieux</a><a href="./retrouver-telephone-en-silencieux.html">Guide : téléphone en silencieux</a><a href="./proteger-telephone-cafe-transports.html">Guide : café et transports</a><a href="./hearme-ou-localiser-mon-appareil-google.html">Comparatif : HearMe ou Google</a></nav></section>
   </main>
   <footer>
     <a href="../?lang=fr">← Accueil</a>

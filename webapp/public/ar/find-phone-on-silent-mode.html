@@ -96,6 +96,20 @@ ol.big p{margin:0;color:var(--ink2)}
 .note{margin-top:18px;padding:18px 20px;border-radius:18px;border:1px solid rgba(184,166,255,.35);background:rgba(124,92,255,.08)}
 .note h3{margin:0 0 6px;font-size:16px}
 .note p{margin:0;color:var(--ink2)}
+table.cmp{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--rule);border-radius:18px;overflow:hidden;font-size:15px}
+table.cmp th,table.cmp td{padding:12px 14px;text-align:start;vertical-align:top;border-bottom:1px solid var(--rule)}
+table.cmp tr:last-child th,table.cmp tr:last-child td{border-bottom:0}
+table.cmp thead th{background:rgba(255,255,255,.04);font-size:14px}
+table.cmp thead th.hm{color:#c4b5fd}
+table.cmp tbody th{font-weight:600;width:34%}
+table.cmp td.hm{background:rgba(124,92,255,.07)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.v{display:inline-block;min-width:1.4em;font-weight:800;margin-inline-end:6px}
+.v.y{color:#4ade80}.v.n{color:#f87171}.v.p{color:#fbbf24}
+@media(max-width:600px){table.cmp thead{display:none}table.cmp,table.cmp tbody,table.cmp tr,table.cmp th,table.cmp td{display:block;width:auto}
+ table.cmp tr{border-bottom:1px solid var(--rule);padding:6px 0}table.cmp tr:last-child{border-bottom:0}
+ table.cmp th,table.cmp td{border:0;padding:6px 14px}table.cmp tbody th{width:auto}
+ table.cmp td:before{content:attr(data-l);display:block;font-size:12px;color:#c4b5fd;font-weight:600}}
 .cta p{color:var(--ink2);max-width:34rem;margin:0 auto 20px}
 </style>
 </head>
@@ -115,6 +129,7 @@ ol.big p{margin:0;color:var(--ink2)}
           <p class="lead">الهاتف في مكان ما في البيت، على الوضع الصامت، والاتصال به لا يفيد. لا داعي للقلق: إليك الطرق التي تنجح، من الأسرع إلى الأبسط.</p>
         </div>
       </div>
+      
       <section aria-labelledby="h1s"><h2 id="h1s">اجعله يرن حتى وهو صامت</h2><ol class="big"><li><h3>عبر حساب Google</h3><p>من حاسوب أو هاتف آخر، افتح google.com/android/find واختر «تشغيل صوت». يرن الهاتف بصوت عالٍ لمدة 5 دقائق حتى على الوضع الصامت. يجب أن يكون مشغّلًا ومتصلًا بالإنترنت.</p></li><li><h3>عبر مكبّر صوت أو جهاز Google آخر</h3><p>إذا كان لديك مكبّر صوت ذكي من Google أو جهاز لوحي بالحساب نفسه، قل «Ok Google، اعثر على هاتفي»: سيبدأ بالرنين.</p></li><li><h3>عبر ساعتك الذكية</h3><p>معظم الساعات الذكية فيها خاصية «العثور على الهاتف» التي تجعله يرن ما دامت الساعة والهاتف متصلين بالبلوتوث.</p></li><li><h3>على iPhone أو Samsung</h3><p>iPhone: تطبيق «تحديد الموقع» على جهاز Apple آخر أو icloud.com/find ثم «تشغيل صوت». Samsung: smartthingsfind.samsung.com ثم «رنين».</p></li></ol></section>
       <section aria-labelledby="h2s"><h2 id="h2s">بدون إنترنت أو جهاز آخر</h2><ol class="big" style="counter-reset:s 4"><li><h3>اتصل به رغم ذلك</h3><p>على الوضع الصامت، كثير من الهواتف ما زالت تهتز. اتصل به من هاتف آخر في غرفة هادئة واستمع إلى صوت الاهتزاز على الأثاث.</p></li><li><h3>أعد مسارك</h3><p>تذكّر آخر مرة استعملته فيها، ثم مُرّ بالأماكن نفسها بالترتيب: الأريكة، السرير، الحمّام، المطبخ، السيارة.</p></li><li><h3>ابحث بمصباح</h3><p>أطفئ الضوء ومرّر مصباحًا تحت الأثاث وبين الوسائد: الشاشة أو الغطاء يعكسان الضوء.</p></li><li><h3>تحقّق من الحقائب والجيوب والسيارة</h3><p>جيوب السترات والحقائب والفراغ بين مقاعد السيارة هي أكثر الأماكن التي يختفي فيها الهاتف.</p></li></ol>
         <div class="note"><h3>لماذا لا تنجح هذه الطرق دائمًا؟</h3><p>الرنين عن بُعد يحتاج إلى الإنترنت وإلى جهاز آخر في متناول يدك. مع HearMe، يكفي أن تقول كلمتك المفتاحية بصوت عالٍ: يرن الهاتف بقوة حتى على الوضع الصامت وبدون إنترنت، لأن الكلمة تُتعرَّف على الهاتف نفسه.</p></div></section>
@@ -122,7 +137,7 @@ ol.big p{margin:0;color:var(--ink2)}
       <section aria-labelledby="hfaq"><h2 id="hfaq">أسئلة شائعة</h2><details><summary>هل يمكن جعل هاتف صامت يرن؟</summary><p>نعم. خاصية «تشغيل صوت» من Google تجعله يرن حتى على الوضع الصامت إذا كان مشغّلًا ومتصلًا. وHearMe يجعله يرن عندما تقول كلمتك المفتاحية، حتى بدون إنترنت.</p></details><details><summary>وإذا كانت البطارية فارغة؟</summary><p>الهاتف المطفأ لا يمكنه الرنين. صفحة Google تعرض عادةً آخر موقع معروف. ويمكن لـ HearMe أيضًا أن ينبّهك عندما تكاد البطارية تنفد.</p></details><details><summary>هل يمكن أن تنطلق كلمة HearMe وحدها؟</summary><p>أنت من يختار كلمته. يوجد خيار يطلب قولها مرتين، حتى لا يشغّلها تلفاز أو شخص آخر بالخطأ.</p></details></section>
     </article>
     <div class="cta"><h2>في المرة القادمة، نادِه بصوتك</h2><p>HearMe مجاني. قل كلمتك المفتاحية فيرن الهاتف، حتى على الوضع الصامت وبدون إنترنت.</p><a class="btn" href="https://play.google.com/store/apps/details?id=com.gethearme.app" rel="noopener">حمّل HearMe مجانًا</a></div>
-    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">ميزات أخرى</h2><nav class="more"><a href="./find-phone-on-silent.html">الكلمة المفتاحية</a><a href="./phone-anti-theft-alarm.html">منبّه ضد السرقة</a><a href="./find-lost-stolen-phone.html">العثور على هاتفك</a><a href="./silent-sos.html">الاستغاثة الصامتة</a><a href="./phone-stolen-what-to-do.html">دليل: هاتف مسروق</a><a href="./protect-phone-cafe-public-transport.html">دليل: المقهى والمواصلات</a></nav></section>
+    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">ميزات أخرى</h2><nav class="more"><a href="./find-phone-on-silent.html">الكلمة المفتاحية</a><a href="./phone-anti-theft-alarm.html">منبّه ضد السرقة</a><a href="./find-lost-stolen-phone.html">العثور على هاتفك</a><a href="./silent-sos.html">الاستغاثة الصامتة</a><a href="./phone-stolen-what-to-do.html">دليل: هاتف مسروق</a><a href="./protect-phone-cafe-public-transport.html">دليل: المقهى والمواصلات</a><a href="./hearme-vs-google-find-hub.html">مقارنة: HearMe أم Google</a></nav></section>
   </main>
   <footer>
     <a href="../?lang=ar">→ الرئيسية</a>

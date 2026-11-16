@@ -96,6 +96,20 @@ ol.big p{margin:0;color:var(--ink2)}
 .note{margin-top:18px;padding:18px 20px;border-radius:18px;border:1px solid rgba(184,166,255,.35);background:rgba(124,92,255,.08)}
 .note h3{margin:0 0 6px;font-size:16px}
 .note p{margin:0;color:var(--ink2)}
+table.cmp{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--rule);border-radius:18px;overflow:hidden;font-size:15px}
+table.cmp th,table.cmp td{padding:12px 14px;text-align:start;vertical-align:top;border-bottom:1px solid var(--rule)}
+table.cmp tr:last-child th,table.cmp tr:last-child td{border-bottom:0}
+table.cmp thead th{background:rgba(255,255,255,.04);font-size:14px}
+table.cmp thead th.hm{color:#c4b5fd}
+table.cmp tbody th{font-weight:600;width:34%}
+table.cmp td.hm{background:rgba(124,92,255,.07)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.v{display:inline-block;min-width:1.4em;font-weight:800;margin-inline-end:6px}
+.v.y{color:#4ade80}.v.n{color:#f87171}.v.p{color:#fbbf24}
+@media(max-width:600px){table.cmp thead{display:none}table.cmp,table.cmp tbody,table.cmp tr,table.cmp th,table.cmp td{display:block;width:auto}
+ table.cmp tr{border-bottom:1px solid var(--rule);padding:6px 0}table.cmp tr:last-child{border-bottom:0}
+ table.cmp th,table.cmp td{border:0;padding:6px 14px}table.cmp tbody th{width:auto}
+ table.cmp td:before{content:attr(data-l);display:block;font-size:12px;color:#c4b5fd;font-weight:600}}
 .cta p{color:var(--ink2);max-width:34rem;margin:0 auto 20px}
 </style>
 </head>
@@ -115,6 +129,7 @@ ol.big p{margin:0;color:var(--ink2)}
           <p class="lead">معظم سرقات الهواتف تحدث في ثوانٍ، في أماكن مزدحمة: المقاهي، المحطات، المترو، الحافلات. بعض العادات البسيطة تكفي حتى لا تكون هدفًا سهلًا.</p>
         </div>
       </div>
+      
       <section aria-labelledby="h1s"><h2 id="h1s">في المقهى أو المطعم أو المكتبة</h2><ol class="big"><li><h3>لا تضعه على حافة الطاولة</h3><p>الهاتف الموضوع من جهة الشارع أو الممر يمكن أن يأخذه أي مارّ، غالبًا بعد تغطيته بقائمة طعام أو جريدة. أبقِه قريبًا منك، من جهة الجدار.</p></li><li><h3>احذر من محاولات الإلهاء</h3><p>شخص يسألك عن الوقت أو يريك ورقة أو يسكب شيئًا قد يكون هدفه صرف نظرك بينما يأخذ شخص آخر الهاتف.</p></li><li><h3>لا تتركه وحده أبدًا</h3><p>ولو لدقيقة لتطلب أو لتذهب إلى الحمّام: خذه معك، أو فعّل منبّهًا ضد السرقة قبل أن تبتعد.</p></li><li><h3>لا في الجيب الخلفي ولا في حقيبة مفتوحة</h3><p>استعمل جيبًا أماميًا أو داخليًا، أو حقيبة مغلقة تحملها أمامك.</p></li></ol></section>
       <section aria-labelledby="h2s"><h2 id="h2s">في المترو والحافلة والقطار</h2><ol class="big" style="counter-reset:s 4"><li><h3>ضعه في جيبك قرب الأبواب</h3><p>أكثر السرقات شيوعًا تحدث قبل إغلاق الأبواب مباشرة: يخطف السارق الهاتف ويخرج. قرب الأبواب، أبقِه في جيبك.</p></li><li><h3>أمسكه جيدًا في الزحام</h3><p>في عربة أو حافلة مزدحمة، الإمساك بالهاتف بقوة يجعل أخذه أصعب بكثير.</p></li><li><h3>السمّاعات في أذنيك وعيناك على الشاشة</h3><p>مع الموسيقى في أذنيك ونظرك على الشاشة، تنتبه أقل لما يحدث حولك. ارفع رأسك عند كل محطة.</p></li><li><h3>لا تنم والهاتف في يدك</h3><p>في الرحلات الطويلة، ضعه في جيب مغلق قبل أن تستريح.</p></li></ol>
         <div class="note"><h3>وإذا سُرق رغم ذلك؟</h3><p>مع تفعيل ميزة منع السرقة في HearMe، إذا أخذ أحد هاتفك أو حرّكه، ينطلق إنذار قوي فورًا. لإيقافه يجب فتح قفل الهاتف: لا يستطيع السارق إطفاءه. تصلك تنبيهات على Telegram مع الموقع، وصورة للشخص عند كل رمز خاطئ.</p></div></section>
@@ -122,7 +137,7 @@ ol.big p{margin:0;color:var(--ink2)}
       <section aria-labelledby="hfaq"><h2 id="hfaq">أسئلة شائعة</h2><details><summary>أين تكثر سرقات الهواتف؟</summary><p>في الأماكن المزدحمة: المقاهي، المحطات، المترو، الحافلات، المهرجانات ومخارج الحفلات. اللحظات الخطرة هي عندما تكون مشتّت الانتباه أو مستعجلًا.</p></details><details><summary>هل ينطلق الإنذار إذا أخذت هاتفي بنفسي؟</summary><p>نعم إذا كانت ميزة منع السرقة مفعّلة. ألغِ تفعيلها قبل أخذه، أو افتح قفل الهاتف لإيقاف الإنذار.</p></details><details><summary>ماذا أفعل إذا سُرق هاتفي؟</summary><p>لا تلاحق السارق، ثم اتبع دليلنا «سُرق هاتفك؟ ماذا تفعل»: حدّد موقعه، اقفله، أوقف شريحة SIM، وقدّم بلاغًا.</p></details></section>
     </article>
     <div class="cta"><h2>فعّل منع السرقة قبل أن تضع هاتفك</h2><p>HearMe مجاني. إذا أخذ أحد هاتفك، ينطلق الإنذار وتُنبَّه فورًا.</p><a class="btn" href="https://play.google.com/store/apps/details?id=com.gethearme.app" rel="noopener">حمّل HearMe مجانًا</a></div>
-    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">ميزات أخرى</h2><nav class="more"><a href="./find-phone-on-silent.html">الكلمة المفتاحية</a><a href="./phone-anti-theft-alarm.html">منبّه ضد السرقة</a><a href="./find-lost-stolen-phone.html">العثور على هاتفك</a><a href="./silent-sos.html">الاستغاثة الصامتة</a><a href="./phone-stolen-what-to-do.html">دليل: هاتف مسروق</a><a href="./find-phone-on-silent-mode.html">دليل: الهاتف على الوضع الصامت</a></nav></section>
+    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">ميزات أخرى</h2><nav class="more"><a href="./find-phone-on-silent.html">الكلمة المفتاحية</a><a href="./phone-anti-theft-alarm.html">منبّه ضد السرقة</a><a href="./find-lost-stolen-phone.html">العثور على هاتفك</a><a href="./silent-sos.html">الاستغاثة الصامتة</a><a href="./phone-stolen-what-to-do.html">دليل: هاتف مسروق</a><a href="./find-phone-on-silent-mode.html">دليل: الهاتف على الوضع الصامت</a><a href="./hearme-vs-google-find-hub.html">مقارنة: HearMe أم Google</a></nav></section>
   </main>
   <footer>
     <a href="../?lang=ar">→ الرئيسية</a>

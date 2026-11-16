@@ -96,6 +96,20 @@ ol.big p{margin:0;color:var(--ink2)}
 .note{margin-top:18px;padding:18px 20px;border-radius:18px;border:1px solid rgba(184,166,255,.35);background:rgba(124,92,255,.08)}
 .note h3{margin:0 0 6px;font-size:16px}
 .note p{margin:0;color:var(--ink2)}
+table.cmp{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--rule);border-radius:18px;overflow:hidden;font-size:15px}
+table.cmp th,table.cmp td{padding:12px 14px;text-align:start;vertical-align:top;border-bottom:1px solid var(--rule)}
+table.cmp tr:last-child th,table.cmp tr:last-child td{border-bottom:0}
+table.cmp thead th{background:rgba(255,255,255,.04);font-size:14px}
+table.cmp thead th.hm{color:#c4b5fd}
+table.cmp tbody th{font-weight:600;width:34%}
+table.cmp td.hm{background:rgba(124,92,255,.07)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.v{display:inline-block;min-width:1.4em;font-weight:800;margin-inline-end:6px}
+.v.y{color:#4ade80}.v.n{color:#f87171}.v.p{color:#fbbf24}
+@media(max-width:600px){table.cmp thead{display:none}table.cmp,table.cmp tbody,table.cmp tr,table.cmp th,table.cmp td{display:block;width:auto}
+ table.cmp tr{border-bottom:1px solid var(--rule);padding:6px 0}table.cmp tr:last-child{border-bottom:0}
+ table.cmp th,table.cmp td{border:0;padding:6px 14px}table.cmp tbody th{width:auto}
+ table.cmp td:before{content:attr(data-l);display:block;font-size:12px;color:#c4b5fd;font-weight:600}}
 .cta p{color:var(--ink2);max-width:34rem;margin:0 auto 20px}
 </style>
 </head>
@@ -115,6 +129,7 @@ ol.big p{margin:0;color:var(--ink2)}
           <p class="lead">La mayoría de los robos de móvil duran unos segundos y ocurren en lugares concurridos: terrazas, estaciones, metro, autobús. Unos pocos hábitos sencillos bastan para no ser un blanco fácil.</p>
         </div>
       </div>
+      
       <section aria-labelledby="h1s"><h2 id="h1s">En la cafetería, el restaurante o la biblioteca</h2><ol class="big"><li><h3>No lo dejes al borde de la mesa</h3><p>Un móvil del lado de la calle o del paso puede llevárselo alguien que pasa, a menudo tapándolo con una carta o un periódico. Tenlo cerca de ti, del lado de la pared.</p></li><li><h3>Cuidado con las distracciones</h3><p>Alguien que te pregunta la hora, te enseña un papel o derrama algo puede estar desviando tu mirada mientras otra persona coge el móvil.</p></li><li><h3>No lo dejes nunca solo</h3><p>Aunque sea un minuto para pedir o ir al baño: llévalo contigo, o activa una alarma antirrobo antes de alejarte.</p></li><li><h3>Ni en el bolsillo trasero ni en un bolso abierto</h3><p>Mejor un bolsillo delantero o interior, o un bolso cerrado llevado por delante.</p></li></ol></section>
       <section aria-labelledby="h2s"><h2 id="h2s">En el metro, el autobús y el tren</h2><ol class="big" style="counter-reset:s 4"><li><h3>Guárdalo cerca de las puertas</h3><p>El tirón más habitual ocurre justo antes de que se cierren las puertas: el ladrón coge el móvil y sale. Cerca de las puertas, tenlo guardado.</p></li><li><h3>Sujétalo con firmeza entre la gente</h3><p>En un vagón o autobús lleno, sujetar bien el móvil lo hace mucho más difícil de quitar.</p></li><li><h3>Auriculares puestos y vista en la pantalla</h3><p>Con música en los oídos y la vista en la pantalla, te fijas menos en lo que pasa alrededor. Levanta la vista en cada parada.</p></li><li><h3>No te duermas con el móvil en la mano</h3><p>En trayectos largos, guárdalo en un bolsillo cerrado antes de descansar.</p></li></ol>
         <div class="note"><h3>¿Y si te lo quitan igualmente?</h3><p>Con el antirrobo de HearMe activado, si alguien coge o mueve tu móvil, suena enseguida una alarma fuerte. Para pararla hay que desbloquear el móvil: el ladrón no puede apagarla. Recibes una alerta en Telegram con la ubicación, y una foto de la persona con cada código erróneo.</p></div></section>
@@ -122,7 +137,7 @@ ol.big p{margin:0;color:var(--ink2)}
       <section aria-labelledby="hfaq"><h2 id="hfaq">Preguntas frecuentes</h2><details><summary>¿Dónde son más frecuentes los robos de móvil?</summary><p>En lugares concurridos: terrazas, estaciones, metro, autobuses, festivales y salidas de conciertos. Los momentos de riesgo son cuando estás distraído o con prisa.</p></details><details><summary>¿Suena la alarma si cojo yo mismo mi móvil?</summary><p>Sí, si el antirrobo está activado. Desactívalo antes de cogerlo, o desbloquea el móvil para parar la alarma.</p></details><details><summary>¿Qué hago si me roban el móvil?</summary><p>No persigas al ladrón y sigue nuestra guía «Me han robado el móvil: qué hacer»: localizarlo, bloquearlo, bloquear la tarjeta SIM, denunciarlo.</p></details></section>
     </article>
     <div class="cta"><h2>Activa el antirrobo antes de dejar el móvil</h2><p>HearMe es gratis. Si alguien coge tu móvil, la alarma suena y te avisa al instante.</p><a class="btn" href="https://play.google.com/store/apps/details?id=com.gethearme.app" rel="noopener">Descargar HearMe gratis</a></div>
-    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">Otras funciones</h2><nav class="more"><a href="./hacer-sonar-movil-en-silencio.html">Palabra clave</a><a href="./alarma-antirrobo-movil.html">Alarma antirrobo</a><a href="./encontrar-movil-perdido-robado.html">Encontrar tu móvil</a><a href="./sos-silencioso.html">SOS silencioso</a><a href="./me-han-robado-el-movil-que-hacer.html">Guía: móvil robado</a><a href="./encontrar-movil-en-silencio.html">Guía: móvil en silencio</a></nav></section>
+    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">Otras funciones</h2><nav class="more"><a href="./hacer-sonar-movil-en-silencio.html">Palabra clave</a><a href="./alarma-antirrobo-movil.html">Alarma antirrobo</a><a href="./encontrar-movil-perdido-robado.html">Encontrar tu móvil</a><a href="./sos-silencioso.html">SOS silencioso</a><a href="./me-han-robado-el-movil-que-hacer.html">Guía: móvil robado</a><a href="./encontrar-movil-en-silencio.html">Guía: móvil en silencio</a><a href="./hearme-o-encontrar-mi-dispositivo-google.html">Comparativa: HearMe o Google</a></nav></section>
   </main>
   <footer>
     <a href="../?lang=es">← Inicio</a>

@@ -96,6 +96,20 @@ ol.big p{margin:0;color:var(--ink2)}
 .note{margin-top:18px;padding:18px 20px;border-radius:18px;border:1px solid rgba(184,166,255,.35);background:rgba(124,92,255,.08)}
 .note h3{margin:0 0 6px;font-size:16px}
 .note p{margin:0;color:var(--ink2)}
+table.cmp{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--rule);border-radius:18px;overflow:hidden;font-size:15px}
+table.cmp th,table.cmp td{padding:12px 14px;text-align:start;vertical-align:top;border-bottom:1px solid var(--rule)}
+table.cmp tr:last-child th,table.cmp tr:last-child td{border-bottom:0}
+table.cmp thead th{background:rgba(255,255,255,.04);font-size:14px}
+table.cmp thead th.hm{color:#c4b5fd}
+table.cmp tbody th{font-weight:600;width:34%}
+table.cmp td.hm{background:rgba(124,92,255,.07)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.v{display:inline-block;min-width:1.4em;font-weight:800;margin-inline-end:6px}
+.v.y{color:#4ade80}.v.n{color:#f87171}.v.p{color:#fbbf24}
+@media(max-width:600px){table.cmp thead{display:none}table.cmp,table.cmp tbody,table.cmp tr,table.cmp th,table.cmp td{display:block;width:auto}
+ table.cmp tr{border-bottom:1px solid var(--rule);padding:6px 0}table.cmp tr:last-child{border-bottom:0}
+ table.cmp th,table.cmp td{border:0;padding:6px 14px}table.cmp tbody th{width:auto}
+ table.cmp td:before{content:attr(data-l);display:block;font-size:12px;color:#c4b5fd;font-weight:600}}
 .cta p{color:var(--ink2);max-width:34rem;margin:0 auto 20px}
 </style>
 </head>
@@ -115,6 +129,7 @@ ol.big p{margin:0;color:var(--ink2)}
           <p class="lead">Le téléphone est quelque part dans la maison, en silencieux, et l&#x27;appeler ne sert à rien. Pas de panique : voici les méthodes qui marchent, de la plus rapide à la plus simple.</p>
         </div>
       </div>
+      
       <section aria-labelledby="h1s"><h2 id="h1s">Le faire sonner, même en silencieux</h2><ol class="big"><li><h3>Avec votre compte Google</h3><p>Sur un ordinateur ou un autre téléphone, ouvrez google.com/android/find et choisissez « Faire sonner ». Le téléphone sonne fort pendant 5 minutes, même en mode silencieux. Il doit être allumé et connecté à Internet.</p></li><li><h3>Avec une enceinte ou un autre appareil Google</h3><p>Si vous avez une enceinte connectée Google ou une tablette avec le même compte, dites « Ok Google, trouve mon téléphone » : il se met à sonner.</p></li><li><h3>Avec votre montre connectée</h3><p>La plupart des montres connectées ont une fonction « Trouver mon téléphone » qui le fait sonner tant que la montre et le téléphone sont reliés en Bluetooth.</p></li><li><h3>Sur iPhone ou Samsung</h3><p>iPhone : application Localiser sur un autre appareil Apple ou icloud.com/find, puis « Émettre un son ». Samsung : smartthingsfind.samsung.com, puis « Faire sonner ».</p></li></ol></section>
       <section aria-labelledby="h2s"><h2 id="h2s">Sans Internet ni autre appareil</h2><ol class="big" style="counter-reset:s 4"><li><h3>Appelez-le quand même</h3><p>En silencieux, beaucoup de téléphones vibrent encore. Appelez-le depuis un autre téléphone dans une pièce calme et écoutez la vibration contre un meuble.</p></li><li><h3>Refaites votre trajet</h3><p>Pensez à la dernière fois que vous l&#x27;avez utilisé, puis repassez par les mêmes endroits dans l&#x27;ordre : canapé, lit, salle de bain, cuisine, voiture.</p></li><li><h3>Cherchez avec une lampe</h3><p>Éteignez la lumière et balayez sous les meubles et entre les coussins avec une lampe : l&#x27;écran ou la coque reflète la lumière.</p></li><li><h3>Vérifiez sacs, poches et voiture</h3><p>Les poches de vestes, les sacs et l&#x27;espace entre les sièges de la voiture sont les cachettes les plus fréquentes.</p></li></ol>
         <div class="note"><h3>Pourquoi ces méthodes ne marchent pas toujours ?</h3><p>La sonnerie à distance a besoin d&#x27;Internet et d&#x27;un autre appareil sous la main. Avec HearMe, il suffit de dire votre mot-clé à voix haute : le téléphone sonne fort, même en silencieux et même sans Internet, car le mot est reconnu sur le téléphone lui-même.</p></div></section>
@@ -122,7 +137,7 @@ ol.big p{margin:0;color:var(--ink2)}
       <section aria-labelledby="hfaq"><h2 id="hfaq">Questions fréquentes</h2><details><summary>Peut-on faire sonner un téléphone en silencieux ?</summary><p>Oui. La fonction « Faire sonner » de Google le fait sonner même en silencieux, s&#x27;il est allumé et connecté. HearMe le fait sonner quand vous dites votre mot-clé, même sans Internet.</p></details><details><summary>Et si la batterie est vide ?</summary><p>Un téléphone éteint ne peut plus sonner. La page Google affiche en général la dernière position connue. HearMe peut aussi vous prévenir quand la batterie est presque vide.</p></details><details><summary>Le mot-clé HearMe peut-il se déclencher tout seul ?</summary><p>Vous choisissez votre propre mot. Une option permet de devoir le dire deux fois, pour qu&#x27;une télévision ou une autre personne ne le déclenche pas par erreur.</p></details></section>
     </article>
     <div class="cta"><h2>La prochaine fois, appelez-le à voix haute</h2><p>HearMe est gratuit. Dites votre mot-clé et le téléphone sonne, même en silencieux et sans Internet.</p><a class="btn" href="https://play.google.com/store/apps/details?id=com.gethearme.app" rel="noopener">Télécharger HearMe gratuitement</a></div>
-    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">Les autres fonctions</h2><nav class="more"><a href="./faire-sonner-telephone-silencieux.html">Mot-clé vocal</a><a href="./alarme-antivol-telephone.html">Alarme antivol</a><a href="./retrouver-telephone-perdu-vole.html">Retrouver son téléphone</a><a href="./sos-silencieux.html">SOS silencieux</a><a href="./telephone-vole-que-faire.html">Guide : téléphone volé</a><a href="./proteger-telephone-cafe-transports.html">Guide : café et transports</a></nav></section>
+    <section aria-labelledby="hmore" style="margin-top:40px"><h2 id="hmore">Les autres fonctions</h2><nav class="more"><a href="./faire-sonner-telephone-silencieux.html">Mot-clé vocal</a><a href="./alarme-antivol-telephone.html">Alarme antivol</a><a href="./retrouver-telephone-perdu-vole.html">Retrouver son téléphone</a><a href="./sos-silencieux.html">SOS silencieux</a><a href="./telephone-vole-que-faire.html">Guide : téléphone volé</a><a href="./proteger-telephone-cafe-transports.html">Guide : café et transports</a><a href="./hearme-ou-localiser-mon-appareil-google.html">Comparatif : HearMe ou Google</a></nav></section>
   </main>
   <footer>
     <a href="../?lang=fr">← Accueil</a>
