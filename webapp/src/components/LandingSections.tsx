@@ -6,6 +6,9 @@ import {
   Camera,
   MapPin,
   LockKeyhole,
+  Send,
+  Mail,
+  MonitorSmartphone,
   Plus,
 } from 'lucide-react';
 import { useI18n } from '../i18n';
@@ -42,6 +45,9 @@ const FEATURES: { icon: React.ElementType; t: I18nKey; d: I18nKey }[] = [
   { icon: Camera, t: 'ls.f4t', d: 'ls.f4d' },
   { icon: MapPin, t: 'ls.f5t', d: 'ls.f5d' },
   { icon: LockKeyhole, t: 'ls.f6t', d: 'ls.f6d' },
+  { icon: Send, t: 'ls.f7t', d: 'ls.f7d' },
+  { icon: Mail, t: 'ls.f8t', d: 'ls.f8d' },
+  { icon: MonitorSmartphone, t: 'ls.f9t', d: 'ls.f9d' },
 ];
 
 const FAQ: { q: I18nKey; a: I18nKey }[] = [
