@@ -8,6 +8,7 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './fr/retrouver-telephone-perdu-vole.html', label: 'Retrouver son téléphone' },
     { href: './fr/sos-silencieux.html', label: 'SOS silencieux' },
     { href: './fr/telephone-vole-que-faire.html', label: 'Guide : téléphone volé' },
+    { href: './fr/retrouver-telephone-en-silencieux.html', label: 'Guide : téléphone en silencieux' },
   ],
   en: [
     { href: './en/find-phone-on-silent.html', label: 'Voice keyword' },
@@ -15,6 +16,7 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './en/find-lost-stolen-phone.html', label: 'Find your phone' },
     { href: './en/silent-sos.html', label: 'Silent SOS' },
     { href: './en/phone-stolen-what-to-do.html', label: 'Guide: stolen phone' },
+    { href: './en/find-phone-on-silent-mode.html', label: 'Guide: phone on silent' },
   ],
   es: [
     { href: './es/hacer-sonar-movil-en-silencio.html', label: 'Palabra clave' },
@@ -22,6 +24,7 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './es/encontrar-movil-perdido-robado.html', label: 'Encontrar tu móvil' },
     { href: './es/sos-silencioso.html', label: 'SOS silencioso' },
     { href: './es/me-han-robado-el-movil-que-hacer.html', label: 'Guía: móvil robado' },
+    { href: './es/encontrar-movil-en-silencio.html', label: 'Guía: móvil en silencio' },
   ],
   ar: [
     { href: './ar/find-phone-on-silent.html', label: 'الكلمة المفتاحية' },
@@ -29,5 +32,6 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './ar/find-lost-stolen-phone.html', label: 'العثور على هاتفك' },
     { href: './ar/silent-sos.html', label: 'الاستغاثة الصامتة' },
     { href: './ar/phone-stolen-what-to-do.html', label: 'دليل: هاتف مسروق' },
+    { href: './ar/find-phone-on-silent-mode.html', label: 'دليل: الهاتف على الوضع الصامت' },
   ],
 };

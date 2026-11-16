@@ -189,6 +189,42 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/telephone-vole-que-faire.html"/>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://gethearme.me/fr/retrouver-telephone-en-silencieux.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-en-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-on-silent-mode.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-en-silencio.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-on-silent-mode.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-en-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/en/find-phone-on-silent-mode.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-en-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-on-silent-mode.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-en-silencio.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-on-silent-mode.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-en-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/es/encontrar-movil-en-silencio.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-en-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-on-silent-mode.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-en-silencio.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-on-silent-mode.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-en-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/ar/find-phone-on-silent-mode.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-en-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-on-silent-mode.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-en-silencio.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-on-silent-mode.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-en-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
   <url><loc>https://gethearme.me/aide.html</loc><priority>0.6</priority></url>
   <url><loc>https://gethearme.me/privacy.html</loc><priority>0.3</priority></url>
 </urlset>
