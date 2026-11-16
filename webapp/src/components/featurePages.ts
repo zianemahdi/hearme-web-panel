@@ -47,3 +47,11 @@ export const ABOUT_PAGE: Record<Lang, { href: string; label: string }> = {
   es: { href: './es/sobre-nosotros.html', label: 'Sobre nosotros y contacto' },
   ar: { href: './ar/about.html', label: 'من نحن والتواصل' },
 };
+
+/** Page « Tous les guides » (statique, public/{lang}/…). */
+export const GUIDES_PAGE: Record<Lang, { href: string; label: string }> = {
+  fr: { href: './fr/guides.html', label: 'Tous les guides' },
+  en: { href: './en/guides.html', label: 'All guides' },
+  es: { href: './es/guias.html', label: 'Todas las guías' },
+  ar: { href: './ar/guides.html', label: 'كل الأدلة' },
+};

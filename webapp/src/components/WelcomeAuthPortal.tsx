@@ -22,7 +22,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { useI18n, LanguageSwitcher } from '../i18n';
 import { SocialLinks } from './SocialLinks';
 import { LandingSections } from './LandingSections';
-import { ABOUT_PAGE } from './featurePages';
+import { ABOUT_PAGE, GUIDES_PAGE } from './featurePages';
 import { SoundWave } from './SoundWave';
 import { ChevronDown } from 'lucide-react';
 
@@ -528,6 +528,9 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
         </div>
         <SocialLinks />
         <div className="flex items-center gap-4">
+          <a href={GUIDES_PAGE[lang].href} className="hover:text-slate-300 transition underline">
+            {GUIDES_PAGE[lang].label}
+          </a>
           <a href={ABOUT_PAGE[lang].href} className="hover:text-slate-300 transition underline">
             {ABOUT_PAGE[lang].label}
           </a>

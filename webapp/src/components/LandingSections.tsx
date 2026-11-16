@@ -16,7 +16,7 @@ import type { I18nKey } from '../i18n/fr';
 import { PlayBadge } from './PlayBadge';
 import { AppShowcase } from './AppShowcase';
 import { ShaderBackground } from './ShaderBackground';
-import { FEATURE_PAGES } from './featurePages';
+import { FEATURE_PAGES, GUIDES_PAGE } from './featurePages';
 import { HowVideo } from './HowVideo';
 
 /**
@@ -143,6 +143,12 @@ export const LandingSections: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }
               {p.label}
             </a>
           ))}
+          <a
+            href={GUIDES_PAGE[lang].href}
+            className="text-sm font-semibold px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#7C5CFF] to-fuchsia-500 text-white hover:brightness-110 transition"
+          >
+            {GUIDES_PAGE[lang].label} {lang === 'ar' ? '←' : '→'}
+          </a>
         </nav>
       </section>
 
