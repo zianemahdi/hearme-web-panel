@@ -290,7 +290,7 @@ export const fr = {
   'ls.q6': 'Dans quelles langues ?',
   'ls.a6': 'En français, anglais, espagnol et arabe, dans l\'application comme sur ce site.',
   'ls.ctaTitle': 'Votre téléphone mérite un garde du corps.',
-  'ls.ctaLead': 'Installez HearMe gratuitement et gardez la main, même s\'il n\'est plus entre vos mains.',
+  'ls.ctaLead': 'Installez HearMe gratuitement : trois minutes suffisent pour être protégé.',
   'ls.discover': 'Découvrir HearMe',
 } as const;
 

@@ -290,6 +290,6 @@ export const en: Dict = {
   'ls.q6': 'Which languages?',
   'ls.a6': 'French, English, Spanish and Arabic, in the app and on this website.',
   'ls.ctaTitle': 'Your phone deserves a bodyguard.',
-  'ls.ctaLead': 'Install HearMe for free and stay in control, even when it\'s out of your hands.',
+  'ls.ctaLead': 'Install HearMe for free: three minutes is all it takes to be protected.',
   'ls.discover': 'Discover HearMe',
 };
