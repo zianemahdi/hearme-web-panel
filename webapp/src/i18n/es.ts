@@ -2,6 +2,7 @@ import type { Dict } from './fr';
 
 export const es: Dict = {
   'meta.title': 'HearMe — Alarma antirrobo y localizador para Android',
+  'meta.description': 'HearMe encuentra tu móvil: suena cuando dices tu palabra clave, incluso en silencio. Alarma antirrobo, foto del ladrón, ubicación en directo y SOS silencioso. Gratis en Android.',
   'logo.tagline': 'Antirrobo y ubicación en vivo',
   'logo.panel': 'Panel de emergencia',
 
@@ -262,6 +263,7 @@ export const es: Dict = {
   'ls.f8d': 'Recibe las alertas por correo y, cada lunes, un resumen: horas de protección, alertas, códigos erróneos.',
   'ls.f9t': 'Control a distancia',
   'ls.f9d': 'Desde gethearme.me, haz sonar el teléfono, bloquéalo o toma una foto, desde cualquier navegador.',
+  'ls.learnMore': 'Más información:',
   'ls.factsLabel': 'En resumen',
   'ls.fact1': 'Gratis en Google Play',
   'ls.fact2': '4 idiomas',

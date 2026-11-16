@@ -2,6 +2,7 @@
 // dictionnaires doivent avoir exactement les mêmes clés (vérifié par TypeScript).
 export const fr = {
   'meta.title': 'HearMe — Antivol et alarme pour téléphone Android',
+  'meta.description': 'HearMe retrouve votre téléphone : il sonne quand vous dites votre mot-clé, même en silencieux. Alarme antivol, photo du voleur, position en direct et SOS silencieux. Gratuit sur Android.',
   'logo.tagline': 'Antivol & localisation en direct',
   'logo.panel': "Panneau d'urgence",
 
@@ -262,6 +263,7 @@ export const fr = {
   'ls.f8d': 'Recevez les alertes par e-mail, et chaque lundi un résumé : heures de protection, alertes, codes faux.',
   'ls.f9t': 'Contrôle à distance',
   'ls.f9d': 'Depuis gethearme.me, faites sonner le téléphone, verrouillez-le ou prenez une photo, depuis n\'importe quel navigateur.',
+  'ls.learnMore': 'En savoir plus :',
   'ls.factsLabel': 'En bref',
   'ls.fact1': 'Gratuit sur Google Play',
   'ls.fact2': '4 langues',

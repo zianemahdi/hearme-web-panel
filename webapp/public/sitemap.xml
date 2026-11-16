@@ -9,6 +9,150 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/"/>
     <priority>1.0</priority>
   </url>
-  <url><loc>https://gethearme.me/aide.html</loc><priority>0.7</priority></url>
+  <url>
+    <loc>https://gethearme.me/fr/faire-sonner-telephone-silencieux.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/faire-sonner-telephone-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-on-silent.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/hacer-sonar-movil-en-silencio.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-on-silent.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/faire-sonner-telephone-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/en/find-phone-on-silent.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/faire-sonner-telephone-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-on-silent.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/hacer-sonar-movil-en-silencio.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-on-silent.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/faire-sonner-telephone-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/es/hacer-sonar-movil-en-silencio.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/faire-sonner-telephone-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-on-silent.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/hacer-sonar-movil-en-silencio.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-on-silent.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/faire-sonner-telephone-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/ar/find-phone-on-silent.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/faire-sonner-telephone-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-phone-on-silent.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/hacer-sonar-movil-en-silencio.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-phone-on-silent.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/faire-sonner-telephone-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/fr/alarme-antivol-telephone.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/alarme-antivol-telephone.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/phone-anti-theft-alarm.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/alarma-antirrobo-movil.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/phone-anti-theft-alarm.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/alarme-antivol-telephone.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/en/phone-anti-theft-alarm.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/alarme-antivol-telephone.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/phone-anti-theft-alarm.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/alarma-antirrobo-movil.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/phone-anti-theft-alarm.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/alarme-antivol-telephone.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/es/alarma-antirrobo-movil.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/alarme-antivol-telephone.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/phone-anti-theft-alarm.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/alarma-antirrobo-movil.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/phone-anti-theft-alarm.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/alarme-antivol-telephone.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/ar/phone-anti-theft-alarm.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/alarme-antivol-telephone.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/phone-anti-theft-alarm.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/alarma-antirrobo-movil.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/phone-anti-theft-alarm.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/alarme-antivol-telephone.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/fr/retrouver-telephone-perdu-vole.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-perdu-vole.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-lost-stolen-phone.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-perdido-robado.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-lost-stolen-phone.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-perdu-vole.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/en/find-lost-stolen-phone.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-perdu-vole.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-lost-stolen-phone.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-perdido-robado.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-lost-stolen-phone.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-perdu-vole.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/es/encontrar-movil-perdido-robado.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-perdu-vole.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-lost-stolen-phone.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-perdido-robado.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-lost-stolen-phone.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-perdu-vole.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/ar/find-lost-stolen-phone.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/retrouver-telephone-perdu-vole.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/find-lost-stolen-phone.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/encontrar-movil-perdido-robado.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/find-lost-stolen-phone.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/retrouver-telephone-perdu-vole.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/fr/sos-silencieux.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/sos-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/silent-sos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/sos-silencioso.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/silent-sos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/sos-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/en/silent-sos.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/sos-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/silent-sos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/sos-silencioso.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/silent-sos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/sos-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/es/sos-silencioso.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/sos-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/silent-sos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/sos-silencioso.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/silent-sos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/sos-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/ar/silent-sos.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/sos-silencieux.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/silent-sos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/sos-silencioso.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/silent-sos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/sos-silencieux.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url><loc>https://gethearme.me/aide.html</loc><priority>0.6</priority></url>
   <url><loc>https://gethearme.me/privacy.html</loc><priority>0.3</priority></url>
 </urlset>

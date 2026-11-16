@@ -2,6 +2,7 @@ import type { Dict } from './fr';
 
 export const en: Dict = {
   'meta.title': 'HearMe — Anti-theft alarm & phone finder for Android',
+  'meta.description': 'HearMe finds your phone: it rings when you say your keyword, even on silent. Anti-theft alarm, thief photo, live location and silent SOS. Free on Android.',
   'logo.tagline': 'Anti-theft & live location',
   'logo.panel': 'Emergency panel',
 
@@ -262,6 +263,7 @@ export const en: Dict = {
   'ls.f8d': 'Get alerts by e-mail, and every Monday a summary: hours protected, alerts, wrong codes.',
   'ls.f9t': 'Remote control',
   'ls.f9d': 'From gethearme.me, ring the phone, lock it or take a photo, from any browser.',
+  'ls.learnMore': 'Learn more:',
   'ls.factsLabel': 'At a glance',
   'ls.fact1': 'Free on Google Play',
   'ls.fact2': '4 languages',

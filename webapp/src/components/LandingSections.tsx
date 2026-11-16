@@ -16,6 +16,7 @@ import type { I18nKey } from '../i18n/fr';
 import { PlayBadge } from './PlayBadge';
 import { AppShowcase } from './AppShowcase';
 import { ShaderBackground } from './ShaderBackground';
+import { FEATURE_PAGES } from './featurePages';
 
 /**
  * Présentation sous l'écran de connexion : comment ça marche, ce que fait l'app,
@@ -62,7 +63,7 @@ const FAQ: { q: I18nKey; a: I18nKey }[] = [
 ];
 
 export const LandingSections: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const dark = theme === 'dark';
   const title = `font-semibold tracking-[-0.035em] leading-[1.05] text-balance text-3xl sm:text-4xl ${
     dark ? 'text-white' : 'text-slate-950'
@@ -122,6 +123,23 @@ export const LandingSections: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }
             </li>
           ))}
         </ul>
+        {/* Liens vers les pages détaillées (aussi utiles à Google). */}
+        <nav aria-label={t('ls.learnMore')} className="mt-8 flex flex-wrap items-center gap-2">
+          <span className={`text-sm me-2 ${dark ? 'text-white/85' : 'text-slate-700'}`}>{t('ls.learnMore')}</span>
+          {FEATURE_PAGES[lang].map((p) => (
+            <a
+              key={p.href}
+              href={p.href}
+              className={`text-sm font-medium px-3.5 py-1.5 rounded-full border transition-colors ${
+                dark
+                  ? 'border-white/[0.12] text-purple-200 hover:border-purple-400/50 hover:text-white'
+                  : 'border-slate-300 text-purple-700 hover:border-purple-400'
+              }`}
+            >
+              {p.label}
+            </a>
+          ))}
+        </nav>
       </section>
 
       {/* Questions fréquentes */}
