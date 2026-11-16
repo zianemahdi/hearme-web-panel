@@ -334,6 +334,42 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://gethearme.me/fr/telephone-oublie-taxi-bus.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/telephone-oublie-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/phone-left-in-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/movil-olvidado-taxi-autobus.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/phone-left-in-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/telephone-oublie-taxi-bus.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/en/phone-left-in-taxi-bus.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/telephone-oublie-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/phone-left-in-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/movil-olvidado-taxi-autobus.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/phone-left-in-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/telephone-oublie-taxi-bus.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/es/movil-olvidado-taxi-autobus.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/telephone-oublie-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/phone-left-in-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/movil-olvidado-taxi-autobus.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/phone-left-in-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/telephone-oublie-taxi-bus.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gethearme.me/ar/phone-left-in-taxi-bus.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/telephone-oublie-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/phone-left-in-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://gethearme.me/es/movil-olvidado-taxi-autobus.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://gethearme.me/ar/phone-left-in-taxi-bus.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gethearme.me/fr/telephone-oublie-taxi-bus.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://gethearme.me/fr/a-propos.html</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://gethearme.me/fr/a-propos.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://gethearme.me/en/about.html"/>
