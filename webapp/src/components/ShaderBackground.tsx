@@ -86,7 +86,14 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
     // la même teinte Ice et la même composition (foyer en haut à droite, derrière
     // la carte de connexion), avec une pulsation douce. Résultat : tout le monde
     // voit la lumière ; WebGL n'ajoute que l'animation des arcs.
-    if (!gl) {
+    // Rendu logiciel (pas de vraie puce graphique : vieux téléphones, machines
+    // virtuelles, outils de mesure de Google) : le shader tournerait sur le
+    // processeur et bloquerait la page. On prend alors le dégradé fixe ci-dessous.
+    const dbg = gl && gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer = gl ? String(gl.getParameter(dbg ? dbg.UNMASKED_RENDERER_WEBGL : gl.RENDERER) || '') : '';
+    const software = /swiftshader|llvmpipe|software|basic render/i.test(renderer);
+    if (software) gl?.getExtension('WEBGL_lose_context')?.loseContext();
+    if (!gl || software) {
       canvas.style.background = [
         'radial-gradient(120% 95% at 78% 12%, rgba(90,205,255,0.30), transparent 55%)',
         'radial-gradient(80% 70% at 62% 45%, rgba(60,170,235,0.20), transparent 62%)',
@@ -139,8 +146,8 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
     // sans dimensions, innerWidth vaut 0 et aucun resize ne suit — le fond
     // resterait noir. Ici, il se répare tout seul dès que la taille existe.
     const syncSize = () => {
-      // Plafonné à 2 : au-delà, le coût grimpe sans gain visible.
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Plafonné à 1,5 : au-delà, le coût grimpe sans gain visible (traits flous de toute façon).
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const w = Math.floor((contained ? canvas.clientWidth : window.innerWidth) * dpr);
       const h = Math.floor((contained ? canvas.clientHeight : window.innerHeight) * dpr);
       if (w === canvas.width && h === canvas.height) return;
@@ -161,9 +168,13 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
 
     let raf = 0;
     let time = 1.0;
-    const draw = () => {
+    let last = -1e9;
+    const draw = (now: number = 0) => {
       raf = requestAnimationFrame(draw);
       if (!visible) return;
+      // ~30 images/s : l'effet reste fluide et coûte deux fois moins.
+      if (now - last < 32) return;
+      last = now;
       syncSize();
       const c = cfg.current;
       time += 0.05 * (reduced ? 0 : c.speed);
@@ -175,9 +186,16 @@ export const ShaderBackground: React.FC<ShaderBackgroundProps> = ({
       gl.uniform1f(uBright, c.brightness);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
-    draw();
+    // Démarre une fois la page chargée et au repos, pour ne pas ralentir son affichage.
+    let started = false;
+    const start = () => { if (!started) { started = true; raf = requestAnimationFrame(draw); } };
+    const ric = (window as any).requestIdleCallback as ((cb: () => void, o?: { timeout: number }) => number) | undefined;
+    const kick = () => { if (ric) ric(start, { timeout: 2500 }); else window.setTimeout(start, 1200); };
+    if (document.readyState === 'complete') kick(); else window.addEventListener('load', kick, { once: true });
 
     return () => {
+      started = true;
+      window.removeEventListener('load', kick);
       cancelAnimationFrame(raf);
       io?.disconnect();
       gl.deleteBuffer(buf);
