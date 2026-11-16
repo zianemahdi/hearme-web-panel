@@ -9,6 +9,7 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './fr/sos-silencieux.html', label: 'SOS silencieux' },
     { href: './fr/telephone-vole-que-faire.html', label: 'Guide : téléphone volé' },
     { href: './fr/retrouver-telephone-en-silencieux.html', label: 'Guide : téléphone en silencieux' },
+    { href: './fr/proteger-telephone-cafe-transports.html', label: 'Guide : café et transports' },
   ],
   en: [
     { href: './en/find-phone-on-silent.html', label: 'Voice keyword' },
@@ -17,6 +18,7 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './en/silent-sos.html', label: 'Silent SOS' },
     { href: './en/phone-stolen-what-to-do.html', label: 'Guide: stolen phone' },
     { href: './en/find-phone-on-silent-mode.html', label: 'Guide: phone on silent' },
+    { href: './en/protect-phone-cafe-public-transport.html', label: 'Guide: cafés and transport' },
   ],
   es: [
     { href: './es/hacer-sonar-movil-en-silencio.html', label: 'Palabra clave' },
@@ -25,6 +27,7 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './es/sos-silencioso.html', label: 'SOS silencioso' },
     { href: './es/me-han-robado-el-movil-que-hacer.html', label: 'Guía: móvil robado' },
     { href: './es/encontrar-movil-en-silencio.html', label: 'Guía: móvil en silencio' },
+    { href: './es/proteger-movil-cafeteria-transporte.html', label: 'Guía: cafetería y transporte' },
   ],
   ar: [
     { href: './ar/find-phone-on-silent.html', label: 'الكلمة المفتاحية' },
@@ -33,5 +36,6 @@ export const FEATURE_PAGES: Record<Lang, { href: string; label: string }[]> = {
     { href: './ar/silent-sos.html', label: 'الاستغاثة الصامتة' },
     { href: './ar/phone-stolen-what-to-do.html', label: 'دليل: هاتف مسروق' },
     { href: './ar/find-phone-on-silent-mode.html', label: 'دليل: الهاتف على الوضع الصامت' },
+    { href: './ar/protect-phone-cafe-public-transport.html', label: 'دليل: المقهى والمواصلات' },
   ],
 };
