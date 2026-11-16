@@ -272,7 +272,7 @@ export const es: Dict = {
   'ls.fact5': 'Datos alojados en Europa',
   'ls.appKicker': 'La app',
   'ls.appTitle': 'Fácil de configurar, discreta cada día.',
-  'ls.appLead': 'Una pantalla para la escucha de la palabra clave y otra para el antirrobo. Lo activas y HearMe vigila en segundo plano, con una notificación siempre visible.',
+  'ls.appLead': "Una pantalla para la escucha de la palabra clave y otra para el antirrobo. Lo activas y HearMe vigila en segundo plano, y una notificación te muestra siempre que está activo.",
   'ls.shotAlt1': 'Pantalla Escucha de HearMe: di «mi teléfono» y suena, incluso en silencio',
   'ls.shotAlt2': 'Pantalla Antirrobo de HearMe: modo de protección activado',
   'ls.faqKicker': 'Preguntas frecuentes',

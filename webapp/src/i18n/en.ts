@@ -272,7 +272,7 @@ export const en: Dict = {
   'ls.fact5': 'Data hosted in Europe',
   'ls.appKicker': 'The app',
   'ls.appTitle': 'Easy to set up, quiet every day.',
-  'ls.appLead': 'One screen for keyword listening, one for anti-theft. Switch it on and HearMe watches in the background, with a notification that stays visible.',
+  'ls.appLead': "One screen for keyword listening, one for anti-theft. Switch it on and HearMe watches in the background, with a notification that always shows it's active.",
   'ls.shotAlt1': 'HearMe Listening screen: say “my phone” and it rings, even on silent',
   'ls.shotAlt2': 'HearMe Anti-theft screen: protection mode armed',
   'ls.faqKicker': 'FAQ',

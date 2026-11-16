@@ -272,7 +272,7 @@ export const fr = {
   'ls.fact5': 'Données hébergées en Europe',
   'ls.appKicker': 'L\'application',
   'ls.appTitle': 'Simple à régler, discrète au quotidien.',
-  'ls.appLead': 'Un écran pour l\'écoute du mot-clé, un pour l\'antivol. Vous activez, HearMe veille en arrière-plan, avec une notification qui reste visible.',
+  'ls.appLead': "Un écran pour l'écoute du mot-clé, un pour l'antivol. Vous activez, HearMe veille en arrière-plan, et une notification vous montre toujours qu'il est actif.",
   'ls.shotAlt1': 'Écran Écoute de HearMe : dites « mon téléphone » et il sonne, même en silencieux',
   'ls.shotAlt2': 'Écran Antivol de HearMe : mode de protection armé',
   'ls.faqKicker': 'Questions fréquentes',
