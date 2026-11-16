@@ -7,10 +7,6 @@ import {
   AlertCircle,
   Loader2,
   ShieldCheck,
-  Camera,
-  MapPin,
-  Volume2,
-  Check,
   HelpCircle
 } from 'lucide-react';
 import { AuthMode } from '../types';
@@ -301,92 +297,6 @@ export const WelcomeAuthPortal: React.FC<WelcomeAuthPortalProps> = ({
             </p>
           </div>
 
-          {/* 4 Core Pillars of HearMe */}
-          <div className="grid sm:grid-cols-2 gap-3 pt-2">
-            <div className={`p-3.5 rounded-2xl border transition-all ${
-              theme === 'dark'
-                ? 'bg-white/[0.03] border-white/[0.08] hover:border-purple-500/30'
-                : 'bg-white/80 border-slate-200 hover:border-purple-300 shadow-sm'
-            }`}>
-              <div className="flex items-center gap-2.5 mb-1.5">
-                <div className="w-7 h-7 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center">
-                  <Volume2 className="w-4 h-4" />
-                </div>
-                <h2 className={`font-bold text-xs ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-                  {t('wa.f1t')}
-                </h2>
-              </div>
-              <p className={`text-[11px] leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                {t('wa.f1d')}
-              </p>
-            </div>
-
-            <div className={`p-3.5 rounded-2xl border transition-all ${
-              theme === 'dark'
-                ? 'bg-white/[0.03] border-white/[0.08] hover:border-pink-500/30'
-                : 'bg-white/80 border-slate-200 hover:border-pink-300 shadow-sm'
-            }`}>
-              <div className="flex items-center gap-2.5 mb-1.5">
-                <div className="w-7 h-7 rounded-xl bg-pink-500/15 text-pink-400 flex items-center justify-center">
-                  <MapPin className="w-4 h-4" />
-                </div>
-                <h2 className={`font-bold text-xs ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-                  {t('wa.f2t')}
-                </h2>
-              </div>
-              <p className={`text-[11px] leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                {t('wa.f2d')}
-              </p>
-            </div>
-
-            <div className={`p-3.5 rounded-2xl border transition-all ${
-              theme === 'dark'
-                ? 'bg-white/[0.03] border-white/[0.08] hover:border-indigo-500/30'
-                : 'bg-white/80 border-slate-200 hover:border-indigo-300 shadow-sm'
-            }`}>
-              <div className="flex items-center gap-2.5 mb-1.5">
-                <div className="w-7 h-7 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center">
-                  <Camera className="w-4 h-4" />
-                </div>
-                <h2 className={`font-bold text-xs ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-                  {t('wa.f3t')}
-                </h2>
-              </div>
-              <p className={`text-[11px] leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                {t('wa.f3d')}
-              </p>
-            </div>
-
-            <div className={`p-3.5 rounded-2xl border transition-all ${
-              theme === 'dark'
-                ? 'bg-white/[0.03] border-white/[0.08] hover:border-emerald-500/30'
-                : 'bg-white/80 border-slate-200 hover:border-emerald-300 shadow-sm'
-            }`}>
-              <div className="flex items-center gap-2.5 mb-1.5">
-                <div className="w-7 h-7 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-                <h2 className={`font-bold text-xs ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-                  {t('wa.f4t')}
-                </h2>
-              </div>
-              <p className={`text-[11px] leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                {t('wa.f4d')}
-              </p>
-            </div>
-          </div>
-
-          {/* Social Proof & Guarantee badge */}
-          <div className="flex items-center gap-4 pt-1 text-xs text-slate-400">
-            <div className="flex items-center gap-1.5">
-              <Check className="w-4 h-4 text-emerald-400" />
-              <span>{t('wa.b1')}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Check className="w-4 h-4 text-emerald-400" />
-              <span>{t('wa.b2')}</span>
-            </div>
-          </div>
         </section>
 
         {/* Accès : compte créé dans l'app (Google, e-mail ou PIN de secours) */}
