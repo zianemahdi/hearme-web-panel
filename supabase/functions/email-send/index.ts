@@ -23,12 +23,12 @@
 // =========================================================================
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import nodemailer from "npm:nodemailer@6.9.16";
+import { composeAlert, composeWeekly, isLang, KINDS, num, type Kind, type Lang } from "./build.ts";
 
 const SMTP_USER = Deno.env.get("SMTP_USER") ?? "";
 const SMTP_PASS = Deno.env.get("SMTP_PASS") ?? "";
 const SMTP_HOST = Deno.env.get("SMTP_HOST") ?? "smtp.gmail.com";
 const SMTP_PORT = Number(Deno.env.get("SMTP_PORT") ?? "465");
-const PANEL_URL = "https://gethearme.me/";
 
 const admin = createClient(
   Deno.env.get("SUPABASE_URL")!,
@@ -52,155 +52,6 @@ function clientIp(req: Request): string {
   const parts = (req.headers.get("x-forwarded-for") ?? "")
     .split(",").map((s) => s.trim()).filter(Boolean);
   return parts.at(-1) ?? "";
-}
-
-type Lang = "fr" | "en" | "es" | "ar";
-type Kind = "theft" | "unlock_failed" | "battery_low" | "shutdown" | "test" | "weekly";
-const KINDS: Kind[] = ["theft", "unlock_failed", "battery_low", "shutdown", "test", "weekly"];
-
-// {d} = nom du téléphone.
-const TEXT: Record<Lang, {
-  subject: Record<Kind, string>;
-  intro: Record<Kind, string>;
-  location: string; map: string; noLocation: string; battery: string; time: string;
-  panel: string; footer: string;
-}> = {
-  fr: {
-    subject: {
-      theft: "🚨 HearMe : vol détecté sur « {d} »",
-      unlock_failed: "🔐 HearMe : code faux sur « {d} »",
-      battery_low: "🪫 HearMe : batterie faible sur « {d} »",
-      shutdown: "📴 HearMe : « {d} » s'éteint",
-      test: "✅ HearMe : e-mail d'essai",
-      weekly: "📊 HearMe : ta semaine sur « {d} »",
-    },
-    intro: {
-      theft: "Ton téléphone « {d} » a été arraché puis emporté alors que l'antivol était armé. Ouvre ton panneau web pour le suivre en direct, le faire sonner ou le verrouiller.",
-      unlock_failed: "Quelqu'un a saisi un code faux sur « {d} » alors que l'antivol était armé. Une photo de la personne est dans ton panneau web.",
-      battery_low: "La batterie de « {d} » est faible alors que l'antivol est armé. Voici sa dernière position connue.",
-      shutdown: "« {d} » est en train de s'éteindre alors que l'antivol est armé. Voici sa dernière position connue.",
-      test: "Les alertes de ton téléphone « {d} » arriveront bien à cette adresse.",
-      weekly: "Voici ta semaine avec HearMe sur « {d} », du {from} au {to}.",
-    },
-    location: "Position", map: "Voir sur la carte", noLocation: "Position indisponible",
-    battery: "Batterie", time: "Heure", panel: "Ouvrir mon panneau web",
-    footer: "Tu reçois cet e-mail parce que les alertes par e-mail sont activées dans HearMe (Profil). Tu peux les couper à tout moment.",
-  },
-  en: {
-    subject: {
-      theft: "🚨 HearMe: theft detected on “{d}”",
-      unlock_failed: "🔐 HearMe: wrong code on “{d}”",
-      battery_low: "🪫 HearMe: low battery on “{d}”",
-      shutdown: "📴 HearMe: “{d}” is shutting down",
-      test: "✅ HearMe: test email",
-      weekly: "📊 HearMe: your week on “{d}”",
-    },
-    intro: {
-      theft: "Your phone “{d}” was snatched and carried away while anti-theft was armed. Open your web panel to follow it live, make it ring or lock it.",
-      unlock_failed: "Someone entered a wrong code on “{d}” while anti-theft was armed. A photo of that person is in your web panel.",
-      battery_low: "The battery of “{d}” is low while anti-theft is armed. Here is its last known location.",
-      shutdown: "“{d}” is shutting down while anti-theft is armed. Here is its last known location.",
-      test: "Alerts from your phone “{d}” will arrive at this address.",
-      weekly: "Here is your week with HearMe on “{d}”, from {from} to {to}.",
-    },
-    location: "Location", map: "View on the map", noLocation: "Location unavailable",
-    battery: "Battery", time: "Time", panel: "Open my web panel",
-    footer: "You're getting this email because email alerts are on in HearMe (Profile). You can turn them off at any time.",
-  },
-  es: {
-    subject: {
-      theft: "🚨 HearMe: robo detectado en «{d}»",
-      unlock_failed: "🔐 HearMe: código incorrecto en «{d}»",
-      battery_low: "🪫 HearMe: batería baja en «{d}»",
-      shutdown: "📴 HearMe: «{d}» se está apagando",
-      test: "✅ HearMe: correo de prueba",
-      weekly: "📊 HearMe: tu semana en «{d}»",
-    },
-    intro: {
-      theft: "Tu teléfono «{d}» fue arrebatado y se lo llevaron con el antirrobo activado. Abre tu panel web para seguirlo en directo, hacerlo sonar o bloquearlo.",
-      unlock_failed: "Alguien introdujo un código incorrecto en «{d}» con el antirrobo activado. Tienes una foto de esa persona en tu panel web.",
-      battery_low: "La batería de «{d}» está baja con el antirrobo activado. Esta es su última ubicación conocida.",
-      shutdown: "«{d}» se está apagando con el antirrobo activado. Esta es su última ubicación conocida.",
-      test: "Las alertas de tu teléfono «{d}» llegarán a esta dirección.",
-      weekly: "Esta es tu semana con HearMe en «{d}», del {from} al {to}.",
-    },
-    location: "Ubicación", map: "Ver en el mapa", noLocation: "Ubicación no disponible",
-    battery: "Batería", time: "Hora", panel: "Abrir mi panel web",
-    footer: "Recibes este correo porque las alertas por correo están activadas en HearMe (Perfil). Puedes desactivarlas cuando quieras.",
-  },
-  ar: {
-    subject: {
-      theft: "🚨 HearMe: تم رصد سرقة على «{d}»",
-      unlock_failed: "🔐 HearMe: رمز خاطئ على «{d}»",
-      battery_low: "🪫 HearMe: البطارية منخفضة على «{d}»",
-      shutdown: "📴 HearMe: «{d}» يتم إيقاف تشغيله",
-      test: "✅ HearMe: رسالة تجريبية",
-      weekly: "📊 HearMe: أسبوعك على «{d}»",
-    },
-    intro: {
-      theft: "تم انتزاع هاتفك «{d}» وأخذه بينما كانت مكافحة السرقة مفعّلة. افتح لوحة التحكم على الويب لتتبعه مباشرة أو جعله يرن أو قفله.",
-      unlock_failed: "أدخل شخص ما رمزًا خاطئًا على «{d}» بينما كانت مكافحة السرقة مفعّلة. صورة هذا الشخص موجودة في لوحة التحكم على الويب.",
-      battery_low: "بطارية «{d}» منخفضة بينما مكافحة السرقة مفعّلة. هذا آخر موقع معروف له.",
-      shutdown: "يتم إيقاف تشغيل «{d}» بينما مكافحة السرقة مفعّلة. هذا آخر موقع معروف له.",
-      test: "ستصل تنبيهات هاتفك «{d}» إلى هذا العنوان.",
-      weekly: "إليك أسبوعك مع HearMe على «{d}»، من {from} إلى {to}.",
-    },
-    location: "الموقع", map: "عرض على الخريطة", noLocation: "الموقع غير متاح",
-    battery: "البطارية", time: "الوقت", panel: "فتح لوحة التحكم على الويب",
-    footer: "تتلقى هذه الرسالة لأن تنبيهات البريد الإلكتروني مفعّلة في HearMe (الملف الشخصي). يمكنك إيقافها في أي وقت.",
-  },
-};
-
-
-// Rapport de la semaine : intitulés, unités, messages. {n} = nombre.
-const WEEK: Record<Lang, {
-  listen: string; armed: string; rings: string; thefts: string; wrong: string; sos: string;
-  hours: string; times: string; never: string;
-  off: string; quiet: string; footer: string;
-}> = {
-  fr: {
-    listen: "Écoute du mot-clé", armed: "Antivol armé", rings: "Téléphone retrouvé à la voix",
-    thefts: "Alertes de vol", wrong: "Codes faux tapés", sos: "SOS silencieux",
-    hours: "{n} h", times: "{n} fois", never: "aucune",
-    off: "Ta protection est restée coupée toute la semaine. Ouvre HearMe et active l'écoute ou l'antivol : un geste suffit.",
-    quiet: "Aucune alerte cette semaine. Tout est calme.",
-    footer: "Tu reçois ce rapport chaque lundi. Pour l'arrêter : HearMe › Profil › Rapport de la semaine.",
-  },
-  en: {
-    listen: "Keyword listening", armed: "Anti-theft armed", rings: "Phone found by voice",
-    thefts: "Theft alerts", wrong: "Wrong codes entered", sos: "Silent SOS",
-    hours: "{n} h", times: "{n}×", never: "none",
-    off: "Your protection was off all week. Open HearMe and turn on listening or anti-theft: it takes one tap.",
-    quiet: "No alerts this week. All quiet.",
-    footer: "You get this report every Monday. To stop it: HearMe › Profile › Weekly report.",
-  },
-  es: {
-    listen: "Escucha de la palabra clave", armed: "Antirrobo activado", rings: "Teléfono encontrado por voz",
-    thefts: "Alertas de robo", wrong: "Códigos incorrectos", sos: "SOS silencioso",
-    hours: "{n} h", times: "{n} veces", never: "ninguna",
-    off: "Tu protección estuvo desactivada toda la semana. Abre HearMe y activa la escucha o el antirrobo: basta un toque.",
-    quiet: "Ninguna alerta esta semana. Todo tranquilo.",
-    footer: "Recibes este informe cada lunes. Para detenerlo: HearMe › Perfil › Informe semanal.",
-  },
-  ar: {
-    listen: "الاستماع للكلمة المفتاحية", armed: "مكافحة السرقة مفعّلة", rings: "العثور على الهاتف بالصوت",
-    thefts: "تنبيهات السرقة", wrong: "رموز خاطئة", sos: "استغاثة صامتة",
-    hours: "{n} ساعة", times: "{n} مرة", never: "لا شيء",
-    off: "بقيت حمايتك متوقفة طوال الأسبوع. افتح HearMe وفعّل الاستماع أو مكافحة السرقة: لمسة واحدة تكفي.",
-    quiet: "لا توجد تنبيهات هذا الأسبوع. كل شيء هادئ.",
-    footer: "تتلقى هذا التقرير كل يوم اثنين. لإيقافه: HearMe › الملف الشخصي › التقرير الأسبوعي.",
-  },
-};
-
-/** Entier 0..max envoyé par l'app, sinon 0. */
-function num(v: unknown, max: number): number {
-  return Number.isInteger(v) && (v as number) >= 0 ? Math.min(v as number, max) : 0;
-}
-
-const isLang = (l: unknown): l is Lang => typeof l === "string" && l in TEXT;
-
-function esc(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 /** Heure lisible dans la langue et le fuseau du téléphone (fuseau invalide → UTC). */
@@ -254,92 +105,28 @@ Deno.serve(async (req) => {
   }
 
   const lang: Lang = isLang(auth.lang) ? auth.lang : "fr";
-  const t = TEXT[lang];
   const device = String(auth.device_name ?? "HearMe").replace(/[\r\n]+/g, " ").slice(0, 64) || "HearMe";
-  const fill = (s: string) => s.replaceAll("{d}", device);
+
+  if (kind === "weekly") {
+    const ws = typeof body?.week_start === "string" && /^\d{4}-\d{2}-\d{2}$/.test(body.week_start)
+      ? new Date(body.week_start + "T12:00:00Z") : null;
+    if (!ws || Number.isNaN(ws.getTime())) return json({ error: "bad_week" }, 400);
+    const m = composeWeekly(lang, {
+      device, weekStart: ws,
+      listen: num(body?.listen_h, 168), armed: num(body?.armed_h, 168),
+      rings: num(body?.rings, 999), thefts: num(body?.thefts, 999),
+      wrong: num(body?.wrong_codes, 999), sos: num(body?.sos, 999),
+    });
+    return await deliver(String(auth.to), m.subject, m.text, m.html);
+  }
 
   const lat = Number(body?.lat), lng = Number(body?.lng);
   const hasLoc = Number.isFinite(lat) && Number.isFinite(lng) && Math.abs(lat) <= 90 && Math.abs(lng) <= 180 &&
     body?.lat !== null && body?.lng !== null && body?.lat !== undefined && body?.lng !== undefined;
-  const mapUrl = hasLoc ? `https://maps.google.com/?q=${lat.toFixed(6)},${lng.toFixed(6)}` : "";
+  const mapUrl = hasLoc ? `https://maps.google.com/?q=${lat.toFixed(6)},${lng.toFixed(6)}` : null;
   const battery = Number.isInteger(body?.battery) && body.battery >= 0 && body.battery <= 100 ? body.battery as number : null;
-  const time = formatTime(lang, body?.tz);
-
-  if (kind === "weekly") {
-    const w = WEEK[lang];
-    const ws = typeof body?.week_start === "string" && /^\d{4}-\d{2}-\d{2}$/.test(body.week_start)
-      ? new Date(body.week_start + "T12:00:00Z") : null;
-    if (!ws || Number.isNaN(ws.getTime())) return json({ error: "bad_week" }, 400);
-    const we = new Date(ws.getTime() + 6 * 86_400_000);
-    const dfmt = new Intl.DateTimeFormat(lang, { day: "numeric", month: "long", timeZone: "UTC" });
-    const listen = num(body?.listen_h, 168), armed = num(body?.armed_h, 168);
-    const counts = {
-      rings: num(body?.rings, 999), thefts: num(body?.thefts, 999),
-      wrong: num(body?.wrong_codes, 999), sos: num(body?.sos, 999),
-    };
-    const h = (n: number) => w.hours.replace("{n}", String(n));
-    // Arabe : مرة واحدة · مرتان · 3 à 10 مرات · 11 et plus مرة.
-    const x = (n: number) => n === 0 ? w.never
-      : lang === "ar" ? (n === 1 ? "مرة واحدة" : n === 2 ? "مرتان" : n <= 10 ? `${n} مرات` : `${n} مرة`)
-      : w.times.replace("{n}", String(n));
-    // Français : « 1er novembre », pas « 1 novembre ».
-    const day = (d: Date) => lang === "fr" ? dfmt.format(d).replace(/^1 /, "1er ") : dfmt.format(d);
-    const rows: [string, string][] = [
-      [w.listen, h(listen)], [w.armed, h(armed)], [w.rings, x(counts.rings)],
-      [w.thefts, x(counts.thefts)], [w.wrong, x(counts.wrong)], [w.sos, x(counts.sos)],
-    ];
-    // Protection coupée toute la semaine : on le dit. Sinon, une semaine sans alerte.
-    const note = listen === 0 && armed === 0 ? w.off
-      : counts.thefts + counts.wrong + counts.sos === 0 ? w.quiet : "";
-    const intro = fill(t.intro.weekly).replace("{from}", day(ws)).replace("{to}", day(we));
-    const text = [intro, "", ...rows.map(([k, v]) => `${k} : ${v}`), "", ...(note ? [note, ""] : []),
-      `${t.panel} : ${PANEL_URL}`, "", w.footer].join("\n");
-    const dir = lang === "ar" ? "rtl" : "ltr";
-    const end = dir === "rtl" ? "left" : "right";
-    const cells = rows.map(([k, v]) =>
-      `<tr><td style="padding:8px 0;color:#6b6585;border-bottom:1px solid #eeeaf8">${esc(k)}</td>` +
-      `<td style="padding:8px 0;color:#161228;font-weight:700;text-align:${end};border-bottom:1px solid #eeeaf8">${esc(v)}</td></tr>`).join("");
-    const html = `<!doctype html><html lang="${lang}" dir="${dir}"><body style="margin:0;background:#f5f3fa;font-family:Arial,Helvetica,sans-serif">
-<div style="max-width:520px;margin:0 auto;padding:24px">
-<div style="background:#0d0b17;color:#eeeaf8;padding:18px 22px;font-weight:700;letter-spacing:.18em">HEARME</div>
-<div style="background:#ffffff;padding:22px;border:1px solid #e3def2;border-top:0">
-<p style="margin:0 0 16px;font-size:16px;line-height:1.5;color:#161228">${esc(intro)}</p>
-<table style="border-collapse:collapse;font-size:14px;width:100%">${cells}</table>
-${note ? `<p style="margin:18px 0 0;font-size:15px;line-height:1.5;color:#161228">${esc(note)}</p>` : ""}
-<p style="margin:22px 0 0"><a href="${PANEL_URL}" style="display:inline-block;background:#6a55d6;color:#ffffff;text-decoration:none;padding:12px 18px;font-weight:700">${esc(t.panel)}</a></p>
-</div>
-<p style="font-size:12px;line-height:1.5;color:#6b6585;margin:14px 0 0">${esc(w.footer)}</p>
-</div></body></html>`;
-    return await deliver(String(auth.to), fill(t.subject.weekly), text, html);
-  }
-
-  const subject = fill(t.subject[kind]);
-  const intro = fill(t.intro[kind]);
-  const showLoc = kind !== "test";
-  const lines = [intro, ""];
-  if (showLoc) lines.push(`${t.location} : ${hasLoc ? mapUrl : t.noLocation}`);
-  if (battery !== null) lines.push(`${t.battery} : ${battery} %`);
-  lines.push(`${t.time} : ${time}`, "", `${t.panel} : ${PANEL_URL}`, "", t.footer);
-
-  const dir = lang === "ar" ? "rtl" : "ltr";
-  const row = (label: string, value: string) =>
-    `<tr><td style="padding:6px 0;color:#6b6585;width:110px">${esc(label)}</td><td style="padding:6px 0;color:#161228;font-weight:600">${value}</td></tr>`;
-  const html = `<!doctype html><html lang="${lang}" dir="${dir}"><body style="margin:0;background:#f5f3fa;font-family:Arial,Helvetica,sans-serif">
-<div style="max-width:520px;margin:0 auto;padding:24px">
-<div style="background:#0d0b17;color:#eeeaf8;padding:18px 22px;font-weight:700;letter-spacing:.18em">HEARME</div>
-<div style="background:#ffffff;padding:22px;border:1px solid #e3def2;border-top:0">
-<p style="margin:0 0 16px;font-size:16px;line-height:1.5;color:#161228">${esc(intro)}</p>
-<table style="border-collapse:collapse;font-size:14px">
-${showLoc ? row(t.location, hasLoc ? `<a href="${mapUrl}" style="color:#5140b8">${esc(t.map)}</a>` : esc(t.noLocation)) : ""}
-${battery !== null ? row(t.battery, `${battery} %`) : ""}
-${row(t.time, esc(time))}
-</table>
-<p style="margin:22px 0 0"><a href="${PANEL_URL}" style="display:inline-block;background:#6a55d6;color:#ffffff;text-decoration:none;padding:12px 18px;font-weight:700">${esc(t.panel)}</a></p>
-</div>
-<p style="font-size:12px;line-height:1.5;color:#6b6585;margin:14px 0 0">${esc(t.footer)}</p>
-</div></body></html>`;
-
-  return await deliver(String(auth.to), subject, lines.join("\n"), html);
+  const m = composeAlert(lang, kind, { device, time: formatTime(lang, body?.tz), mapUrl, battery });
+  return await deliver(String(auth.to), m.subject, m.text, m.html);
 });
 
 async function deliver(to: string, subject: string, text: string, html: string): Promise<Response> {
