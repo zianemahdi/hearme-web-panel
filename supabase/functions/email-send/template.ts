@@ -15,7 +15,6 @@ export const SITE = "https://gethearme.me/";
 const LOGO = "https://gethearme.me/icon-192.png";
 const SOCIAL = [
   { name: "TikTok", url: "https://www.tiktok.com/@gethearme" },
-  { name: "Instagram", url: "https://www.instagram.com/gethearme" },
   { name: "YouTube", url: "https://www.youtube.com/@gethearme" },
 ];
 
